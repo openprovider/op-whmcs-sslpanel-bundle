@@ -39,46 +39,6 @@ function openprovidersslnew_ConfigOptions()
             "Size" => "60",
             "Description" => "Openprovider API URL",
         ],
-        "SSL Certificate Type" => [
-            "Type" => "dropdown",
-            "Options" => "Symantec Secure Site," .
-                "Symantec Secure Site Pro," .
-                "Symantec Secure Site with EV," .
-                "Symantec Secure Site Pro with EV," .
-                "GeoTrust QuickSSL Premium," .
-                "GeoTrust True Business ID," .
-                "GeoTrust True Business ID with EV," .
-                "GeoTrust True Business ID Multi-Domain," .
-                "GeoTrust True Business ID with EV Multi-Domain," .
-                "GeoTrust True Business ID Wildcard," .
-                "thawte SSL123,thawte Web Server," .
-                "thawte Web Server with EV," .
-                "thawte Web Server Wildcard," .
-                "thawte SGC SuperCert," .
-                "Comodo EssentialSSL," .
-                "Comodo InstantSSL," .
-                "Comodo InstantSSL Pro," .
-                "Comodo PremiumSSL," .
-                "Comodo EV SSL," .
-                "Comodo EV SGC SSL," .
-                "Comodo Instant SGC SSL," .
-                "Comodo Unified Communications Certificate," .
-                "Comodo EVSSL Multi-Domain," .
-                "Comodo EssentialSSL Wildcard," .
-                "Comodo PremiumSSL Wildcard," .
-                "Comodo Instant SGC Wildcard SSL," .
-                "RapidSSL," .
-                "RapidSSL Wildcard",
-        ],
-        "Validity Period" => [
-            "Type" => "dropdown",
-            "Options" => "1,2,3",
-            "Description" => "Years",
-        ],
-        "" => [
-            "Type" => "na",
-            "Description" => "Do not have a Openprovider SSL account? Visit <a href=\"https://www.openprovider.co.uk/register/\" target=\"_blank\">www.openprovider.co.uk/</a> to signup free.",
-        ],
     ];
 }
 
