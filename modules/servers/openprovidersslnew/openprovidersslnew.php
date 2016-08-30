@@ -39,6 +39,10 @@ function openprovidersslnew_ConfigOptions()
             "Size" => "60",
             "Description" => "Openprovider API URL",
         ],
+        "SSL Certificate Type" => [
+            "Type" => "dropdown",
+            "Options" => "PositiveSSL",
+        ],
     ];
 }
 
@@ -59,7 +63,7 @@ function openprovidersslnew_search($params)
         $params,
         $products,
         '',
-        [$params["configoption1"],$params["configoption2"]]
+        [$params["configoption1"], $params["configoption2"]]
     );
 
     return array(
