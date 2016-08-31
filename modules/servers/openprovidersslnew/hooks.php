@@ -2,16 +2,22 @@
 
 function hook_openprovidernewssl_acceptorder(array $params)
 {
-    $results = localAPI("getorders", ['id' => $params['orderid']], "admin");
+    $reply = null;
 
-    logModuleCall(
-        'openprovidersslnew',
-        'hook',
-        $params,
-        $results,
-        [],
-        [$params["configoption1"], $params["configoption2"]]
-    );
+    try {
+        $reply = opApiWrapper::createSslCert($params, 41);
+    } catch (\Exception $e) {
+        logModuleCall(
+            'openprovidersslnew',
+            'hook_openprovidernewssl_acceptorder',
+            $params,
+            $reply,
+            [
+                'errorMessage' => $e->getMessage(),
+            ],
+            [$params["configoption1"], $params["configoption2"]]
+        );
+    }
 }
 
 add_hook('AcceptOrder', 1, 'hook_openprovidernewssl_acceptorder');

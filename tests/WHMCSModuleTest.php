@@ -133,4 +133,3 @@ class WHMCSModuleTest extends PHPUnit_Framework_TestCase
 	$this->assertNotNull($products);
     } 
 }
-
