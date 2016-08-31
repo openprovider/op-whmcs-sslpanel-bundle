@@ -46,13 +46,21 @@ function openprovidersslnew_ConfigOptions()
     ];
 }
 
-function openprovidersslnew_ClientAreaCustomButtonArray()
+/**
+ * @return array
+ */
+function openprovidersslnew_AdminCustomButtonArray()
 {
     return [
         "Search ssl products" => "search",
     ];
 }
 
+/**
+ * @param array $params
+ *
+ * @return array
+ */
 function openprovidersslnew_search($params)
 {
     $products = opApiWrapper::processRequest('searchProductSslCertRequest', $params, []);
