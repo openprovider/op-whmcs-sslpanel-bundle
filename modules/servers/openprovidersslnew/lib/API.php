@@ -133,7 +133,7 @@ class OP_API
     public function process(OP_Request $r)
     {
         if ($this->debug) {
-            echo $r->getRaw() . "\n";
+            error_log(var_export($r->getRaw() . "\n",true),3,'/tmp/openprovidersslnew.log');
         }
 
         $msg = $r->getRaw();
@@ -142,7 +142,7 @@ class OP_API
             throw new OP_API_Exception ('Bad reply');
         }
         if ($this->debug) {
-            echo $str . "\n";
+            error_log(var_export($str . "\n",true),3,'/tmp/openprovidersslnew.log');
         }
         return new OP_Reply($str);
     }

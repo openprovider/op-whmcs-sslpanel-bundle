@@ -12,13 +12,12 @@ class opApiWrapper
 
     static public function processRequest($requestName, $params, $args)
     {
-        $api = new OP_API($params["OpenproviderAPI"]);
+        $api = new OP_API($params["apiUrl"]);
         $request = new OP_Request;
         $request->setCommand($requestName)
-            ->setAuth(array('username' => $params["Username"], 'password' => $params["Password"]))
+            ->setAuth(array('username' => $params["username"], 'password' => $params["password"]))
             ->setArgs($args);
         $reply = $api->setDebug(0)->process($request);
-
         $returnValue = $reply->getValue();
         $faultCode = $reply->getFaultCode();
         if ($faultCode != 0) {
@@ -161,12 +160,18 @@ class opApiWrapper
 
     static public function createSslCert($params, $productId)
     {
-        $args = [
-            'productId' => $productId,
-            'period' => 1,
-            'startProvision' => 0,
-        ];
-
-        return self::processRequest('createSslCertRequest', $params, $args);
+        return self::processRequest(
+	    'createSslCertRequest', 
+	    [
+	        'username' => $params['configoption1'],
+	        'password' => $params['configoption2'],
+	        'apiUrl' => $params['configoption3'],
+            ], 
+	    [
+                'productId' => $productId,
+                'period' => 1,
+                'startProvision' => 0,
+            ]
+        );
     }
 }

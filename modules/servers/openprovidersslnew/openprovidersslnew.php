@@ -1,6 +1,6 @@
 <?php
 
-include './lib/opApiWrapper.php';
+include __DIR__.'/lib/opApiWrapper.php';
 
 /**
  * @return array
@@ -24,17 +24,17 @@ function openprovidersslnew_MetaData()
 function openprovidersslnew_ConfigOptions()
 {
     return [
-        "Username" => [
+        "username" => [
             "Type" => "text",
             "Size" => "25",
             "Description" => "Openprovider login",
         ],
-        "Password" => [
+        "password" => [
             "Type" => "password",
             "Size" => "25",
             "Description" => "Openprovider password",
         ],
-        "OpenproviderAPI" => [
+        "apiUrl" => [
             "Type" => "text",
             "Size" => "60",
             "Description" => "Openprovider API URL",
@@ -45,3 +45,31 @@ function openprovidersslnew_ConfigOptions()
         ],
     ];
 }
+
+/**
+ * @param array $params
+ *
+ * @return string
+ */
+function openprovidersslnew_CreateAccount($params)
+{
+    $reply = null;
+
+    try {
+        $reply = opApiWrapper::createSslCert($params, 41);
+    } catch (opApiException $e) {
+        logModuleCall(
+            'openprovidersslnew',
+            'hook_openprovidernewssl_acceptorder',
+            $params,
+            $reply,
+            [
+                'errorMessage' => $e->getMessage(),
+            ],
+            [$params["configoption1"], $params["configoption2"]]
+        );
+    }
+
+    return "success";   
+}
+
