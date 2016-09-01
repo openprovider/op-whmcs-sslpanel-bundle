@@ -17,7 +17,7 @@ class opApiWrapper
         $request->setCommand($requestName)
             ->setAuth(array('username' => $params["username"], 'password' => $params["password"]))
             ->setArgs($args);
-        $reply = $api->setDebug(0)->process($request);
+        $reply = $api->setDebug(1)->process($request);
         $returnValue = $reply->getValue();
         $faultCode = $reply->getFaultCode();
         if ($faultCode != 0) {

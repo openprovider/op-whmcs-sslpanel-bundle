@@ -1,7 +1,5 @@
 <?php
 
-include __DIR__.'/lib/opApiWrapper.php';
-
 /**
  * @return array
  */
@@ -53,6 +51,7 @@ function openprovidersslnew_ConfigOptions()
  */
 function openprovidersslnew_CreateAccount($params)
 {
+    include __DIR__.'/lib/opApiWrapper.php';
     $reply = null;
 
     try {
@@ -60,15 +59,26 @@ function openprovidersslnew_CreateAccount($params)
     } catch (opApiException $e) {
         logModuleCall(
             'openprovidersslnew',
-            'hook_openprovidernewssl_acceptorder',
+            'openprovidersslnew_CreateAccount',
             $params,
-            $reply,
-            [
-                'errorMessage' => $e->getMessage(),
-            ],
-            [$params["configoption1"], $params["configoption2"]]
+	    $e->getMessage(),
+            $e->getTraceAsString()	
         );
+	
+	return $e->getFullMessage();
     }
+
+   /*
+    * for debugging 
+    logModuleCall(
+	'openprovidersslnew',
+	'openprovidersslnew_CreateAccount',
+	$params,
+	$reply,
+	$reply,
+	[$params["configoption1"], $params["configoption2"]]
+    );
+    */
 
     return "success";   
 }
