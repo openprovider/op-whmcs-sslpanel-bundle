@@ -1,1 +1,0 @@
-{$products|@print_r}

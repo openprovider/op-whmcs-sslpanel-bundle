@@ -51,7 +51,7 @@ function openprovidersslnew_ConfigOptions()
  */
 function openprovidersslnew_CreateAccount($params)
 {
-    include __DIR__.'/lib/opApiWrapper.php';
+    include __DIR__ . '/lib/opApiWrapper.php';
     $reply = null;
 
     try {
@@ -61,25 +61,24 @@ function openprovidersslnew_CreateAccount($params)
             'openprovidersslnew',
             'openprovidersslnew_CreateAccount',
             $params,
-	    $e->getMessage(),
-            $e->getTraceAsString()	
+            $e->getMessage(),
+            $e->getTraceAsString()
         );
-	
-	return $e->getFullMessage();
+
+        return $e->getFullMessage();
     }
 
-   /*
-    * for debugging 
+    /*
+     * for debugging
     logModuleCall(
-	'openprovidersslnew',
-	'openprovidersslnew_CreateAccount',
-	$params,
-	$reply,
-	$reply,
-	[$params["configoption1"], $params["configoption2"]]
+        'openprovidersslnew',
+        'openprovidersslnew_CreateAccount',
+        $params,
+        $reply,
+        $reply,
+        [$params["configoption1"], $params["configoption2"]]
     );
     */
 
-    return "success";   
+    return "success";
 }
-
