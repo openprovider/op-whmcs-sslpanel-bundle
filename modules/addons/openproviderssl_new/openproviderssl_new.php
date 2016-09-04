@@ -30,8 +30,27 @@ function openproviderssl_new_config()
 
 function openproviderssl_new_output($vars)
 {
-    // debug
-    //error_log(var_export($vars,ture),3,'/tmp/111.log');	
+    if (!empty($_REQUEST['action'])) {
+        $action = $_REQUEST['action'];
+    } else {
+        $action = 'default';
+    }
 
-    echo '<p>The date & time are currently '.date("Y-m-d H:i:s").'</p>';
+    $view = [
+        'global' => [
+            'mod_url' => '?module=openproviderssl_new',
+            'module' => 'openproviderssl_new',
+        ],
+    ];
+
+    if ('list' == $action) {
+        echo '<p>The date & time are currently '.date("Y-m-d H:i:s").'</p>';
+    } else {
+        $action = 'default';
+    }
+
+    $view['global']['mod_action_url'] = $view['global']['mod_url'] . '&action=' . $action;
+    $view['global']['action'] = $action;
+
+    include dirname(__FILE__) . '/templates/' . $action . '.php';
 }
