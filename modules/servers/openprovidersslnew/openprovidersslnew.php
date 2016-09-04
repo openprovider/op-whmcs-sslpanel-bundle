@@ -7,7 +7,7 @@ function openprovidersslnew_MetaData()
 {
     return array(
         'DisplayName' => 'Openprovider ssl provisioning module',
-        'APIVersion' => '1.1', // Use API Version 1.1
+        'APIVersion' => '1.0', // Use API Version 1.0
         'RequiresServer' => true, // Set true if module requires a server to work
         'DefaultNonSSLPort' => '1111', // Default Non-SSL Connection Port
         'DefaultSSLPort' => '1112', // Default SSL Connection Port
