@@ -112,7 +112,7 @@ class WHMCSModuleTest extends PHPUnit_Framework_TestCase
             'password' => 'opdrs4',
         ];
 
-        $products = opApiWrapper::processRequest('searchProductSslCertRequest', $params, []);
+        $products = opApiWrapper::searchProductSslCert($params);
 
         error_log(var_export($products, true));
 
