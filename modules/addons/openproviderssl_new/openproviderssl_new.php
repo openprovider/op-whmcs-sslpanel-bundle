@@ -49,18 +49,12 @@ function openproviderssl_new_output($vars)
 
         try {
             $reply = opApiWrapper::searchProductSslCert([
-
+		'apiUrl' => $vars['option1'],
+		'username' => $vars['option2'],
+		'password' => $vars['option3'],
             ]);
         } catch (opApiException $e) {
-            logModuleCall(
-                'openproviderssl_new_addon',
-                'openproviderssl_new_output',
-                $vars,
-                $e->getMessage(),
-                $e->getTraceAsString()
-            );
-
-            return $e->getFullMessage();
+	    $view['errorMessage'] = $e->getMessage();
         }
 
         $view['products'] = $reply['results'];

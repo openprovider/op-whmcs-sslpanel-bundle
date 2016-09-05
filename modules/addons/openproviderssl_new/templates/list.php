@@ -18,10 +18,4 @@
         </tbody>
     </table>
 
-    <?php echo 'addon list pages'; ?> :
-    <?php foreach ($view['pages'] as $p): ?>
-        <a href="<?php echo $view['global']['mod_action_url'] ?>&user=<?php echo $view['user']['user'] ?>&acc=<?php echo $view['user']['acc'] ?>&page=<?php echo $p ?>"><?php if ($view['current_page'] == $p): ?>
-                <strong><?php echo $p ?></strong><?php else : ?><?php echo $p ?><?php endif; ?></a>
-    <?php endforeach; ?>
-
 <?php endif; ?>
