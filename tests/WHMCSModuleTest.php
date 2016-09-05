@@ -108,8 +108,8 @@ class WHMCSModuleTest extends PHPUnit_Framework_TestCase
     {
         $params = [
             'apiUrl' => 'https://api.cte.openprovider.eu/',
-            'Username' => 'opdrs4',
-            'Password' => 'opdrs4',
+            'username' => 'opdrs4',
+            'password' => 'opdrs4',
         ];
 
         $products = opApiWrapper::processRequest('searchProductSslCertRequest', $params, []);
