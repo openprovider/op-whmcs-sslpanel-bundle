@@ -62,6 +62,8 @@ function openproviderssl_new_output($vars)
 
             return $e->getFullMessage();
         }
+
+        $view['products'] = $reply['results'];
     } else {
         $action = 'default';
     }
