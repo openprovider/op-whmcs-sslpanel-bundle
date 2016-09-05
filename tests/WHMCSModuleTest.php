@@ -107,7 +107,7 @@ class WHMCSModuleTest extends PHPUnit_Framework_TestCase
     public function testOpApi()
     {
         $params = [
-            'OpenproviderAPI' => 'https://api.cte.openprovider.eu/',
+            'apiUrl' => 'https://api.cte.openprovider.eu/',
             'Username' => 'opdrs4',
             'Password' => 'opdrs4',
         ];

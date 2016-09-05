@@ -44,7 +44,24 @@ function openproviderssl_new_output($vars)
     ];
 
     if ('list' == $action) {
-        echo '<p>The date & time are currently '.date("Y-m-d H:i:s").'</p>';
+        include __DIR__ . '/../../servers/openprovidersslnew/lib/opApiWrapper.php';
+        $reply = null;
+
+        try {
+            $reply = opApiWrapper::searchProductSslCert([
+
+            ]);
+        } catch (opApiException $e) {
+            logModuleCall(
+                'openproviderssl_new_addon',
+                'openproviderssl_new_output',
+                $vars,
+                $e->getMessage(),
+                $e->getTraceAsString()
+            );
+
+            return $e->getFullMessage();
+        }
     } else {
         $action = 'default';
     }
