@@ -26,4 +26,4 @@
 
 <?php endif; ?>
 
-<a href="<?php echo $view['global']['mod_url'] ?>&action=defualt"><?php echo 'Back'; ?></a>
+<a href="<?php echo $view['global']['mod_url'] ?>&action=default"><?php echo 'Back'; ?></a>
