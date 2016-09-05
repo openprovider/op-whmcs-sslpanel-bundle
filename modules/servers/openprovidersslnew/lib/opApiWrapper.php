@@ -12,6 +12,10 @@ class opApiWrapper
 
     static public function processRequest($requestName, $params, $args)
     {
+        if (!isset($params['username']) || !isset($params['password']) || !isset($params['apiUrl'])) {
+            throw new opApiException(opApiException::ERR_OP_API_EXCEPTION, 'Username, password or apiUrl are invalid', 399);
+        }
+
         $api = new OP_API($params["apiUrl"]);
         $request = new OP_Request;
         $request->setCommand($requestName)
