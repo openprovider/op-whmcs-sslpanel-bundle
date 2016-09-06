@@ -58,33 +58,32 @@ function openproviderssl_new_output($vars)
     } else if ($action === 'update') {
         try {
             $reply = search_products($vars);
-
-            $pdo = Capsule::connection()->getPdo();
-            $pdo->beginTransaction();
-            try {
-                $statement = $pdo->prepare('truncate openprovidersslnew_products');
-                $statement->execute();
-
-                foreach ($reply['results'] as $product) {
-                    $statement = $pdo->prepare('INSERT INTO table (id, product_id, name, brand_name, price, currency, changed_at) VALUES (:id, :product_id, :name, :brand_name, :price, :currency, :changed_at)');
-                    $statement->execute([
-                        ':id' => null,
-                        ':product_id' => $product['id'],
-                        ':name' => $product['name'],
-                        ':brand_name' => $product['brandName'],
-                        ':price' => $product['warranty']['reseller']['price'],
-                        ':currency' => $product['warranty']['reseller']['currency'],
-                        ':changed_at' => date('Y-m-d H:i:s', time()),
-                    ]);
-                }
-
-                $pdo->commit();
-            } catch (\Exception $e) {
-                $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
-                $pdo->rollBack();
-            }
         } catch (opApiException $e) {
             $view['errorMessage'] = $e->getMessage();
+        }
+        $pdo = Capsule::connection()->getPdo();
+        $pdo->beginTransaction();
+        try {
+            $statement = $pdo->prepare('truncate openprovidersslnew_products');
+            $statement->execute();
+
+            foreach ($reply['results'] as $product) {
+                $statement = $pdo->prepare('INSERT INTO table (id, product_id, name, brand_name, price, currency, changed_at) VALUES (:id, :product_id, :name, :brand_name, :price, :currency, :changed_at)');
+                $statement->execute([
+                    ':id' => null,
+                    ':product_id' => $product['id'],
+                    ':name' => $product['name'],
+                    ':brand_name' => $product['brandName'],
+                    ':price' => $product['warranty']['reseller']['price'],
+                    ':currency' => $product['warranty']['reseller']['currency'],
+                    ':changed_at' => date('Y-m-d H:i:s', time()),
+                ]);
+            }
+
+            $pdo->commit();
+        } catch (\Exception $e) {
+            $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
+            $pdo->rollBack();
         }
     } else {
         $action = 'default';
