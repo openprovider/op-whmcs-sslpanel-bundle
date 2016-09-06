@@ -46,7 +46,7 @@ function openprovidersslnew_ConfigOptions()
         ],
         "SSL Certificate Type" => [
             "Type" => "dropdown",
-            "Options" => implode(',',$products),
+            "Options" => implode(',', $products),
         ],
     ];
 }
@@ -62,7 +62,10 @@ function openprovidersslnew_CreateAccount($params)
     $reply = null;
 
     try {
-        $reply = opApiWrapper::createSslCert($params, 41);
+        $product_id = array_shift(
+            Capsule::table('openprovidersslnew_products')->where('name', $params['configoption4'])->get()
+        )->product_id;
+        opApiWrapper::createSslCert($params, $product_id);
     } catch (opApiException $e) {
         logModuleCall(
             'openprovidersslnew',
