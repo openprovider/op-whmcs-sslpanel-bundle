@@ -1,4 +1,4 @@
-<?php if (!empty($view['products'])): ?>
+<?php if (!empty($view['errorMessage'])): ?>
     <?php echo $view['errorMessage']; ?>
 <?php endif; ?>
 
