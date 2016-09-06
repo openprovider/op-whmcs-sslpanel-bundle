@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 function openproviderssl_new_config()
 {
     return [
@@ -103,17 +105,24 @@ function search_products($vars)
 
 function openproviderssl_new_activate()
 {
-    $queryString = " CREATE TABLE IF NOT EXISTS `openprovidersslnew_products` (
-                                      `id` INT AUTO_INCREMENT ,
-                                      `product_id` INT ,
-                                      `name` VARCHAR( 255 ) ,
-                                      `brand_name` VARCHAR( 255 ) ,
-                                      `price` FLOAT,
-                                      `currency`
-                                      `changed_at` VARCHAR( 19 ) ,
-                                      PRIMARY KEY ( `id` )
-                        ) ENGINE = MYISAM ";
-    mysql_query($queryString);
+    try {
+        Capsule::schema()->create(
+            'openprovidersslnew_products',
+            function ($table) {
+                /** @var \Illuminate\Database\Schema\Blueprint $table */
+                $table->increments('id');
+                $table->integer('product_id');
+                $table->string('name');
+                $table->string('brand_name');
+                $table->float('price');
+                $table->string('currency');
+                $table->string('changed_at', 19);
+                $table->primary(['id']);
+            }
+        );
+    } catch (\Exception $e) {
+        echo "Unable to create openprovidersslnew_products: {$e->getMessage()}";
+    }
 }
 
 function openproviderssl_new_deactivate()
