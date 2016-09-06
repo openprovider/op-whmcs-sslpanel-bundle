@@ -68,7 +68,7 @@ function openproviderssl_new_output($vars)
             $statement->execute();
 
             foreach ($reply['results'] as $product) {
-                $statement = $pdo->prepare('INSERT INTO table (id, product_id, name, brand_name, price, currency, changed_at) VALUES (:id, :product_id, :name, :brand_name, :price, :currency, :changed_at)');
+                $statement = $pdo->prepare('INSERT INTO openprovidersslnew_products (id, product_id, name, brand_name, price, currency, changed_at) VALUES (:id, :product_id, :name, :brand_name, :price, :currency, :changed_at)');
                 $statement->execute([
                     ':id' => null,
                     ':product_id' => $product['id'],
