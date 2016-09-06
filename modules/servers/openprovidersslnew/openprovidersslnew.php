@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 /**
  * @return array
  */
@@ -21,6 +23,11 @@ function openprovidersslnew_MetaData()
  */
 function openprovidersslnew_ConfigOptions()
 {
+    $products = [];
+    foreach (Capsule::table('openprovidersslnew_products')->get() as $product) {
+        $products[] = $product->name;
+    }
+
     return [
         "username" => [
             "Type" => "text",
@@ -39,7 +46,7 @@ function openprovidersslnew_ConfigOptions()
         ],
         "SSL Certificate Type" => [
             "Type" => "dropdown",
-            "Options" => "PositiveSSL",
+            "Options" => implode(',',$products),
         ],
     ];
 }
@@ -67,18 +74,6 @@ function openprovidersslnew_CreateAccount($params)
 
         return $e->getFullMessage();
     }
-
-    /*
-     * for debugging
-    logModuleCall(
-        'openprovidersslnew',
-        'openprovidersslnew_CreateAccount',
-        $params,
-        $reply,
-        $reply,
-        [$params["configoption1"], $params["configoption2"]]
-    );
-    */
 
     return "success";
 }
