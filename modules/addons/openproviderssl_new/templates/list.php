@@ -8,7 +8,7 @@
         <tr>
             <th><?php echo 'id'; ?></th>
             <th><?php echo 'name'; ?></th>
-            <th><?php echo 'brandName'; ?></th>
+            <th><?php echo 'brand name'; ?></th>
             <th><?php echo 'price'; ?></th>
             <th><?php echo 'currency'; ?></th>
         </tr>
