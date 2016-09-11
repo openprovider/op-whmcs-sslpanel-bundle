@@ -65,6 +65,13 @@ function openprovidersslnew_CreateAccount($params)
         $product_id = array_shift(
             Capsule::table('openprovidersslnew_products')->where('name', $params['configoption4'])->get()
         )->product_id;
+
+        if (isset($params['configoptions']) && isset($params['configoptions']['years'])) {
+            $params['period'] = $params['configoptions']['years'];
+        } else {
+            $params['period'] = 1;
+        }
+
         opApiWrapper::createSslCert($params, $product_id);
     } catch (opApiException $e) {
         logModuleCall(

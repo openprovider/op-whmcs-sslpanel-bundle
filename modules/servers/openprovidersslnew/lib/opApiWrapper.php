@@ -173,7 +173,7 @@ class opApiWrapper
             ], 
 	    [
                 'productId' => $productId,
-                'period' => 1, //todo: get rid
+                'period' => $params['period'],
                 'startProvision' => 0,
             ]
         );
