@@ -87,3 +87,14 @@ function openprovidersslnew_CreateAccount($params)
 
     return "success";
 }
+
+function openprovidersslnew_ClientArea($params) 
+{
+    return [
+        'templatefile' => 'templates/clientarea.tpl',
+        'templateVariables' => [
+            'linkValue' => 'http://esemennikov.sslinhva.openprovider.nl/#/orders/overview',
+            'linkName' => 'sslinhva link',
+        ],
+    ];
+}
