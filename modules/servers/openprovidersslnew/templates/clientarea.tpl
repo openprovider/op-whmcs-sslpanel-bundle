@@ -10,7 +10,7 @@
                 <tbody>
                 <tr>
                     <td class="fieldarea" width="150">{$linkName}:</td>
-                    <td><a href="{$linkValue}">ssl panel</a></td>
+                    <td><a href="{$linkValue}">open link</a></td>
                 </tr>
                 <tr>
                     <td class="fieldarea" width="150">status</td>

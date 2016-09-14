@@ -149,7 +149,7 @@ function openprovidersslnew_ClientArea($params)
         'templatefile' => 'templates/clientarea.tpl',
         'templateVariables' => [
             'linkValue' => $params['configoption4'] . 'auth-order-otp-token?token=' . $reply['token'],
-            'linkName' => 'sslinhva link',
+            'linkName' => 'ssl panel',
             'errorMessage' => $fullMessage,
             'status' => $order->status,
             'creationDate' => $order->creation_date,
