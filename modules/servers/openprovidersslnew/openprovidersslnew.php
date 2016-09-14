@@ -78,42 +78,40 @@ function openprovidersslnew_CreateAccount($params)
         }
 
         $reply = opApiWrapper::createSslCert($params, $product_id);
+
+        Capsule::table('openprovidersslnew_orders')->insert([
+            'id' => null,
+            'product_id' => $product_id,
+            'order_id' => $reply['id'],
+            'status' => 'REQ',
+            'creation_date' => date('Y-m-d H:i:s', time()),
+            'activation_date' => '1970-01-01 00:00:00',
+            'expiration_date' => '1970-01-01 00:00:00',
+            'changed_at' => date('Y-m-d H:i:s', time()),
+            'service_id' => $params['serviceid'],
+        ]);
     } catch (opApiException $e) {
+        $fullMessage = $e->getFullMessage();
         logModuleCall(
             'openprovidersslnew',
             'openprovidersslnew_CreateAccount',
             $params,
-            $e->getMessage(),
+            $fullMessage,
             $e->getTraceAsString()
         );
 
-        return $e->getFullMessage();
-    }
-
-    $pdo = null;
-    try {
-        $pdo = Capsule::connection()->getPdo();
-        $pdo->beginTransaction();
-        //todo: INSERT INTO...
-        $statement = $pdo->prepare('INSERT INTO openprovidersslnew_orders (id, product_id, order_id, status, creation_date, activation_date, expiration_date, changed_at, service_id) VALUES (:id, :product_id, :order_id, :status, :creation_date, :activation_date, :expiration_date, :changed_at, :service_id)');
-        $statement->execute([
-            ':id' => null,
-            ':product_id' => $product_id,
-            ':order_id' => $reply['id'],
-            ':status' => 'REQ',
-            ':creation_date' => date('Y-m-d H:i:s', time()),
-            ':activation_date' => '1970-01-01 00:00:00',
-            ':expiration_date' => '1970-01-01 00:00:00',
-            ':changed_at' => date('Y-m-d H:i:s', time()),
-            ':service_id' => $params['serviceid'],
-        ]);
-
-        $pdo->commit();
+        return $fullMessage;
     } catch (\Exception $e) {
-        $pdo->rollBack();
-        $errorMessage = "Error occurred during order saving: {$e->getMessage()}";
+        $message = "Error occurred during order saving: {$e->getMessage()}";
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_CreateAccount',
+            $params,
+            $message,
+            $e->getTraceAsString()
+        );
 
-        return $errorMessage;
+        return $message;
     }
 
     return "success";
@@ -128,7 +126,7 @@ function openprovidersslnew_ClientArea($params)
 {
     include __DIR__ . '/lib/opApiWrapper.php';
     $reply = null;
-    $errorMessage = null;
+    $fullMessage = null;
 
     try {
         $orderId = array_shift(
@@ -136,15 +134,14 @@ function openprovidersslnew_ClientArea($params)
         )->order_id;
         $reply = opApiWrapper::generateOtpToken($params, $orderId);
     } catch (opApiException $e) {
+        $fullMessage = $e->getFullMessage();
         logModuleCall(
             'openprovidersslnew',
             'openprovidersslnew_ClientArea',
             $params,
-            $e->getMessage(),
+            $fullMessage,
             $e->getTraceAsString()
         );
-
-        $errorMessage = $e->getFullMessage();
     }
 
     return [
@@ -152,7 +149,7 @@ function openprovidersslnew_ClientArea($params)
         'templateVariables' => [
             'linkValue' => $params['configoption4'] . 'auth-order-otp-token?token=' . $reply['token'],
             'linkName' => 'sslinhva link',
-            'errorMessage' => $errorMessage,
+            'errorMessage' => $fullMessage,
         ],
     ];
 }
