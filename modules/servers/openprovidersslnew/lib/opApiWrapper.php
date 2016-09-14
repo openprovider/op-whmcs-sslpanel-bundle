@@ -178,4 +178,19 @@ class opApiWrapper
             ]
         );
     }
+
+    static public function generateOtpToken($params, $opOrderId)
+    {
+        return self::processRequest(
+            'generateOtpTokenSslCertRequest',
+            [
+                'username' => $params['configoption1'],
+                'password' => $params['configoption2'],
+                'apiUrl' => $params['configoption3'],
+            ],
+            [
+                'id' => $opOrderId,
+            ]
+        );
+    }
 }

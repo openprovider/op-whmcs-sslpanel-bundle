@@ -90,10 +90,29 @@ function openprovidersslnew_CreateAccount($params)
 
 function openprovidersslnew_ClientArea($params) 
 {
+    include __DIR__ . '/lib/opApiWrapper.php';
+    $token = null;
+
+    try {
+        //todo: get OP order id from DB
+        $token = opApiWrapper::generateOtpToken($params, 444)['token'];
+    } catch (opApiException $e) {
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_ClientArea',
+            $params,
+            $e->getMessage(),
+            $e->getTraceAsString()
+        );
+
+        return $e->getFullMessage();
+    }
+
+    // todo: sslinvha link to the module settings
     return [
         'templatefile' => 'templates/clientarea.tpl',
         'templateVariables' => [
-            'linkValue' => 'http://esemennikov.sslinhva.openprovider.nl/#/orders/overview',
+            'linkValue' => 'http://esemennikov.sslinhva.openprovider.nl/auth-order-otp-token?token=' . $token,
             'linkName' => 'sslinhva link',
         ],
     ];
