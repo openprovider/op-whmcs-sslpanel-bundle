@@ -78,13 +78,13 @@ function openproviderssl_new_output($vars)
             Capsule::table('openprovidersslnew_products')->truncate();
             foreach ($reply['results'] as $product) {
                 Capsule::table('openprovidersslnew_products')->insert([
-                    null,
-                    $product['id'],
-                    $product['name'],
-                    $product['brandName'],
-                    $product['warranty']['reseller']['price'],
-                    $product['warranty']['reseller']['currency'],
-                    date('Y-m-d H:i:s', time()),
+                    'id' => null,
+                    'product_id' => $product['id'],
+                    'name' => $product['name'],
+                    'brand_name' => $product['brandName'],
+                    'price' => $product['warranty']['reseller']['price'],
+                    'currency' => $product['warranty']['reseller']['currency'],
+                    'changed_at' => date('Y-m-d H:i:s', time()),
                 ]);
             }
         } catch (\Exception $e) {
