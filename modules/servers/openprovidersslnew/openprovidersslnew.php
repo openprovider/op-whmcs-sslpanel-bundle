@@ -77,7 +77,7 @@ function openprovidersslnew_CreateAccount($params)
             $params['period'] = 1;
         }
 
-        opApiWrapper::createSslCert($params, $product_id);
+        $reply = opApiWrapper::createSslCert($params, $product_id);
     } catch (opApiException $e) {
         logModuleCall(
             'openprovidersslnew',
@@ -90,17 +90,44 @@ function openprovidersslnew_CreateAccount($params)
         return $e->getFullMessage();
     }
 
+    $pdo = null;
+    try {
+        $pdo = Capsule::connection()->getPdo();
+        $pdo->beginTransaction();
+        $statement = $pdo->prepare('INSERT INTO openprovidersslnew_orders (id, product_id, name, brand_name, price, currency, changed_at) VALUES (:id, :product_id, :order_id, :status, :creation_date, :activation_date, :expiration_date, :changed_at)');
+        $statement->execute([
+            ':id' => null,
+            ':product_id' => $product_id,
+            ':order_id' => $reply['data']['id'],
+            ':status' => 'REQ',
+            ':creation_date' => date('Y-m-d H:i:s', time()),
+            ':activation_date' => null,
+            ':expiration_date' => null,
+            ':changed_at' => date('Y-m-d H:i:s', time()),
+        ]);
+
+        $pdo->commit();
+    } catch (\Exception $e) {
+        $view['errorMessage'] = "Error occurred during order saving: {$e->getMessage()}";
+        $pdo->rollBack();
+    }
+
     return "success";
 }
 
-function openprovidersslnew_ClientArea($params) 
+/**
+ * @param array $params
+ *
+ * @return array|string
+ */
+function openprovidersslnew_ClientArea($params)
 {
     include __DIR__ . '/lib/opApiWrapper.php';
-    $token = null;
+    $reply = null;
 
     try {
         //todo: get OP order id from DB
-        $token = opApiWrapper::generateOtpToken($params, 444)['token'];
+        $reply = opApiWrapper::generateOtpToken($params, 444)['token'];
     } catch (opApiException $e) {
         logModuleCall(
             'openprovidersslnew',
@@ -116,7 +143,7 @@ function openprovidersslnew_ClientArea($params)
     return [
         'templatefile' => 'templates/clientarea.tpl',
         'templateVariables' => [
-            'linkValue' => $params['configoption5'] . 'auth-order-otp-token?token=' . $token,
+            'linkValue' => $params['configoption4'] . 'auth-order-otp-token?token=' . $reply['data']['token'],
             'linkName' => 'sslinhva link',
         ],
     ];

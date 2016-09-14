@@ -130,23 +130,28 @@ function openproviderssl_new_activate()
                 $table->primary(['id']);
             }
         );
+    } catch (\Exception $e) {
+        echo "Unable to create openprovidersslnew_products: {$e->getMessage()}";
+    }
 
+    try {
         Capsule::schema()->create(
             'openprovidersslnew_orders',
             function ($table) {
                 /** @var \Illuminate\Database\Schema\Blueprint $table */
                 $table->increments('id');
                 $table->integer('product_id');
-                $table->integer('op_order_id');
+                $table->integer('order_id');
                 $table->string('status', 32);
-                $table->string('creation_at', 19);
-                $table->string('activation_at', 19);
-                $table->string('expiration_at', 19);
+                $table->string('creation_date', 19);
+                $table->string('activation_date', 19);
+                $table->string('expiration_date', 19);
+                $table->string('changed_at', 19);
                 $table->primary(['id']);
             }
         );
     } catch (\Exception $e) {
-        echo "Unable to create openprovidersslnew_products: {$e->getMessage()}";
+        echo "Unable to create openprovidersslnew_orders: {$e->getMessage()}";
     }
 }
 
