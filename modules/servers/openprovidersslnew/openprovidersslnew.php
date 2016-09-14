@@ -44,10 +44,10 @@ function openprovidersslnew_ConfigOptions()
             "Size" => "60",
             "Description" => "Openprovider API URL",
         ],
-        "sslApiUrl" => [
+        "sslUrl" => [
             "Type" => "text",
             "Size" => "60",
-            "Description" => "SSL API URL",
+            "Description" => "SSL URL",
         ],
         "SSL Certificate Type" => [
             "Type" => "dropdown",
