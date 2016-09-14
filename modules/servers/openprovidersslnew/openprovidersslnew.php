@@ -134,7 +134,7 @@ function openprovidersslnew_ClientArea($params)
         $orderId = array_shift(
             Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get()
         )->order_id;
-        $reply = opApiWrapper::generateOtpToken($params, $orderId)['token'];
+        $reply = opApiWrapper::generateOtpToken($params, $orderId);
     } catch (opApiException $e) {
         logModuleCall(
             'openprovidersslnew',
@@ -150,7 +150,7 @@ function openprovidersslnew_ClientArea($params)
     return [
         'templatefile' => 'templates/clientarea.tpl',
         'templateVariables' => [
-            'linkValue' => $params['configoption4'] . 'auth-order-otp-token?token=' . $reply['data']['token'],
+            'linkValue' => $params['configoption4'] . 'auth-order-otp-token?token=' . $reply['token'],
             'linkName' => 'sslinhva link',
             'errorMessage' => $errorMessage,
         ],
