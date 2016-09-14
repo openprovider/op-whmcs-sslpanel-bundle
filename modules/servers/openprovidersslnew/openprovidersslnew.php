@@ -127,12 +127,13 @@ function openprovidersslnew_ClientArea($params)
     include __DIR__ . '/lib/opApiWrapper.php';
     $reply = null;
     $fullMessage = null;
+    $order = null;
 
     try {
-        $orderId = array_shift(
+        $order = array_shift(
             Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get()
-        )->order_id;
-        $reply = opApiWrapper::generateOtpToken($params, $orderId);
+        );
+        $reply = opApiWrapper::generateOtpToken($params, $order->orderId);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
         logModuleCall(
@@ -150,6 +151,10 @@ function openprovidersslnew_ClientArea($params)
             'linkValue' => $params['configoption4'] . 'auth-order-otp-token?token=' . $reply['token'],
             'linkName' => 'sslinhva link',
             'errorMessage' => $fullMessage,
+            'status' => $order->status,
+            'creationDate' => $order->creation_date,
+            'activationDate' => $order->activation_date,
+            'expirationDate' => $order->expiration_date,
         ],
     ];
 }

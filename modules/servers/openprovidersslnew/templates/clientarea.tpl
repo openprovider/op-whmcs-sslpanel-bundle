@@ -10,7 +10,23 @@
                 <tbody>
                 <tr>
                     <td class="fieldarea" width="150">{$linkName}:</td>
-                    <td><a href="{$linkValue}">{$linkValue}</a></td>
+                    <td><a href="{$linkValue}">ssl panel</a></td>
+                </tr>
+                <tr>
+                    <td class="fieldarea" width="150">status</td>
+                    <td>{$status}</td>
+                </tr>
+                <tr>
+                    <td class="fieldarea" width="150">creation date</td>
+                    <td>{$creationDate}</td>
+                </tr>
+                <tr>
+                    <td class="fieldarea" width="150">activation date</td>
+                    <td>{$activationDate}</td>
+                </tr>
+                <tr>
+                    <td class="fieldarea" width="150">expiration date</td>
+                    <td>{$expirationDte}</td>
                 </tr>
                 </tbody>
             </table>
