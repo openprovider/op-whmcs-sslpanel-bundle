@@ -111,7 +111,7 @@ function openprovidersslnew_CreateAccount($params)
         $pdo->commit();
     } catch (\Exception $e) {
         $pdo->rollBack();
-        return ['status' => 'error', 'description' = > "Error occurred during order saving: {$e->getMessage()}"];
+        return ['status' => 'error', 'description' => "Error occurred during order saving: {$e->getMessage()}"];
     }
 
     return "success";
