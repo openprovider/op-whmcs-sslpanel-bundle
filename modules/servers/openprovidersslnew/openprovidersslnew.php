@@ -99,11 +99,11 @@ function openprovidersslnew_CreateAccount($params)
         $statement->execute([
             ':id' => null,
             ':product_id' => $product_id,
-            ':order_id' => $reply['data']['id'],
+            ':order_id' => $reply['id'],
             ':status' => 'REQ',
             ':creation_date' => date('Y-m-d H:i:s', time()),
-            ':activation_date' => null,
-            ':expiration_date' => null,
+            ':activation_date' => '1970-01-01 00:00:00',
+            ':expiration_date' => '1970-01-01 00:00:00',
             ':changed_at' => date('Y-m-d H:i:s', time()),
             ':service_id' => $params['serviceid'],
         ]);
@@ -111,7 +111,9 @@ function openprovidersslnew_CreateAccount($params)
         $pdo->commit();
     } catch (\Exception $e) {
         $pdo->rollBack();
-        return ['status' => 'error', 'description' => "Error occurred during order saving: {$e->getMessage()}"];
+        $errorMessage = "Error occurred during order saving: {$e->getMessage()}";
+
+        return $errorMessage;
     }
 
     return "success";
