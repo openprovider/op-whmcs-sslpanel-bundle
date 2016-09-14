@@ -2,6 +2,9 @@
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+/**
+ * @return array
+ */
 function openproviderssl_new_config()
 {
     return [
@@ -36,6 +39,9 @@ function openproviderssl_new_config()
     ];
 }
 
+/**
+ * @param array $vars
+ */
 function openproviderssl_new_output($vars)
 {
     if (!empty($_REQUEST['action'])) {
@@ -57,7 +63,7 @@ function openproviderssl_new_output($vars)
         try {
             $reply = search_products($vars);
         } catch (opApiException $e) {
-            $view['errorMessage'] = $e->getMessage();
+            $view['errorMessage'] = $e->getFullMessage();
         }
 
         $view['products'] = $reply['results'];
@@ -65,32 +71,24 @@ function openproviderssl_new_output($vars)
         try {
             $reply = search_products($vars);
         } catch (opApiException $e) {
-            $view['errorMessage'] = $e->getMessage();
+            $view['errorMessage'] = $e->getFullMessage();
         }
-        $pdo = Capsule::connection()->getPdo();
-        $pdo->beginTransaction();
-        try {
-            $statement = $pdo->prepare('truncate openprovidersslnew_products');
-            $statement->execute();
 
+        try {
+            Capsule::table('openprovidersslnew_products')->truncate();
             foreach ($reply['results'] as $product) {
-                //todo: INSERT INTO...
-                $statement = $pdo->prepare('INSERT INTO openprovidersslnew_products (id, product_id, name, brand_name, price, currency, changed_at) VALUES (:id, :product_id, :name, :brand_name, :price, :currency, :changed_at)');
-                $statement->execute([
-                    ':id' => null,
-                    ':product_id' => $product['id'],
-                    ':name' => $product['name'],
-                    ':brand_name' => $product['brandName'],
-                    ':price' => $product['warranty']['reseller']['price'],
-                    ':currency' => $product['warranty']['reseller']['currency'],
-                    ':changed_at' => date('Y-m-d H:i:s', time()),
+                Capsule::table('openprovidersslnew_products')->insert([
+                    null,
+                    $product['id'],
+                    $product['name'],
+                    $product['brandName'],
+                    $product['warranty']['reseller']['price'],
+                    $product['warranty']['reseller']['currency'],
+                    date('Y-m-d H:i:s', time()),
                 ]);
             }
-
-            $pdo->commit();
         } catch (\Exception $e) {
             $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
-            $pdo->rollBack();
         }
     } else {
         $action = 'default';
@@ -120,6 +118,9 @@ function search_products($vars)
     return $reply;
 }
 
+/**
+ *
+ */
 function openproviderssl_new_activate()
 {
     //todo: try via Exception classes
@@ -164,9 +165,12 @@ function openproviderssl_new_activate()
     }
 }
 
+/**
+ * @return array
+ */
 function openproviderssl_new_deactivate()
 {
-    return array('status' => 'success', 'description' => '');
+    return ['status' => 'success', 'description' => ''];
     //return array('status'=>'error','description'=>'If an error occurs you can return an error message for display here');
     //return array('status'=>'info','description'=>'If you want to give an info message to a user you can return it here');
 }
