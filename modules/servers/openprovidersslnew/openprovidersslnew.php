@@ -94,6 +94,7 @@ function openprovidersslnew_CreateAccount($params)
     try {
         $pdo = Capsule::connection()->getPdo();
         $pdo->beginTransaction();
+        //todo: INSERT INTO...
         $statement = $pdo->prepare('INSERT INTO openprovidersslnew_orders (id, product_id, name, brand_name, price, currency, changed_at) VALUES (:id, :product_id, :order_id, :status, :creation_date, :activation_date, :expiration_date, :changed_at, :service_id)');
         $statement->execute([
             ':id' => null,
