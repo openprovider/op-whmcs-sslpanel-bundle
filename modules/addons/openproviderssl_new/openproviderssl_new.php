@@ -26,6 +26,12 @@ function openproviderssl_new_config()
                 "Type" => "password",
                 "Size" => "25",
             ],
+            "option4" => [
+                "FriendlyName" => "sslUrl",
+                "Type" => "text", "Size" => "255",
+                "Description" => "Ssl Url",
+                "Default" => "https://sslinhva.cte.openprovider.eu/",
+            ],
         ]
     ];
 }
