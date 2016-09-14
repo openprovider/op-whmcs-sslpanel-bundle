@@ -84,7 +84,7 @@ function openproviderssl_new_output($vars)
                 ]);
             }
         } catch (opApiException $e) {
-            $view['errorMessage'] = $e->getFullMessage();
+            $view['errorMessage'] = "Unable to retrieve products: {$e->getFullMessage()}";
         } catch (\Exception $e) {
             $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
         }
