@@ -147,6 +147,7 @@ function openproviderssl_new_activate()
                 $table->string('activation_date', 19);
                 $table->string('expiration_date', 19);
                 $table->string('changed_at', 19);
+                $table->integer('service_id');
                 $table->primary(['id']);
             }
         );

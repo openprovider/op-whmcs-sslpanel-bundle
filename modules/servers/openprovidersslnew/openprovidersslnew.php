@@ -94,7 +94,7 @@ function openprovidersslnew_CreateAccount($params)
     try {
         $pdo = Capsule::connection()->getPdo();
         $pdo->beginTransaction();
-        $statement = $pdo->prepare('INSERT INTO openprovidersslnew_orders (id, product_id, name, brand_name, price, currency, changed_at) VALUES (:id, :product_id, :order_id, :status, :creation_date, :activation_date, :expiration_date, :changed_at)');
+        $statement = $pdo->prepare('INSERT INTO openprovidersslnew_orders (id, product_id, name, brand_name, price, currency, changed_at) VALUES (:id, :product_id, :order_id, :status, :creation_date, :activation_date, :expiration_date, :changed_at, :service_id)');
         $statement->execute([
             ':id' => null,
             ':product_id' => $product_id,
@@ -104,6 +104,7 @@ function openprovidersslnew_CreateAccount($params)
             ':activation_date' => null,
             ':expiration_date' => null,
             ':changed_at' => date('Y-m-d H:i:s', time()),
+            ':service_id' => $params['serviceid'],
         ]);
 
         $pdo->commit();
@@ -126,8 +127,11 @@ function openprovidersslnew_ClientArea($params)
     $reply = null;
 
     try {
-        //todo: get OP order id from DB
-        $reply = opApiWrapper::generateOtpToken($params, 444)['token'];
+        $orderId = array_shift(
+            Capsule::table('openprovidersslnew_products')->where('service_id', $params['serviceid'])->get()
+        )->order_id;
+
+        $reply = opApiWrapper::generateOtpToken($params, $orderId)['token'];
     } catch (opApiException $e) {
         logModuleCall(
             'openprovidersslnew',
