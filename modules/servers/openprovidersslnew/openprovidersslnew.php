@@ -44,6 +44,11 @@ function openprovidersslnew_ConfigOptions()
             "Size" => "60",
             "Description" => "Openprovider API URL",
         ],
+        "sslApiUrl" => [
+            "Type" => "text",
+            "Size" => "60",
+            "Description" => "SSL API URL",
+        ],
         "SSL Certificate Type" => [
             "Type" => "dropdown",
             "Options" => implode(',', $products),
@@ -63,7 +68,7 @@ function openprovidersslnew_CreateAccount($params)
 
     try {
         $product_id = array_shift(
-            Capsule::table('openprovidersslnew_products')->where('name', $params['configoption4'])->get()
+            Capsule::table('openprovidersslnew_products')->where('name', $params['configoption5'])->get()
         )->product_id;
 
         if (isset($params['configoptions']) && isset($params['configoptions']['years'])) {
@@ -108,11 +113,10 @@ function openprovidersslnew_ClientArea($params)
         return $e->getFullMessage();
     }
 
-    // todo: sslinvha link to the module settings
     return [
         'templatefile' => 'templates/clientarea.tpl',
         'templateVariables' => [
-            'linkValue' => 'http://esemennikov.sslinhva.openprovider.nl/auth-order-otp-token?token=' . $token,
+            'linkValue' => $params['configoption5'] . 'auth-order-otp-token?token=' . $token,
             'linkName' => 'sslinhva link',
         ],
     ];
