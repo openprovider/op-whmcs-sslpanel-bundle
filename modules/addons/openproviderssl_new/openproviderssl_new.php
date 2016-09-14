@@ -70,11 +70,7 @@ function openproviderssl_new_output($vars)
     } else if ($action === 'update') {
         try {
             $reply = search_products($vars);
-        } catch (opApiException $e) {
-            $view['errorMessage'] = $e->getFullMessage();
-        }
 
-        try {
             Capsule::table('openprovidersslnew_products')->truncate();
             foreach ($reply['results'] as $product) {
                 Capsule::table('openprovidersslnew_products')->insert([
@@ -87,6 +83,8 @@ function openproviderssl_new_output($vars)
                     'changed_at' => date('Y-m-d H:i:s', time()),
                 ]);
             }
+        } catch (opApiException $e) {
+            $view['errorMessage'] = $e->getFullMessage();
         } catch (\Exception $e) {
             $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
         }
