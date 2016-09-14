@@ -116,6 +116,7 @@ function search_products($vars)
 
 function openproviderssl_new_activate()
 {
+    //todo: try via Exception classes
     try {
         Capsule::schema()->create(
             'openprovidersslnew_products',
