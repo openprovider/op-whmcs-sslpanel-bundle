@@ -26,7 +26,7 @@
                 </tr>
                 <tr>
                     <td class="fieldarea" width="150">expiration date</td>
-                    <td>{$expirationDte}</td>
+                    <td>{$expirationDate}</td>
                 </tr>
                 </tbody>
             </table>
