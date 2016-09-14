@@ -1,5 +1,7 @@
 <h2 align="left">Additional product data</h2>
 
+{if $errorMessage} {$errorMessage} {/if}
+
 <table class="frame" width="100%" cellspacing="0" cellpadding="0">
   <tbody><tr>
     <td><table width="100%" cellspacing="0" cellpadding="10" border="0">

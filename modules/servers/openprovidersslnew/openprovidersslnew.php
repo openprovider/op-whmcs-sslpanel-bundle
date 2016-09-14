@@ -95,7 +95,7 @@ function openprovidersslnew_CreateAccount($params)
         $pdo = Capsule::connection()->getPdo();
         $pdo->beginTransaction();
         //todo: INSERT INTO...
-        $statement = $pdo->prepare('INSERT INTO openprovidersslnew_orders (id, product_id, name, brand_name, price, currency, changed_at) VALUES (:id, :product_id, :order_id, :status, :creation_date, :activation_date, :expiration_date, :changed_at, :service_id)');
+        $statement = $pdo->prepare('INSERT INTO openprovidersslnew_orders (id, product_id, order_id, status, creation_date, activation_date, expiration_date, changed_at, service_id) VALUES (:id, :product_id, :order_id, :status, :creation_date, :activation_date, :expiration_date, :changed_at, :service_id)');
         $statement->execute([
             ':id' => null,
             ':product_id' => $product_id,
@@ -110,8 +110,8 @@ function openprovidersslnew_CreateAccount($params)
 
         $pdo->commit();
     } catch (\Exception $e) {
-        $view['errorMessage'] = "Error occurred during order saving: {$e->getMessage()}";
         $pdo->rollBack();
+        return ['status' => 'error', 'description' = > "Error occurred during order saving: {$e->getMessage()}"];
     }
 
     return "success";
@@ -126,12 +126,12 @@ function openprovidersslnew_ClientArea($params)
 {
     include __DIR__ . '/lib/opApiWrapper.php';
     $reply = null;
+    $errorMessage = null;
 
     try {
         $orderId = array_shift(
-            Capsule::table('openprovidersslnew_products')->where('service_id', $params['serviceid'])->get()
+            Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get()
         )->order_id;
-
         $reply = opApiWrapper::generateOtpToken($params, $orderId)['token'];
     } catch (opApiException $e) {
         logModuleCall(
@@ -142,7 +142,7 @@ function openprovidersslnew_ClientArea($params)
             $e->getTraceAsString()
         );
 
-        return $e->getFullMessage();
+        $errorMessage = $e->getFullMessage();
     }
 
     return [
@@ -150,6 +150,7 @@ function openprovidersslnew_ClientArea($params)
         'templateVariables' => [
             'linkValue' => $params['configoption4'] . 'auth-order-otp-token?token=' . $reply['data']['token'],
             'linkName' => 'sslinhva link',
+            'errorMessage' => $errorMessage,
         ],
     ];
 }
