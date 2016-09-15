@@ -193,4 +193,19 @@ class opApiWrapper
             ]
         );
     }
+
+    static public function retrieveOrder($params, $opOrderId)
+    {
+        return self::processRequest(
+            'retrieveOrderSslCertRequest',
+            [
+                'username' => $params['configoption1'],
+                'password' => $params['configoption2'],
+                'apiUrl' => $params['configoption3'],
+            ],
+            [
+                'id' => $opOrderId,
+            ]
+        );
+    }
 }

@@ -128,14 +128,33 @@ function openprovidersslnew_ClientArea($params)
     $reply = null;
     $fullMessage = null;
     $order = null;
+    $token = null;
+    $status = null;
 
     try {
         $order = array_shift(
             Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get()
         );
+        // generate otp token
         $reply = opApiWrapper::generateOtpToken($params, $order->order_id);
+        $token = $reply['token'];
+        //update status
+        $reply = opApiWrapper::retrieveOrder($params, $order->order_id);
+        $status = $reply['status'];
+        //save update status into a DB
+        Capsule::table('openprovidersslnew_orders')->lockForUpdate();
+        Capsule::table('openprovidersslnew_orders')->update(['status' => $status]);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_ClientArea',
+            $params,
+            $fullMessage,
+            $e->getTraceAsString()
+        );
+    } catch (\Exception $e) {
+        $fullMessage = $e->getMessage();
         logModuleCall(
             'openprovidersslnew',
             'openprovidersslnew_ClientArea',
@@ -148,10 +167,10 @@ function openprovidersslnew_ClientArea($params)
     return [
         'templatefile' => 'templates/clientarea.tpl',
         'templateVariables' => [
-            'linkValue' => $params['configoption4'] . 'auth-order-otp-token?token=' . $reply['token'],
+            'linkValue' => $params['configoption4'] . 'auth-order-otp-token?token=' . $token,
             'linkName' => 'ssl panel',
             'errorMessage' => $fullMessage,
-            'status' => $order->status,
+            'status' => $status,
             'creationDate' => $order->creation_date,
             'activationDate' => $order->activation_date,
             'expirationDate' => $order->expiration_date,
