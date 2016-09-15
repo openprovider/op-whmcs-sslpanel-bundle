@@ -133,7 +133,7 @@ function openprovidersslnew_ClientArea($params)
         $order = array_shift(
             Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get()
         );
-        $reply = opApiWrapper::generateOtpToken($params, $order->orderId);
+        $reply = opApiWrapper::generateOtpToken($params, $order->order_id);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
         logModuleCall(
