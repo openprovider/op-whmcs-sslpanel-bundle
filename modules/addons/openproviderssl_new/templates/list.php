@@ -9,7 +9,9 @@
             <th><?php echo 'id'; ?></th>
             <th><?php echo 'name'; ?></th>
             <th><?php echo 'brand name'; ?></th>
-            <th><?php echo 'price'; ?></th>
+            <th><?php echo 'price annually'; ?></th>
+            <th><?php echo 'price biennially'; ?></th>
+            <th><?php echo 'price triennially'; ?></th>
             <th><?php echo 'currency'; ?></th>
         </tr>
         <?php foreach ($view['products'] as $item): ?>
@@ -17,8 +19,10 @@
                 <td><?php echo $item['id']?></td>
                 <td><?php echo $item['name']?></td>
                 <td><?php echo $item['brandName']?></td>
-                <td><?php echo $item['warranty']['reseller']['price']?></td>
-                <td><?php echo $item['warranty']['reseller']['currency']?></td>
+                <td><?php echo $item['prices'][0]['price']['reseller']['price']?></td>
+                <td><?php echo $item['prices'][1]['price']['reseller']['price']?></td>
+                <td><?php echo $item['prices'][2]['price']['reseller']['price']?></td>
+                <td><?php echo $item['prices'][0]['price']['reseller']['currency']?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>

@@ -15,7 +15,8 @@ function openproviderssl_new_config()
         "fields" => [
             "option1" => [
                 "FriendlyName" => "apiUrl",
-                "Type" => "text", "Size" => "255",
+                "Type" => "text", 
+                "Size" => "255",
                 "Description" => "Openprovider Api Url",
                 "Default" => "https://api.cte.openprovider.eu/",
             ],
@@ -31,9 +32,17 @@ function openproviderssl_new_config()
             ],
             "option4" => [
                 "FriendlyName" => "sslUrl",
-                "Type" => "text", "Size" => "255",
+                "Type" => "text", 
+                "Size" => "255",
                 "Description" => "Ssl Url",
                 "Default" => "https://sslinhva.cte.openprovider.eu/",
+            ],
+            "option5" => [
+                "FriendlyName" => "opUrl",
+                "Type" => "text",
+                "Size" => "255",
+                "Description" => "openprovider Url",
+                "Default" => "https://rcp.cte.openprovider.eu/",
             ],
         ]
     ];
@@ -54,6 +63,7 @@ function openproviderssl_new_output($vars)
         'global' => [
             'mod_url' => '?module=openproviderssl_new',
             'module' => 'openproviderssl_new',
+            'overview_orders_url' => $vars['option5'],
         ],
     ];
 
@@ -61,7 +71,7 @@ function openproviderssl_new_output($vars)
 
     if ($action === 'list') {
         try {
-            $reply = search_products($vars);
+            $reply = searchProducts($vars);
         } catch (opApiException $e) {
             $view['errorMessage'] = $e->getFullMessage();
         }
@@ -69,7 +79,7 @@ function openproviderssl_new_output($vars)
         $view['products'] = $reply['results'];
     } else if ($action === 'update') {
         try {
-            $reply = search_products($vars);
+            $reply = searchProducts($vars);
 
             Capsule::table('openprovidersslnew_products')->truncate();
             foreach ($reply['results'] as $product) {
@@ -78,8 +88,8 @@ function openproviderssl_new_output($vars)
                     'product_id' => $product['id'],
                     'name' => $product['name'],
                     'brand_name' => $product['brandName'],
-                    'price' => $product['warranty']['reseller']['price'],
-                    'currency' => $product['warranty']['reseller']['currency'],
+                    'price' => $product['prices'][0]['price']['reseller']['price'],
+                    'currency' => $product['prices'][0]['price']['reseller']['currency'], 
                     'changed_at' => date('Y-m-d H:i:s', time()),
                 ]);
             }
@@ -103,7 +113,7 @@ function openproviderssl_new_output($vars)
  *
  * @return array|null
  */
-function search_products($vars)
+function searchProducts($vars)
 {
     include __DIR__ . '/../../servers/openprovidersslnew/lib/opApiWrapper.php';
 

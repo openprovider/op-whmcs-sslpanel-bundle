@@ -159,7 +159,7 @@ class opApiWrapper
 
     static public function searchProductSslCert($params)
     {
-        return self::processRequest('searchProductSslCertRequest', $params, []);
+        return self::processRequest('searchProductSslCertRequest', $params, ['withPrice' => '1']);
     }
 
     static public function createSslCert($params, $productId)
