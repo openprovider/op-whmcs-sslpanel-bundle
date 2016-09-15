@@ -143,7 +143,7 @@ function openprovidersslnew_ClientArea($params)
         $status = $reply['status'];
         //save update status into a DB
         Capsule::table('openprovidersslnew_orders')->lockForUpdate();
-        Capsule::table('openprovidersslnew_orders')->update(['status' => $status]);
+        Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->update(['status' => $status]);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
         logModuleCall(
