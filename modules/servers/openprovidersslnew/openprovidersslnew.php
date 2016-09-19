@@ -188,3 +188,54 @@ function openprovidersslnew_ClientArea($params)
         ],
     ];
 }
+
+/**
+ * @param array $params
+ *
+ * @return array
+ */
+function openprovidersslnew_ServiceSingleSignOn($params)
+{
+    include __DIR__ . '/lib/opApiWrapper.php';
+
+    $return = ['success' => false];
+
+    try {
+        $order = array_shift(
+            Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get()
+        );
+
+        // generate otp token
+        $response = $formattedResponse = opApiWrapper::generateOtpToken($params, $order->order_id);
+        $token = $response['token'];
+
+        $return = [
+            'success' => true,
+            'redirectTo' => $params['configoption4'] . 'auth-order-otp-token?token=' . $token,
+        ];
+    } catch (opApiException $e) {
+        $fullMessage = $e->getFullMessage();
+        $return['errorMsg'] = $fullMessage;
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_ServiceSingleSignOn',
+            $params,
+            $fullMessage,
+            $e->getTraceAsString()
+        );
+    } catch (Exception $e) {
+        $return['errorMsg'] = $e->getMessage();
+        $response = $e->getMessage();
+        $formattedResponse = $e->getTraceAsString();
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_ServiceSingleSignOn',
+            $params,
+            $response,
+            $formattedResponse,
+            ['username', 'password']
+        );
+    }
+
+    return $return;
+}
