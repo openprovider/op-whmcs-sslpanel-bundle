@@ -19,9 +19,24 @@
                 <td><?php echo $item['id']?></td>
                 <td><?php echo $item['name']?></td>
                 <td><?php echo $item['brandName']?></td>
-                <td><?php echo $item['prices'][0]['price']['reseller']['price']?></td>
-                <td><?php echo $item['prices'][1]['price']['reseller']['price']?></td>
-                <td><?php echo $item['prices'][2]['price']['reseller']['price']?></td>
+                <td>
+                    <?php echo $item['prices'][0]['price']['reseller']['price']?>
+                    <br/>
+                    <?php echo $item['prices'][0]['extraDomainPrice']['reseller']['price']?>
+                    <?php if (isset($item['prices'][0]['extraDomainPrice']['reseller']['price'])) echo '(extra domain price)' ?>
+                </td>
+                <td>
+                    <?php echo $item['prices'][1]['price']['reseller']['price']?>
+                    <br/>
+                    <?php echo $item['prices'][1]['extraDomainPrice']['reseller']['price']?>
+                    <?php if (isset($item['prices'][1]['extraDomainPrice']['reseller']['price'])) echo '(extra domain price)' ?>
+                </td>
+                <td>
+                    <?php echo $item['prices'][2]['price']['reseller']['price']?>
+                    <br/>
+                    <?php echo $item['prices'][2]['extraDomainPrice']['reseller']['price']?>
+                    <?php if (isset($item['prices'][2]['extraDomainPrice']['reseller']['price'])) echo '(extra domain price)' ?>
+                </td>
                 <td><?php echo $item['prices'][0]['price']['reseller']['currency']?></td>
             </tr>
         <?php endforeach; ?>
