@@ -24,7 +24,7 @@ if ($ca->isLoggedIn()) {
 
     $serviceId = $_GET['serviceId'];
 
-    $hosting = array_shift(Capsule::table('tblhosting')->where('service_id', $serviceId)->get());
+    $hosting = array_shift(Capsule::table('tblhosting')->where('id', $serviceId)->get());
     $products = array_shift(Capsule::table('tblproducts')->where('id', $hosting->packageid)->get());
     $order = array_shift(Capsule::table('openprovidersslnew_orders')->where('service_id', $serviceId)->get());
 
