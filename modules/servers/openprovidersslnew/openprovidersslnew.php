@@ -71,8 +71,19 @@ function openprovidersslnew_CreateAccount($params)
             Capsule::table('openprovidersslnew_products')->where('name', $params['configoption5'])->get()
         )->product_id;
 
+        //get years
+        $billingCycle = array_shift(
+            Capsule::table('tblhosting')->where('id', $params['serviceid'])->get()
+        )->billingcycle;
+
         if (isset($params['configoptions']) && isset($params['configoptions']['years'])) {
             $params['period'] = $params['configoptions']['years'];
+        } else if ($billingCycle && $billingCycle === 'Annually') {
+            $params['period'] = 1;
+        } else if ($billingCycle && $billingCycle === 'Biennially') {
+            $params['period'] = 2;
+        } else if ($billingCycle && $billingCycle === 'Triennially') {
+            $params['period'] = 3;
         } else {
             $params['period'] = 1;
         }
