@@ -88,6 +88,11 @@ function openprovidersslnew_CreateAccount($params)
             $params['period'] = 1;
         }
 
+        //get domain amount
+        if (isset($params['configoptions']) && isset($params['configoptions']['domain amount'])) {
+            $params['domainAmount'] = $params['configoptions']['domain amount'];
+        }
+
         $reply = opApiWrapper::createSslCert($params, $product_id);
 
         Capsule::table('openprovidersslnew_orders')->insert([
