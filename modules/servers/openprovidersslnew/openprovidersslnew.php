@@ -194,7 +194,9 @@ function openprovidersslnew_ClientArea($params)
     return [
         'templatefile' => 'templates/clientarea.tpl',
         'templateVariables' => [
-            'linkValue' => $params['configoption4'] . 'auth-order-otp-token?token=' . $token,
+            'linkValue' => '?url=' . $params['configoption4'] . 'auth-order-otp-token'
+                . '&serviceId=' . $params['serviceid']
+                . '&token=' . $params[''],
             'linkName' => 'ssl panel',
             'errorMessage' => $fullMessage,
             'status' => $status,

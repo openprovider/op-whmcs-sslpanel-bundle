@@ -10,7 +10,7 @@
                 <tbody>
                 <tr>
                     <td class="fieldarea" width="150">{$linkName}:</td>
-                    <td><a href="{$linkValue}" target="_blank">open link</a></td>
+                    <td><a href="./modules/servers/openprovidersslnew/generateToken.php?{$linkValue}" target="_blank">open</a></td>
                 </tr>
                 <tr>
                     <td class="fieldarea" width="150">status</td>
