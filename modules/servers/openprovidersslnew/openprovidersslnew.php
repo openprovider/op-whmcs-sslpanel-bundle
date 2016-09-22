@@ -67,14 +67,14 @@ function openprovidersslnew_CreateAccount($params)
     $reply = null;
 
     try {
-        $product_id = array_shift(
-            Capsule::table('openprovidersslnew_products')->where('name', $params['configoption5'])->get()
-        )->product_id;
+        $product = Capsule::table('openprovidersslnew_products')->where('name', $params['configoption5'])->get();
+        $product = array_shift($product);
+        $product_id = $product->product_id;
 
         //get years
-        $billingCycle = array_shift(
-            Capsule::table('tblhosting')->where('id', $params['serviceid'])->get()
-        )->billingcycle;
+        $hosting = Capsule::table('tblhosting')->where('id', $params['serviceid'])->get();
+        $hosting = array_shift($hosting);
+        $billingCycle = $hosting->billingcycle;
 
         if (isset($params['configoptions']) && isset($params['configoptions']['years'])) {
             $params['period'] = $params['configoptions']['years'];
@@ -90,7 +90,7 @@ function openprovidersslnew_CreateAccount($params)
 
         //get domain amount
         if (isset($params['configoptions']) && isset($params['configoptions']['domain amount'])) {
-            $params['domainAmount'] = $params['configoptions']['domain amount'];
+            $params['domainAmount'] = $params['configoptions']['domain amount'] + 3; // 3 is preset domains
         }
 
         $reply = opApiWrapper::createSslCert($params, $product_id);
@@ -149,9 +149,8 @@ function openprovidersslnew_ClientArea($params)
     $dates = [];
 
     try {
-        $order = array_shift(
-            Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get()
-        );
+        $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get();
+        $order = array_shift($order);
         //update status
         $reply = opApiWrapper::retrieveOrder($params, $order->order_id);
         $status = $reply['status'];

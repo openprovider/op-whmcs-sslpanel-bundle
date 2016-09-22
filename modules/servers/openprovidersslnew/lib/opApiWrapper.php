@@ -165,16 +165,17 @@ class opApiWrapper
     static public function createSslCert($params, $productId)
     {
         return self::processRequest(
-	    'createSslCertRequest', 
-	    [
-	        'username' => $params['configoption1'],
-	        'password' => $params['configoption2'],
-	        'apiUrl' => $params['configoption3'],
-            ], 
-	    [
+            'createSslCertRequest',
+            [
+                'username' => $params['configoption1'],
+                'password' => $params['configoption2'],
+                'apiUrl' => $params['configoption3'],
+            ],
+            [
                 'productId' => $productId,
                 'period' => $params['period'],
                 'startProvision' => 0,
+                'domainAmount' => $params['domainAmount']
             ]
         );
     }
