@@ -32,14 +32,14 @@ if ($ca->isLoggedIn()) {
     $order = array_shift($order);
 
     $reply = opApiWrapper::generateOtpToken([
-        'username' => $products->configoption1,
-        'password' => $products->configoption2,
-        'apiUrl' => $products->configoption3,
+        'configoption1' => $products->configoption1,
+        'configoption2' => $products->configoption2,
+        'configoption3' => $products->configoption3,
     ], $order->order_id);
 
     $token = $reply['token'];
 
-    Header("Location: " . $products->configoption3 . "?auth-order-otp-token&token=" . $token);
+    Header("Location: " . $products->configoption4 . "?auth-order-otp-token&token=" . $token);
 }
 
 $ca->setTemplate('mypage');
