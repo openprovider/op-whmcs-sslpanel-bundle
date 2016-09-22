@@ -24,9 +24,12 @@ if ($ca->isLoggedIn()) {
 
     $serviceId = $_GET['serviceId'];
 
-    $hosting = array_shift(Capsule::table('tblhosting')->where('id', $serviceId)->get());
-    $products = array_shift(Capsule::table('tblproducts')->where('id', $hosting->packageid)->get());
-    $order = array_shift(Capsule::table('openprovidersslnew_orders')->where('service_id', $serviceId)->get());
+    $hosting = Capsule::table('tblhosting')->where('id', $serviceId)->get();
+    $hosting = array_shift($hosting);
+    $products = Capsule::table('tblproducts')->where('id', $hosting->packageid)->get();
+    $products = array_shift($products);
+    $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $serviceId)->get();
+    $order = array_shift($order);
 
     $reply = opApiWrapper::generateOtpToken([
         'username' => $products->configoption1,
