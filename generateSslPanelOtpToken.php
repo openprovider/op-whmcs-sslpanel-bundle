@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Replace this file into a whmcs root dir
+ */
 include __DIR__ . '/vendor/autoload.php';
 
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -39,7 +42,7 @@ if ($ca->isLoggedIn()) {
 
     $token = $reply['token'];
 
-    Header("Location: " . $products->configoption4 . "?auth-order-otp-token&token=" . $token);
+    Header("Location: " . $products->configoption4 . "auth-order-otp-token?token=" . $token);
 }
 
 $ca->setTemplate('mypage');
