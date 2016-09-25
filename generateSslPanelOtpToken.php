@@ -35,10 +35,11 @@ if ($ca->isLoggedIn()) {
     $order = array_shift($order);
 
     $reply = opApiWrapper::generateOtpToken([
-        'configoption1' => $products->configoption1,
-        'configoption2' => $products->configoption2,
-        'configoption3' => $products->configoption3,
-    ], $order->order_id);
+        'username' => $products->configoption1,
+        'password' => $products->configoption2,
+        'apiUrl' => $products->configoption3,
+        'id' => $order->order_id,
+    ]);
 
     $token = $reply['token'];
 
