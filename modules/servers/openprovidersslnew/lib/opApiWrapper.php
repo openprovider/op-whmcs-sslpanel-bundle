@@ -167,9 +167,9 @@ class opApiWrapper
         return self::processRequest(
             'createSslCertRequest',
             [
-                'username' => $params['username'], // configoption1
-                'password' => $params['password'], // configoption2
-                'apiUrl' => $params['apiUrl'], // configoption3
+                'username' => $params['username'],
+                'password' => $params['password'],
+                'apiUrl' => $params['apiUrl'],
             ],
             [
                 'productId' => $params['productId'],
@@ -185,9 +185,9 @@ class opApiWrapper
         return self::processRequest(
             'cancelSslCertRequest',
             [
-                'username' => $params['username'], // configoption1
-                'password' => $params['password'], // configoption2
-                'apiUrl' => $params['apiUrl'], // configoption3
+                'username' => $params['username'],
+                'password' => $params['password'],
+                'apiUrl' => $params['apiUrl'],
             ],
             [
                 'id' => $params['id'],
@@ -200,9 +200,9 @@ class opApiWrapper
         return self::processRequest(
             'renewSslCertRequest',
             [
-                'username' => $params['username'], // configoption1
-                'password' => $params['password'], // configoption2
-                'apiUrl' => $params['apiUrl'], // configoption3
+                'username' => $params['username'],
+                'password' => $params['password'],
+                'apiUrl' => $params['apiUrl'],
             ],
             [
                 'id' => $params['id'],
@@ -215,9 +215,9 @@ class opApiWrapper
         return self::processRequest(
             'generateOtpTokenSslCertRequest',
             [
-                'username' => $params['username'], // configoption1
-                'password' => $params['password'], // configoption2
-                'apiUrl' => $params['apiUrl'], // configoption3
+                'username' => $params['username'],
+                'password' => $params['password'],
+                'apiUrl' => $params['apiUrl'],
             ],
             [
                 'id' => $params['id'],
@@ -230,9 +230,9 @@ class opApiWrapper
         return self::processRequest(
             'retrieveOrderSslCertRequest',
             [
-                'username' => $params['username'], // configoption1
-                'password' => $params['password'], // configoption2
-                'apiUrl' => $params['apiUrl'], // configoption3
+                'username' => $params['username'],
+                'password' => $params['password'],
+                'apiUrl' => $params['apiUrl'],
             ],
             [
                 'id' => $params['id'],
