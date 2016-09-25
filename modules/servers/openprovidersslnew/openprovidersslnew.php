@@ -95,7 +95,7 @@ function cancel($params)
         $fullMessage = $e->getFullMessage();
         logModuleCall(
             'openprovidersslnew',
-            'openprovidersslnew_CreateAccount',
+            'cancel',
             $params,
             $fullMessage,
             $e->getTraceAsString()
@@ -106,7 +106,7 @@ function cancel($params)
         $message = "Error occurred during order saving: {$e->getMessage()}";
         logModuleCall(
             'openprovidersslnew',
-            'openprovidersslnew_CreateAccount',
+            'cancel',
             $params,
             $message,
             $e->getTraceAsString()
@@ -137,7 +137,7 @@ function renew($params)
         $fullMessage = $e->getFullMessage();
         logModuleCall(
             'openprovidersslnew',
-            'openprovidersslnew_CreateAccount',
+            'renew',
             $params,
             $fullMessage,
             $e->getTraceAsString()
@@ -148,7 +148,7 @@ function renew($params)
         $message = "Error occurred during order saving: {$e->getMessage()}";
         logModuleCall(
             'openprovidersslnew',
-            'openprovidersslnew_CreateAccount',
+            'renew',
             $params,
             $message,
             $e->getTraceAsString()
@@ -201,7 +201,7 @@ function create($params)
         $fullMessage = $e->getFullMessage();
         logModuleCall(
             'openprovidersslnew',
-            'openprovidersslnew_CreateAccount',
+            'create',
             $params,
             $fullMessage,
             $e->getTraceAsString()
@@ -212,7 +212,7 @@ function create($params)
         $message = "Error occurred during order saving: {$e->getMessage()}";
         logModuleCall(
             'openprovidersslnew',
-            'openprovidersslnew_CreateAccount',
+            'create',
             $params,
             $message,
             $e->getTraceAsString()
