@@ -81,27 +81,12 @@ function create($params)
         $product = array_shift($product);
         $product_id = $product->product_id;
 
-        //get years
         $hosting = Capsule::table('tblhosting')->where('id', $params['serviceid'])->get();
         $hosting = array_shift($hosting);
         $billingCycle = $hosting->billingcycle;
 
-        if (isset($params['configoptions']) && isset($params['configoptions']['years'])) {
-            $params['period'] = $params['configoptions']['years'];
-        } else if ($billingCycle && $billingCycle === 'Annually') {
-            $params['period'] = 1;
-        } else if ($billingCycle && $billingCycle === 'Biennially') {
-            $params['period'] = 2;
-        } else if ($billingCycle && $billingCycle === 'Triennially') {
-            $params['period'] = 3;
-        } else {
-            $params['period'] = 1;
-        }
-
-        //get domain amount
-        if (isset($params['configoptions']) && isset($params['configoptions']['domain amount'])) {
-            $params['domainAmount'] = $params['configoptions']['domain amount'] + 3; // 3 is preset domains
-        }
+        $params['period'] = extractYearsFromParams($params, $billingCycle);
+        $params['domainAmount'] = extractDomainAmountFromParams($params);
 
         $reply = opApiWrapper::createSslCert($params, $product_id);
 
@@ -141,6 +126,41 @@ function create($params)
     }
 
     return "success";
+}
+
+/**
+ * @param $params
+ *
+ * @return mixed
+ */
+function extractDomainAmountFromParams($params)
+{
+    if (isset($params['configoptions']) && isset($params['configoptions']['domain amount'])) {
+        return $params['configoptions']['domain amount'] + 3; //3 is preset domains
+    } else {
+        return 1;
+    }
+}
+
+/**
+ * @param $params
+ * @param $billingCycle
+ *
+ * @return mixed
+ */
+function extractYearsFromParams($params, $billingCycle)
+{
+    if (isset($params['configoptions']) && isset($params['configoptions']['years'])) {
+        return $params['configoptions']['years'];
+    } else if ($billingCycle && $billingCycle === 'Annually') {
+        return 1;
+    } else if ($billingCycle && $billingCycle === 'Biennially') {
+        return 2;
+    } else if ($billingCycle && $billingCycle === 'Triennially') {
+        return 3;
+    } else {
+        return 1;
+    }
 }
 
 /**
