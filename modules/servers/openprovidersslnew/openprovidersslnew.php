@@ -353,7 +353,7 @@ function updateOpOrdersTable($params)
 /**
  * @return array
  */
-function provisioningmodule_AdminCustomButtonArray()
+function openprovidersslnew_AdminCustomButtonArray()
 {
     return array(
         "Cancel" => "cancel",
