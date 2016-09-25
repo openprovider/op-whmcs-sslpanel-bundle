@@ -378,5 +378,55 @@ function openprovidersslnew_AdminCustomButtonArray()
     return array(
         "Cancel" => "Cancel",
         "Renew" => "Renew",
+        "Open ssl panel detail page" => "OpenSslPanelDetailPage",
     );
+}
+
+function openprovidersslnew_OpenSslPanelDetailPage($params)
+{
+    include __DIR__ . '/lib/opApiWrapper.php';
+
+    $reply = null;
+    $products = null;
+    $serviceId = $params['serviceid'];
+
+    try {
+        $hosting = Capsule::table('tblhosting')->where('id', $serviceId)->get();
+        $hosting = array_shift($hosting);
+        $products = Capsule::table('tblproducts')->where('id', $hosting->packageid)->get();
+        $products = array_shift($products);
+        $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $serviceId)->get();
+        $order = array_shift($order);
+
+        $reply = opApiWrapper::retrieveOrder([
+            'username' => $products->configoption1,
+            'password' => $products->configoption2,
+            'apiUrl' => $products->configoption3,
+            'id' => $order->order_id,
+        ]);
+    } catch (opApiException $e) {
+        $fullMessage = $e->getFullMessage();
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_OpenSslPanelDetailPage',
+            $params,
+            $fullMessage,
+            $e->getTraceAsString()
+        );
+    } catch (\Exception $e) {
+        $fullMessage = $e->getMessage();
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_OpenSslPanelDetailPage',
+            $params,
+            $fullMessage,
+            $e->getTraceAsString()
+        );
+    }
+
+    $sslinhvaOrderId = $reply['sslinhvaOrderId'];
+
+    Header("Location: " . $products->configoption4 . "?utm_source=rcp&utm_medium=order_overview_link&utm_campaign=new_order_details#/orders/{$sslinhvaOrderId}/details");
+
+    return "success";
 }
