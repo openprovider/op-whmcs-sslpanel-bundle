@@ -89,6 +89,7 @@ function cancel($params)
         $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get();
         $order = array_shift($order);
         $params['id'] = $order->order_id;
+        addCredentialsToParams($params);
         opApiWrapper::cancelSslCert($params);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
@@ -130,6 +131,7 @@ function renew($params)
         $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get();
         $order = array_shift($order);
         $params['id'] = $order->order_id;
+        addCredentialsToParams($params);
         opApiWrapper::renewSslCert($params);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
@@ -181,6 +183,7 @@ function create($params)
         $params['domainAmount'] = extractDomainAmountFromParams($params);
         $params['productId'] = $productId;
 
+        addCredentialsToParams($params);
         $reply = opApiWrapper::createSslCert($params);
 
         Capsule::table('openprovidersslnew_orders')->insert([
@@ -256,6 +259,13 @@ function extractYearsFromParams($params, $billingCycle)
     }
 }
 
+function addCredentialsToParams(&$params)
+{
+    $params['username'] = $params['configoption1'] ?: null;
+    $params['password'] = $params['configoption2'] ?: null;
+    $params['apiUrl'] = $params['configoption3'] ?: null;
+}
+
 /**
  * @param array $params
  *
@@ -276,6 +286,7 @@ function openprovidersslnew_ClientArea($params)
         $order = array_shift($order);
         //update status
         $params['id'] = $order->order_id;
+        addCredentialsToParams($params);
         $reply = opApiWrapper::retrieveOrder($params);
         $status = $reply['status'];
         $dates['creationDate'] = $reply['orderDate'];
