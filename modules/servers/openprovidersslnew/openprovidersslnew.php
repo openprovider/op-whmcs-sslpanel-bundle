@@ -349,3 +349,14 @@ function updateOpOrdersTable($params)
         'expirationDate' => $reply['expirationDate'],
     ];
 }
+
+/**
+ * @return array
+ */
+function provisioningmodule_AdminCustomButtonArray()
+{
+    return array(
+        "Cancel" => "cancel",
+        "Renew" => "renew",
+    );
+}
