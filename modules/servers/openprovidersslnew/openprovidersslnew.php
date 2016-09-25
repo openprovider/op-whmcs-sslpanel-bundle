@@ -382,7 +382,7 @@ function openprovidersslnew_AdminCustomButtonArray()
     );
 }
 
-function openprovidersslnew_OpenSslPanelDetailPage($params)
+function openprovidersslnew_AdminServicesTabFields($params)
 {
     include __DIR__ . '/lib/opApiWrapper.php';
 
@@ -426,7 +426,9 @@ function openprovidersslnew_OpenSslPanelDetailPage($params)
 
     $sslinhvaOrderId = $reply['sslinhvaOrderId'];
 
-    Header("Location: " . $products->configoption4 . "?utm_source=rcp&utm_medium=order_overview_link&utm_campaign=new_order_details#/orders/{$sslinhvaOrderId}/details");
+    $link = $products->configoption4 . "?utm_source=rcp&utm_medium=order_overview_link&utm_campaign=new_order_details#/orders/{$sslinhvaOrderId}/details";
 
-    return "success";
+    return [
+        "Ssl panel" => '<a href="'.$link.'">open order details page</a>',
+    ];
 }
