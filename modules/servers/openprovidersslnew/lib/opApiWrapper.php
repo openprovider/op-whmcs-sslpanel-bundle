@@ -162,17 +162,17 @@ class opApiWrapper
         return self::processRequest('searchProductSslCertRequest', $params, ['withPrice' => '1']);
     }
 
-    static public function createSslCert($params, $productId)
+    static public function createSslCert($params)
     {
         return self::processRequest(
             'createSslCertRequest',
             [
-                'username' => $params['configoption1'],
-                'password' => $params['configoption2'],
-                'apiUrl' => $params['configoption3'],
+                'username' => $params['username'], // configoption1
+                'password' => $params['password'], // configoption2
+                'apiUrl' => $params['apiUrl'], // configoption3
             ],
             [
-                'productId' => $productId,
+                'productId' => $params['productId'],
                 'period' => $params['period'],
                 'startProvision' => 0,
                 'domainAmount' => $params['domainAmount']
@@ -180,32 +180,62 @@ class opApiWrapper
         );
     }
 
-    static public function generateOtpToken($params, $opOrderId)
+    static public function cancelSslCert($params)
     {
         return self::processRequest(
-            'generateOtpTokenSslCertRequest',
+            'cancelSslCertRequest',
             [
-                'username' => $params['configoption1'],
-                'password' => $params['configoption2'],
-                'apiUrl' => $params['configoption3'],
+                'username' => $params['username'], // configoption1
+                'password' => $params['password'], // configoption2
+                'apiUrl' => $params['apiUrl'], // configoption3
             ],
             [
-                'id' => $opOrderId,
+                'id' => $params['id'],
             ]
         );
     }
 
-    static public function retrieveOrder($params, $opOrderId)
+    static public function renewSslCert($params)
+    {
+        return self::processRequest(
+            'renewSslCertRequest',
+            [
+                'username' => $params['username'], // configoption1
+                'password' => $params['password'], // configoption2
+                'apiUrl' => $params['apiUrl'], // configoption3
+            ],
+            [
+                'id' => $params['id'],
+            ]
+        );
+    }
+
+    static public function generateOtpToken($params)
+    {
+        return self::processRequest(
+            'generateOtpTokenSslCertRequest',
+            [
+                'username' => $params['username'], // configoption1
+                'password' => $params['password'], // configoption2
+                'apiUrl' => $params['apiUrl'], // configoption3
+            ],
+            [
+                'id' => $params['id'],
+            ]
+        );
+    }
+
+    static public function retrieveOrder($params)
     {
         return self::processRequest(
             'retrieveOrderSslCertRequest',
             [
-                'username' => $params['configoption1'],
-                'password' => $params['configoption2'],
-                'apiUrl' => $params['configoption3'],
+                'username' => $params['username'], // configoption1
+                'password' => $params['password'], // configoption2
+                'apiUrl' => $params['apiUrl'], // configoption3
             ],
             [
-                'id' => $opOrderId,
+                'id' => $params['id'],
             ]
         );
     }

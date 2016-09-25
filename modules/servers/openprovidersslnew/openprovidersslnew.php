@@ -71,6 +71,98 @@ function openprovidersslnew_CreateAccount($params)
  *
  * @return string
  */
+function openprovidersslnew_Renew($params)
+{
+    renew($params);
+}
+
+/**
+ * @param array $params
+ *
+ * @return string
+ */
+function cancel($params)
+{
+    include __DIR__ . '/lib/opApiWrapper.php';
+
+    try {
+        $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get();
+        $order = array_shift($order);
+        $params['id'] = $order->order_id;
+        opApiWrapper::cancelSslCert($params);
+    } catch (opApiException $e) {
+        $fullMessage = $e->getFullMessage();
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_CreateAccount',
+            $params,
+            $fullMessage,
+            $e->getTraceAsString()
+        );
+
+        return $fullMessage;
+    } catch (\Exception $e) {
+        $message = "Error occurred during order saving: {$e->getMessage()}";
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_CreateAccount',
+            $params,
+            $message,
+            $e->getTraceAsString()
+        );
+
+        return $message;
+    }
+
+    return "success";
+}
+
+/**
+ * @param array $params
+ *
+ * @return string
+ */
+function renew($params)
+{
+    include __DIR__ . '/lib/opApiWrapper.php';
+
+    try {
+        $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get();
+        $order = array_shift($order);
+        $params['id'] = $order->order_id;
+        opApiWrapper::renewSslCert($params);
+    } catch (opApiException $e) {
+        $fullMessage = $e->getFullMessage();
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_CreateAccount',
+            $params,
+            $fullMessage,
+            $e->getTraceAsString()
+        );
+
+        return $fullMessage;
+    } catch (\Exception $e) {
+        $message = "Error occurred during order saving: {$e->getMessage()}";
+        logModuleCall(
+            'openprovidersslnew',
+            'openprovidersslnew_CreateAccount',
+            $params,
+            $message,
+            $e->getTraceAsString()
+        );
+
+        return $message;
+    }
+
+    return "success";
+}
+
+/**
+ * @param array $params
+ *
+ * @return string
+ */
 function create($params)
 {
     include __DIR__ . '/lib/opApiWrapper.php';
@@ -79,7 +171,7 @@ function create($params)
     try {
         $product = Capsule::table('openprovidersslnew_products')->where('name', $params['configoption5'])->get();
         $product = array_shift($product);
-        $product_id = $product->product_id;
+        $productId = $product->product_id;
 
         $hosting = Capsule::table('tblhosting')->where('id', $params['serviceid'])->get();
         $hosting = array_shift($hosting);
@@ -87,12 +179,13 @@ function create($params)
 
         $params['period'] = extractYearsFromParams($params, $billingCycle);
         $params['domainAmount'] = extractDomainAmountFromParams($params);
+        $params['productId'] = $productId;
 
-        $reply = opApiWrapper::createSslCert($params, $product_id);
+        $reply = opApiWrapper::createSslCert($params);
 
         Capsule::table('openprovidersslnew_orders')->insert([
             'id' => null,
-            'product_id' => $product_id,
+            'product_id' => $productId,
             'order_id' => $reply['id'],
             'status' => 'REQ',
             'creation_date' => date('Y-m-d H:i:s', time()),
@@ -182,7 +275,8 @@ function openprovidersslnew_ClientArea($params)
         $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get();
         $order = array_shift($order);
         //update status
-        $reply = opApiWrapper::retrieveOrder($params, $order->order_id);
+        $params['id'] = $order->order_id;
+        $reply = opApiWrapper::retrieveOrder($params);
         $status = $reply['status'];
         $dates['creationDate'] = $reply['orderDate'];
         $dates['activationDate'] = $reply['activeDate'];
