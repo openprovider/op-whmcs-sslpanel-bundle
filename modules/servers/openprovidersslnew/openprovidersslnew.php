@@ -91,6 +91,7 @@ function cancel($params)
         $params['id'] = $order->order_id;
         addCredentialsToParams($params);
         opApiWrapper::cancelSslCert($params);
+        updateOpOrdersTable($params);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
         logModuleCall(
@@ -133,6 +134,7 @@ function renew($params)
         $params['id'] = $order->order_id;
         addCredentialsToParams($params);
         opApiWrapper::renewSslCert($params);
+        updateOpOrdersTable($params);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
         logModuleCall(
