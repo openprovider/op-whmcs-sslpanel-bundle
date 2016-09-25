@@ -63,6 +63,16 @@ function openprovidersslnew_ConfigOptions()
  */
 function openprovidersslnew_CreateAccount($params)
 {
+    create($params);
+}
+
+/**
+ * @param array $params
+ *
+ * @return string
+ */
+function create($params)
+{
     include __DIR__ . '/lib/opApiWrapper.php';
     $reply = null;
 
