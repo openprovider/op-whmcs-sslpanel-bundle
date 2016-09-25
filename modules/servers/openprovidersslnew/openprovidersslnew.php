@@ -279,29 +279,14 @@ function openprovidersslnew_ClientArea($params)
     $order = null;
     $token = null;
     $status = null;
-    $dates = [];
+    $updatedData = [];
 
     try {
         $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get();
         $order = array_shift($order);
         //update status
         $params['id'] = $order->order_id;
-        addCredentialsToParams($params);
-        $reply = opApiWrapper::retrieveOrder($params);
-        $status = $reply['status'];
-        $dates['creationDate'] = $reply['orderDate'];
-        $dates['activationDate'] = $reply['activeDate'];
-        $dates['expirationDate'] = $reply['expirationDate'];
-        //save update status into a DB
-        Capsule::table('openprovidersslnew_orders')->lockForUpdate();
-        Capsule::table('openprovidersslnew_orders')
-            ->where('service_id', $params['serviceid'])
-            ->update([
-                'status' => $status,
-                'creation_date' => $dates['creationDate'],
-                'activation_date' => $dates['activation_date'],
-                'expiration_date' => $dates['expirationDate'],
-            ]);
+        $updatedData = updateOpOrdersTable($params);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
         logModuleCall(
@@ -328,10 +313,37 @@ function openprovidersslnew_ClientArea($params)
             'linkValue' => 'serviceId=' . $params['serviceid'],
             'linkName' => 'ssl panel',
             'errorMessage' => $fullMessage,
-            'status' => $status,
-            'creationDate' => $dates['creationDate'],
-            'activationDate' => $dates['activationDate'],
-            'expirationDate' => $dates['expirationDate'],
+            'status' => $updatedData['status'],
+            'creationDate' => $updatedData['creationDate'],
+            'activationDate' => $updatedData['activationDate'],
+            'expirationDate' => $updatedData['expirationDate'],
         ],
+    ];
+}
+
+/**
+ * @param $params
+ *
+ * @return array
+ */
+function updateOpOrdersTable($params)
+{
+    addCredentialsToParams($params);
+    $reply = opApiWrapper::retrieveOrder($params);
+    //save update status into a DB
+    Capsule::table('openprovidersslnew_orders')->lockForUpdate();
+    Capsule::table('openprovidersslnew_orders')
+        ->where('service_id', $params['serviceid'])
+        ->update([
+            'status' => $reply['status'],
+            'creation_date' => $reply['orderDate'],
+            'activation_date' => $reply['activeDate'],
+            'expiration_date' => $reply['expirationDate'],
+        ]);
+    return [
+        'status' => $reply['status'],
+        'creationDate' => $reply['orderDate'],
+        'activationDate' => $reply['activeDate'],
+        'expirationDate' => $reply['expirationDate'],
     ];
 }
