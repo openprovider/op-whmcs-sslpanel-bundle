@@ -63,17 +63,37 @@ function openprovidersslnew_ConfigOptions()
  */
 function openprovidersslnew_CreateAccount($params)
 {
-    create($params);
+    return create($params);
 }
 
 /**
- * @param array $params
+ * @param $params
  *
  * @return string
  */
 function openprovidersslnew_Renew($params)
 {
-    renew($params);
+    return renew($params);
+}
+
+/**
+ * @param $params
+ *
+ * @return string
+ */
+function openprovidersslnew_Create($params)
+{
+    return create($params);
+}
+
+/**
+ * @param $params
+ *
+ * @return string
+ */
+function openprovidersslnew_Cancel($params)
+{
+    return cancel($params);
 }
 
 /**
@@ -356,7 +376,7 @@ function updateOpOrdersTable($params)
 function openprovidersslnew_AdminCustomButtonArray()
 {
     return array(
-        "Cancel" => "cancel",
-        "Renew" => "renew",
+        "Cancel" => "Cancel",
+        "Renew" => "Renew",
     );
 }
