@@ -2,49 +2,50 @@
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+if (!defined('WHMCS')) {
+    die('This file cannot be accessed directly');
+}
+
 /**
  * @return array
  */
 function openproviderssl_new_config()
 {
     return [
-        "name" => "Openprovidersslnew addon",
-        "description" => "Openprovidersslnew addon for interaction with OP API",
-        "version" => "1.0",
-        "author" => "Openprovider",
-        "fields" => [
-            "option1" => [
-                "FriendlyName" => "apiUrl",
-                "Type" => "text", 
-                "Size" => "255",
-                "Description" => "Openprovider Api Url",
-                "Default" => "https://api.cte.openprovider.eu/",
+        'name' => 'Openprovidersslnew addon',
+        'description' => 'Openprovidersslnew addon for interaction with OP API',
+        'version' => '1.0',
+        'author' => 'Openprovider',
+        'fields' => [
+            'option1' => [
+                'FriendlyName' => 'Openprovider API URL',
+                'Type' => 'text',
+                'Size' => '255',
+                'Default' => 'https://api.cte.openprovider.eu/',
             ],
-            "option2" => [
-                "FriendlyName" => "username",
-                "Type" => "text",
-                "Size" => "25",
+            'option2' => [
+                'FriendlyName' => 'API Username',
+                'Type' => 'text',
+                'Size' => '25',
             ],
-            "option3" => [
-                "FriendlyName" => "password",
-                "Type" => "password",
-                "Size" => "25",
+            'option3' => [
+                'FriendlyName' => 'API Password',
+                'Type' => 'password',
+                'Size' => '25',
             ],
-            "option4" => [
-                "FriendlyName" => "sslUrl",
-                "Type" => "text", 
-                "Size" => "255",
-                "Description" => "Ssl Url",
-                "Default" => "https://sslinhva.cte.openprovider.eu/",
+            'option4' => [
+                'FriendlyName' => 'SSL Panel URL',
+                'Type' => 'text',
+                'Size' => '255',
+                'Default' => 'https://sslinhva.cte.openprovider.eu/',
             ],
-            "option5" => [
-                "FriendlyName" => "opUrl",
-                "Type" => "text",
-                "Size" => "255",
-                "Description" => "openprovider Url",
-                "Default" => "https://rcp.cte.openprovider.eu/",
+            'option5' => [
+                'FriendlyName' => 'Openprovider RCP URL',
+                'Type' => 'text',
+                'Size' => '255',
+                'Default' => 'https://rcp.cte.openprovider.eu/',
             ],
-        ]
+        ],
     ];
 }
 
@@ -77,29 +78,31 @@ function openproviderssl_new_output($vars)
         }
 
         $view['products'] = $reply['results'];
-    } else if ($action === 'update') {
-        try {
-            $reply = searchProducts($vars);
-
-            Capsule::table('openprovidersslnew_products')->truncate();
-            foreach ($reply['results'] as $product) {
-                Capsule::table('openprovidersslnew_products')->insert([
-                    'id' => null,
-                    'product_id' => $product['id'],
-                    'name' => $product['name'],
-                    'brand_name' => $product['brandName'],
-                    'price' => $product['prices'][0]['price']['reseller']['price'],
-                    'currency' => $product['prices'][0]['price']['reseller']['currency'], 
-                    'changed_at' => date('Y-m-d H:i:s', time()),
-                ]);
-            }
-        } catch (opApiException $e) {
-            $view['errorMessage'] = "Unable to retrieve products: {$e->getFullMessage()}";
-        } catch (\Exception $e) {
-            $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
-        }
     } else {
-        $action = 'default';
+        if ($action === 'update') {
+            try {
+                $reply = searchProducts($vars);
+
+                Capsule::table('openprovidersslnew_products')->truncate();
+                foreach ($reply['results'] as $product) {
+                    Capsule::table('openprovidersslnew_products')->insert([
+                        'id' => null,
+                        'product_id' => $product['id'],
+                        'name' => $product['name'],
+                        'brand_name' => $product['brandName'],
+                        'price' => $product['prices'][0]['price']['reseller']['price'],
+                        'currency' => $product['prices'][0]['price']['reseller']['currency'],
+                        'changed_at' => date('Y-m-d H:i:s', time()),
+                    ]);
+                }
+            } catch (opApiException $e) {
+                $view['errorMessage'] = "Unable to retrieve products: {$e->getFullMessage()}";
+            } catch (\Exception $e) {
+                $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
+            }
+        } else {
+            $action = 'default';
+        }
     }
 
     $view['global']['mod_action_url'] = $view['global']['mod_url'] . '&action=' . $action;

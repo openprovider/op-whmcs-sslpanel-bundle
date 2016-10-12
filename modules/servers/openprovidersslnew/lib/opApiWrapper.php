@@ -7,19 +7,20 @@ class opApiWrapper
 {
     static public function infoCustomer($params, $handle)
     {
-        return self::processRequest('searchCustomerRequest', $params, array('handlePattern' => $handle));
+        return self::processRequest('searchCustomerRequest', $params, ['handlePattern' => $handle]);
     }
 
     static public function processRequest($requestName, $params, $args)
     {
         if (!isset($params['username']) || !isset($params['password']) || !isset($params['apiUrl'])) {
-            throw new opApiException(opApiException::ERR_OP_API_EXCEPTION, 'Username, password or apiUrl are invalid', 399);
+            throw new opApiException(opApiException::ERR_OP_API_EXCEPTION, 'Username, password or apiUrl are invalid',
+                399);
         }
 
         $api = new OP_API($params["apiUrl"]);
         $request = new OP_Request;
         $request->setCommand($requestName)
-            ->setAuth(array('username' => $params["username"], 'password' => $params["password"]))
+            ->setAuth(['username' => $params["username"], 'password' => $params["password"]])
             ->setArgs($args);
         $reply = $api->setDebug(1)->process($request);
         $returnValue = $reply->getValue();
@@ -43,34 +44,37 @@ class opApiWrapper
             }
             throw new opApiException($exceptionCode, $exceptionMessage, $faultCode);
         }
+
         return $returnValue;
     }
 
     static public function modifyCustomer($params, $modifyParams, $admin = false, $registrantEqAdmin = false)
     {
         if ($admin) {
-            $args = array('lastNamePattern' => $modifyParams['name']['lastName'],
+            $args = [
+                'lastNamePattern' => $modifyParams['name']['lastName'],
                 'firstNamePattern' => $modifyParams['name']['firstName'],
                 'companyNamePattern' => $modifyParams['companyName'],
-                'emailPattern' => $modifyParams['email']);
+                'emailPattern' => $modifyParams['email'],
+            ];
             $result = self::processRequest('searchCustomerRequest', $params, $args);
             if ($result['total'] > 0) {
                 $handle = $result['results'][0]['handle'];
                 if ($handle !== $modifyParams['handle']) {
-                    self::modifyDomain($params, array('adminHandle' => $handle, 'techHandle' => $handle));
+                    self::modifyDomain($params, ['adminHandle' => $handle, 'techHandle' => $handle]);
                     $modifyParams['handle'] = $handle;
                 }
             } else {
-                $createHandleArray = array(
-                    'name' => array(
+                $createHandleArray = [
+                    'name' => [
                         'initials' => substr($modifyParams['name']['firstName'], 0, 1),
                         'firstName' => $modifyParams['name']['firstName'],
                         'lastName' => $modifyParams['name']['lastName'],
-                    ),
+                    ],
                     'companyName' => $modifyParams['companyName'],
                     'gender' => 'M',
                     'phone' => $modifyParams['phone'],
-                    'address' => array(
+                    'address' => [
                         'street' => $modifyParams['address']['street'],
                         'number' => $modifyParams['address']['number'],
                         'suffix' => $modifyParams['address']['suffix'],
@@ -78,12 +82,13 @@ class opApiWrapper
                         'city' => $modifyParams['address']['city'],
                         'state' => $modifyParams['address']['state'],
                         'country' => $modifyParams['address']['country'],
-                    ),
+                    ],
                     'email' => $modifyParams['email'],
-                );
+                ];
                 $result = self::processRequest('createCustomerRequest', $params, $createHandleArray);
                 $handle = $result['handle'];
-                self::modifyDomain($params, array('adminHandle' => $handle, 'techHandle' => $handle));
+                self::modifyDomain($params, ['adminHandle' => $handle, 'techHandle' => $handle]);
+
                 return;
             }
         }
@@ -101,7 +106,7 @@ class opApiWrapper
     {
         $domainParams['domain'] = [
             'name' => $params["sld"],
-            'extension' => $params["tld"]
+            'extension' => $params["tld"],
         ];
 
         return self::processRequest($operation, $params, $domainParams);
@@ -109,7 +114,7 @@ class opApiWrapper
 
     static public function infoDomain($params)
     {
-        return self::domainOperation('retrieveDomainRequest', $params, array());
+        return self::domainOperation('retrieveDomainRequest', $params, []);
     }
 
     static public function registerDomain($params, $registerParams)
@@ -129,17 +134,22 @@ class opApiWrapper
 
     static public function deleteDomain($params)
     {
-        self::domainOperation('deleteDomainRequest', $params, array());
+        self::domainOperation('deleteDomainRequest', $params, []);
     }
 
     static public function infoDNSZone($params)
     {
-        $zonePattern = array('namePattern' => $params["sld"] . '.' . $params["tld"],
-            'withHistory' => 0);
+        $zonePattern = [
+            'namePattern' => $params["sld"] . '.' . $params["tld"],
+            'withHistory' => 0,
+        ];
         $result = self::processRequest('searchZoneDnsRequest', $params, $zonePattern);
         if ($result['total'] > 0) {
-            $zoneName = array('name' => $params["sld"] . '.' . $params["tld"],
-                'withHistory' => 0);
+            $zoneName = [
+                'name' => $params["sld"] . '.' . $params["tld"],
+                'withHistory' => 0,
+            ];
+
             return self::processRequest('retrieveZoneDnsRequest', $params, $zoneName);
         } else {
             return null;
@@ -148,12 +158,14 @@ class opApiWrapper
 
     static public function modifyDNSZone($params, $zoneParams)
     {
-        $zonePattern = array('namePattern' => $params["sld"] . '.' . $params["tld"],
-            'withHistory' => 0);
+        $zonePattern = [
+            'namePattern' => $params["sld"] . '.' . $params["tld"],
+            'withHistory' => 0,
+        ];
         $result = self::processRequest('searchZoneDnsRequest', $params, $zonePattern);
 
         $operation = $result['total'] > 0 ? 'modify' : 'create';
-        $zoneParams = array('type' => 'master', 'records' => $zoneParams);
+        $zoneParams = ['type' => 'master', 'records' => $zoneParams];
         self::domainOperation($operation . 'ZoneDnsRequest', $params, $zoneParams);
     }
 
@@ -175,7 +187,8 @@ class opApiWrapper
                 'productId' => $params['productId'],
                 'period' => $params['period'],
                 'startProvision' => 0,
-                'domainAmount' => $params['domainAmount']
+                'domainAmount' => $params['domainAmount'],
+                'organizationHandle' => isset($params['organizationHandle']) ? $params['organizationHandle'] : null,
             ]
         );
     }

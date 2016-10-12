@@ -1,13 +1,23 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use libphonenumber\PhoneNumberUtil;
+
+if (!defined('WHMCS')) {
+    die('This file cannot be accessed directly');
+}
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+require_once __DIR__ . '/lib/helpers/ArrayHelper.php';
+require_once __DIR__ . '/lib/opApiWrapper.php';
 
 /**
  * @return array
  */
 function openprovidersslnew_MetaData()
 {
-    return array(
+    return [
         'DisplayName' => 'Openprovider ssl provisioning module',
         'APIVersion' => '1.0', // Use API Version 1.0
         'RequiresServer' => true, // Set true if module requires a server to work
@@ -15,7 +25,7 @@ function openprovidersslnew_MetaData()
         'DefaultSSLPort' => '1112', // Default SSL Connection Port
         'ServiceSingleSignOnLabel' => 'Login to Panel as User',
         'AdminSingleSignOnLabel' => 'Login to Panel as Admin',
-    );
+    ];
 }
 
 /**
@@ -29,29 +39,25 @@ function openprovidersslnew_ConfigOptions()
     }
 
     return [
-        "username" => [
-            "Type" => "text",
-            "Size" => "25",
-            "Description" => "Openprovider login",
+        'API Username' => [
+            'Type' => 'text',
+            'Size' => '25',
         ],
-        "password" => [
-            "Type" => "password",
-            "Size" => "25",
-            "Description" => "Openprovider password",
+        'API Password' => [
+            'Type' => 'password',
+            'Size' => '25',
         ],
-        "apiUrl" => [
-            "Type" => "text",
-            "Size" => "60",
-            "Description" => "Openprovider API URL",
+        'Openprovider API URL' => [
+            'Type' => 'text',
+            'Size' => '60',
         ],
-        "sslUrl" => [
-            "Type" => "text",
-            "Size" => "60",
-            "Description" => "SSL URL",
+        'SSL Panel URL' => [
+            'Type' => 'text',
+            'Size' => '60',
         ],
-        "SSL Certificate Type" => [
-            "Type" => "dropdown",
-            "Options" => implode(',', $products),
+        'SSL Product' => [
+            'Type' => 'dropdown',
+            'Options' => implode(',', $products),
         ],
     ];
 }
@@ -103,8 +109,6 @@ function openprovidersslnew_Cancel($params)
  */
 function cancel($params)
 {
-    include __DIR__ . '/lib/opApiWrapper.php';
-
     try {
         $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get();
         $order = array_shift($order);
@@ -146,8 +150,6 @@ function cancel($params)
  */
 function renew($params)
 {
-    include __DIR__ . '/lib/opApiWrapper.php';
-
     try {
         $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->get();
         $order = array_shift($order);
@@ -189,10 +191,11 @@ function renew($params)
  */
 function create($params)
 {
-    include __DIR__ . '/lib/opApiWrapper.php';
-    $reply = null;
-
     try {
+        if ($handle = createCustomer($params)) {
+            $params['organizationHandle'] = $handle;
+        }
+
         $product = Capsule::table('openprovidersslnew_products')->where('name', $params['configoption5'])->get();
         $product = array_shift($product);
         $productId = $product->product_id;
@@ -270,22 +273,35 @@ function extractYearsFromParams($params, $billingCycle)
 {
     if (isset($params['configoptions']) && isset($params['configoptions']['years'])) {
         return $params['configoptions']['years'];
-    } else if ($billingCycle && $billingCycle === 'Annually') {
-        return 1;
-    } else if ($billingCycle && $billingCycle === 'Biennially') {
-        return 2;
-    } else if ($billingCycle && $billingCycle === 'Triennially') {
-        return 3;
     } else {
-        return 1;
+        if ($billingCycle && $billingCycle === 'Annually') {
+            return 1;
+        } else {
+            if ($billingCycle && $billingCycle === 'Biennially') {
+                return 2;
+            } else {
+                if ($billingCycle && $billingCycle === 'Triennially') {
+                    return 3;
+                } else {
+                    return 1;
+                }
+            }
+        }
     }
 }
 
 function addCredentialsToParams(&$params)
 {
-    $params['username'] = $params['configoption1'] ?: null;
-    $params['password'] = $params['configoption2'] ?: null;
-    $params['apiUrl'] = $params['configoption3'] ?: null;
+    $params = array_merge($params, getCredentialsArray($params));
+}
+
+function getCredentialsArray($params)
+{
+    return [
+        'username' => $params['configoption1'] ?: null,
+        'password' => $params['configoption2'] ?: null,
+        'apiUrl' => $params['configoption3'] ?: null,
+    ];
 }
 
 /**
@@ -295,12 +311,8 @@ function addCredentialsToParams(&$params)
  */
 function openprovidersslnew_ClientArea($params)
 {
-    include __DIR__ . '/lib/opApiWrapper.php';
-    $reply = null;
     $fullMessage = null;
     $order = null;
-    $token = null;
-    $status = null;
     $updatedData = [];
 
     try {
@@ -362,6 +374,7 @@ function updateOpOrdersTable($params)
             'activation_date' => $reply['activeDate'],
             'expiration_date' => $reply['expirationDate'],
         ]);
+
     return [
         'status' => $reply['status'],
         'creationDate' => $reply['orderDate'],
@@ -375,17 +388,15 @@ function updateOpOrdersTable($params)
  */
 function openprovidersslnew_AdminCustomButtonArray()
 {
-    return array(
+    return [
         "Cancel" => "Cancel",
         "Renew" => "Renew",
         "Open ssl panel detail page" => "OpenSslPanelDetailPage",
-    );
+    ];
 }
 
 function openprovidersslnew_AdminServicesTabFields($params)
 {
-    include __DIR__ . '/lib/opApiWrapper.php';
-
     $reply = null;
     $products = null;
     $serviceId = $params['serviceid'];
@@ -429,6 +440,84 @@ function openprovidersslnew_AdminServicesTabFields($params)
     $link = $products->configoption4 . "?utm_source=rcp&utm_medium=order_overview_link&utm_campaign=new_order_details#/orders/{$sslinhvaOrderId}/details";
 
     return [
-        "Ssl panel" => '<a href="'.$link.'">open order details page</a>',
+        "Ssl panel" => '<a href="' . $link . '">open order details page</a>',
+    ];
+}
+
+function createCustomer($params)
+{
+    if (!isset($params['clientsdetails'])) {
+        return null;
+    }
+
+    $customer = buildCustomer(ArrayHelper::getValue($params, 'clientsdetails', []));
+
+    $params['customer'] = $customer;
+
+    try {
+        $reply = opApiWrapper::processRequest(
+            'createCustomerRequest',
+            getCredentialsArray($params),
+            $customer
+        );
+
+        return ArrayHelper::getValue($reply, 'handle');
+    } catch (opApiException $e) {
+        $fullMessage = $e->getFullMessage();
+
+        logModuleCall(
+            'openprovidersslnew',
+            'createClient',
+            $params,
+            $fullMessage,
+            implode(', ', [$fullMessage, $e->getTraceAsString()])
+        );
+    } catch (\Exception $e) {
+        $message = "Error occurred during order saving: {$e->getMessage()}";
+
+        logModuleCall(
+            'openprovidersslnew',
+            'createClient',
+            $params,
+            $message,
+            $e->getTraceAsString()
+        );
+    }
+
+    return null;
+}
+
+function buildCustomer(array $clientDetails)
+{
+    $street = implode(', ', [
+        ArrayHelper::getValue($clientDetails, 'address1'),
+        ArrayHelper::getValue($clientDetails, 'address2'),
+    ]);
+
+    $country = ArrayHelper::getValue($clientDetails, 'country');
+    $phoneUtil = PhoneNumberUtil::getInstance();
+    $phone = $phoneUtil->parse(ArrayHelper::getValue($clientDetails, 'phonenumber'), $country);
+
+    return [
+        'companyName' => ArrayHelper::getValue($clientDetails, 'companyname'),
+        'name' => [
+            'firstName' => ArrayHelper::getValue($clientDetails, 'firstname'),
+            'lastName' => ArrayHelper::getValue($clientDetails, 'lastname'),
+        ],
+        'gender' => 'M',
+        'phone' => [
+            'countryCode' => $phone->getCountryCode(),
+            'areaCode' => 0,
+            'subscriberNumber' => $phone->getNationalNumber(),
+        ],
+        'address' => [
+            'street' => $street,
+            'number' => (int)$street,
+            'zipcode' => ArrayHelper::getValue($clientDetails, 'postcode'),
+            'city' => ArrayHelper::getValue($clientDetails, 'city'),
+            'state' => ArrayHelper::getValue($clientDetails, 'state'),
+            'country' => $country,
+        ],
+        'email' => ArrayHelper::getValue($clientDetails, 'email'),
     ];
 }
