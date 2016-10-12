@@ -1,8 +1,5 @@
 <?php
 
-require_once(dirname(__FILE__) . '/API.php');
-require_once(dirname(__FILE__) . '/opApiException.php');
-
 class opApiWrapper
 {
     static public function infoCustomer($params, $handle)

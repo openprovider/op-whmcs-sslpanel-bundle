@@ -6,6 +6,8 @@ if (!defined('WHMCS')) {
     die('This file cannot be accessed directly');
 }
 
+require_once __DIR__ . '/../../servers/openprovidersslnew/vendor/autoload.php';
+
 /**
  * @return array
  */
@@ -21,7 +23,7 @@ function openproviderssl_new_config()
                 'FriendlyName' => 'Openprovider API URL',
                 'Type' => 'text',
                 'Size' => '255',
-                'Default' => 'https://api.cte.openprovider.eu/',
+                'Default' => 'https://api.cte.openprovider.eu',
             ],
             'option2' => [
                 'FriendlyName' => 'API Username',
@@ -37,13 +39,45 @@ function openproviderssl_new_config()
                 'FriendlyName' => 'SSL Panel URL',
                 'Type' => 'text',
                 'Size' => '255',
-                'Default' => 'https://sslinhva.cte.openprovider.eu/',
+                'Default' => 'https://sslinhva.cte.openprovider.eu',
             ],
             'option5' => [
                 'FriendlyName' => 'Openprovider RCP URL',
                 'Type' => 'text',
                 'Size' => '255',
-                'Default' => 'https://rcp.cte.openprovider.eu/',
+                'Default' => 'https://rcp.cte.openprovider.eu',
+            ],
+            'option6' => [
+                'FriendlyName' => '!TEST! Mode?',
+                'Type' => 'yesno',
+            ],
+            'option7' => [
+                'FriendlyName' => '!TEST! Openprovider API URL',
+                'Type' => 'text',
+                'Size' => '255',
+                'Default' => 'https://api.cte.openprovider.eu',
+            ],
+            'option8' => [
+                'FriendlyName' => '!TEST! API Username',
+                'Type' => 'text',
+                'Size' => '25',
+            ],
+            'option9' => [
+                'FriendlyName' => '!TEST! API Password',
+                'Type' => 'password',
+                'Size' => '25',
+            ],
+            'option10' => [
+                'FriendlyName' => '!TEST! SSL Panel URL',
+                'Type' => 'text',
+                'Size' => '255',
+                'Default' => 'https://sslinhva.cte.openprovider.eu',
+            ],
+            'option11' => [
+                'FriendlyName' => '!TEST! Openprovider RCP URL',
+                'Type' => 'text',
+                'Size' => '255',
+                'Default' => 'https://rcp.cte.openprovider.eu',
             ],
         ],
     ];
@@ -108,7 +142,7 @@ function openproviderssl_new_output($vars)
     $view['global']['mod_action_url'] = $view['global']['mod_url'] . '&action=' . $action;
     $view['global']['action'] = $action;
 
-    include dirname(__FILE__) . '/templates/' . $action . '.php';
+    require __DIR__ . '/templates/' . $action . '.php';
 }
 
 /**
@@ -118,13 +152,7 @@ function openproviderssl_new_output($vars)
  */
 function searchProducts($vars)
 {
-    include __DIR__ . '/../../servers/openprovidersslnew/lib/opApiWrapper.php';
-
-    $reply = opApiWrapper::searchProductSslCert([
-        'apiUrl' => $vars['option1'],
-        'username' => $vars['option2'],
-        'password' => $vars['option3'],
-    ]);
+    $reply = opApiWrapper::searchProductSslCert(ConfigHelper::getAddonCredentialsArray($vars));
 
     return $reply;
 }

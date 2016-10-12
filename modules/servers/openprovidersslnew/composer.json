@@ -1,5 +1,10 @@
 {
   "require": {
     "giggsey/libphonenumber-for-php": "^7.7"
+  },
+  "autoload": {
+    "classmap": [
+      "lib/"
+    ]
   }
 }

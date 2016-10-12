@@ -9,9 +9,6 @@ if (!defined('WHMCS')) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-require_once __DIR__ . '/lib/helpers/ArrayHelper.php';
-require_once __DIR__ . '/lib/opApiWrapper.php';
-
 /**
  * @return array
  */
@@ -58,6 +55,26 @@ function openprovidersslnew_ConfigOptions()
         'SSL Product' => [
             'Type' => 'dropdown',
             'Options' => implode(',', $products),
+        ],
+        '!TEST! Mode?' => [
+            'Type' => 'yesno',
+            'Size' => '25',
+        ],
+        '!TEST! API Username' => [
+            'Type' => 'text',
+            'Size' => '25',
+        ],
+        '!TEST! API Password' => [
+            'Type' => 'password',
+            'Size' => '25',
+        ],
+        '!TEST! Openprovider API URL' => [
+            'Type' => 'text',
+            'Size' => '60',
+        ],
+        '!TEST! SSL Panel URL' => [
+            'Type' => 'text',
+            'Size' => '60',
         ],
     ];
 }
@@ -292,16 +309,7 @@ function extractYearsFromParams($params, $billingCycle)
 
 function addCredentialsToParams(&$params)
 {
-    $params = array_merge($params, getCredentialsArray($params));
-}
-
-function getCredentialsArray($params)
-{
-    return [
-        'username' => $params['configoption1'] ?: null,
-        'password' => $params['configoption2'] ?: null,
-        'apiUrl' => $params['configoption3'] ?: null,
-    ];
+    $params = array_merge($params, ConfigHelper::getServerCredentialsArray($params));
 }
 
 /**
@@ -398,23 +406,21 @@ function openprovidersslnew_AdminCustomButtonArray()
 function openprovidersslnew_AdminServicesTabFields($params)
 {
     $reply = null;
-    $products = null;
+    $product = null;
     $serviceId = $params['serviceid'];
 
     try {
         $hosting = Capsule::table('tblhosting')->where('id', $serviceId)->get();
         $hosting = array_shift($hosting);
-        $products = Capsule::table('tblproducts')->where('id', $hosting->packageid)->get();
-        $products = array_shift($products);
+        $product = Capsule::table('tblproducts')->where('id', $hosting->packageid)->get();
+        $product = array_shift($product);
         $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $serviceId)->get();
         $order = array_shift($order);
 
-        $reply = opApiWrapper::retrieveOrder([
-            'username' => $products->configoption1,
-            'password' => $products->configoption2,
-            'apiUrl' => $products->configoption3,
-            'id' => $order->order_id,
-        ]);
+        $reply = opApiWrapper::retrieveOrder(array_merge(
+            ConfigHelper::getServerCredentialsArray($params),
+            ['id' => $order->order_id]
+        ));
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
         logModuleCall(
@@ -437,7 +443,7 @@ function openprovidersslnew_AdminServicesTabFields($params)
 
     $sslinhvaOrderId = $reply['sslinhvaOrderId'];
 
-    $link = $products->configoption4 . "?utm_source=rcp&utm_medium=order_overview_link&utm_campaign=new_order_details#/orders/{$sslinhvaOrderId}/details";
+    $link = $product->configoption4 . "?utm_source=rcp&utm_medium=order_overview_link&utm_campaign=new_order_details#/orders/{$sslinhvaOrderId}/details";
 
     return [
         "Ssl panel" => '<a href="' . $link . '">open order details page</a>',
@@ -457,7 +463,7 @@ function createCustomer($params)
     try {
         $reply = opApiWrapper::processRequest(
             'createCustomerRequest',
-            getCredentialsArray($params),
+            ConfigHelper::getServerCredentialsArray($params),
             $customer
         );
 

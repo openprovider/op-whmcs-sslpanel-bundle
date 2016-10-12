@@ -11,7 +11,8 @@ class opApiException extends Exception
     const ERR_WHMCS_EXCEPTION = 501;
 
     const ERR_REGISTRY_EXCEPTION = 601;
-    static public $outputMessages = array(
+
+    static public $outputMessages = [
         0 => 'No errors',
         /*
          * 4xx - wrong requests or wrong Openprovider responses
@@ -22,7 +23,8 @@ class opApiException extends Exception
         self::ERR_WHMCS_EXCEPTION => 'Error',
 
         self::ERR_REGISTRY_EXCEPTION => 'Registry error',
-    );
+    ];
+
     protected $additionalInfo, $infoCode;
 
     public function __construct($code = 0, $additionalInfo = '', $infoCode = 0)
@@ -42,6 +44,7 @@ class opApiException extends Exception
         if ($this->additionalInfo != '') {
             $message .= ': ' . $this->additionalInfo;
         }
+
         return $message;
     }
 
@@ -49,5 +52,4 @@ class opApiException extends Exception
     {
         return $this->infoCode;
     }
-
 }

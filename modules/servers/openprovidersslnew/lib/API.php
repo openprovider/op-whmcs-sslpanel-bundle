@@ -30,7 +30,7 @@ class OP_API
 
     public static function convertXmlToPhpObj($node)
     {
-        $ret = array();
+        $ret = [];
 
         if (is_object($node) && $node->hasChildNodes()) {
             foreach ($node->childNodes as $child) {
@@ -46,6 +46,7 @@ class OP_API
                 }
             }
         }
+
         return 0 < count($ret) ? $ret : null;
     }
 
@@ -56,7 +57,7 @@ class OP_API
 
     protected static function parseArray($node)
     {
-        $ret = array();
+        $ret = [];
         foreach ($node->childNodes as $child) {
             $name = self::decode($child->nodeName);
             if ('item' !== $name) {
@@ -64,15 +65,16 @@ class OP_API
             }
             $ret[] = self::convertXmlToPhpObj($child);
         }
+
         return $ret;
     }
 
     /**
      * converts php-structure to DOM-object.
      *
-     * @param array            $arr  php-structure
+     * @param array            $arr php-structure
      * @param SimpleXMLElement $node parent node where new element to attach
-     * @param DOMDocument      $dom  DOMDocument object
+     * @param DOMDocument      $dom DOMDocument object
      *
      * @return SimpleXMLElement
      */
@@ -83,7 +85,7 @@ class OP_API
              * If arr has integer keys, this php-array must be converted in
              * xml-array representation (<array><item>..</item>..</array>)
              */
-            $arrayParam = array();
+            $arrayParam = [];
             foreach ($arr as $k => $v) {
                 if (is_integer($k)) {
                     $arrayParam[] = $v;
@@ -117,6 +119,7 @@ class OP_API
             $str = iconv('ISO-8859-1', 'UTF-8', $str);
             $ret = htmlentities($str, null, OP_API::$encoding);
         }
+
         return $ret;
     }
 
@@ -125,6 +128,7 @@ class OP_API
     public function setDebug($v)
     {
         $this->debug = $v;
+
         return $this;
     }
 
@@ -133,7 +137,7 @@ class OP_API
     public function process(OP_Request $r)
     {
         if ($this->debug) {
-            error_log(var_export($r->getRaw() . "\n",true),3,'/tmp/openprovidersslnew.log');
+            error_log(var_export($r->getRaw() . "\n", true), 3, '/tmp/openprovidersslnew.log');
         }
 
         $msg = $r->getRaw();
@@ -142,8 +146,9 @@ class OP_API
             throw new OP_API_Exception ('Bad reply');
         }
         if ($this->debug) {
-            error_log(var_export($str . "\n",true),3,'/tmp/openprovidersslnew.log');
+            error_log(var_export($str . "\n", true), 3, '/tmp/openprovidersslnew.log');
         }
+
         return new OP_Reply($str);
     }
 
@@ -165,6 +170,7 @@ class OP_API
 
         if ($errno) {
             error_log("CURL error. Code: $errno, Message: $error");
+
             return false;
         } else {
             return $ret;
@@ -218,6 +224,7 @@ class OP_Request
     public function setCommand($v)
     {
         $this->cmd = $v;
+
         return $this;
     }
 
@@ -229,6 +236,7 @@ class OP_Request
     public function setLanguage($v)
     {
         $this->language = $v;
+
         return $this;
     }
 
@@ -240,6 +248,7 @@ class OP_Request
     public function setArgs($v)
     {
         $this->args = $v;
+
         return $this;
     }
 
@@ -249,17 +258,18 @@ class OP_Request
         $this->password = isset($args["password"]) ? $args["password"] : null;
         $this->token = isset($args["token"]) ? $args["token"] : null;
         $this->ip = isset($args["ip"]) ? $args["ip"] : null;
+
         return $this;
     }
 
     public function getAuth()
     {
-        return array(
+        return [
             "username" => $this->username,
             "password" => $this->password,
             "token" => $this->token,
-            "ip" => $this->ip
-        );
+            "ip" => $this->ip,
+        ];
     }
 
     public function getRaw()
@@ -267,6 +277,7 @@ class OP_Request
         if (!$this->raw) {
             $this->raw .= $this->_getRequest();
         }
+
         return $this->raw;
     }
 
@@ -327,8 +338,8 @@ class OP_Reply
 {
     protected $faultCode = 0;
     protected $faultString = null;
-    protected $value = array();
-    protected $warnings = array();
+    protected $value = [];
+    protected $warnings = [];
     protected $raw = null;
 
     public function __construct($str = null)
@@ -363,6 +374,7 @@ class OP_Reply
     public function setValue($v)
     {
         $this->value = $v;
+
         return $this;
     }
 
@@ -374,6 +386,7 @@ class OP_Reply
     public function setWarnings($v)
     {
         $this->warnings = $v;
+
         return $this;
     }
 
@@ -385,6 +398,7 @@ class OP_Reply
     public function setFaultString($v)
     {
         $this->faultString = $v;
+
         return $this;
     }
 
@@ -396,6 +410,7 @@ class OP_Reply
     public function setFaultCode($v)
     {
         $this->faultCode = $v;
+
         return $this;
     }
 
@@ -404,6 +419,7 @@ class OP_Reply
         if (!$this->raw) {
             $this->raw .= $this->_getReply();
         }
+
         return $this->raw;
     }
 
@@ -424,6 +440,7 @@ class OP_Reply
             $warningsNode = $replyNode->appendChild($dom->createElement('warnings'));
             OP_API::convertPhpObjToDom($this->warnings, $warningsNode, $dom);
         }
+
         return $dom->saveXML();
     }
 }
