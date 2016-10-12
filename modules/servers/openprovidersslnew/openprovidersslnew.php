@@ -263,7 +263,7 @@ function create($params)
         return $message;
     }
 
-    return "success";
+    return 'success';
 }
 
 /**
@@ -273,11 +273,11 @@ function create($params)
  */
 function extractDomainAmountFromParams($params)
 {
-    if (isset($params['configoptions']) && isset($params['configoptions']['domain amount'])) {
-        return $params['configoptions']['domain amount'] + 3; //3 is preset domains
-    } else {
-        return 1;
+    if ($domainAmount = ArrayHelper::getValue($params, 'configoptions.domain amount')) {
+        return $domainAmount + 3; // 3 is preset domains
     }
+
+    return 1;
 }
 
 /**
@@ -288,22 +288,16 @@ function extractDomainAmountFromParams($params)
  */
 function extractYearsFromParams($params, $billingCycle)
 {
-    if (isset($params['configoptions']) && isset($params['configoptions']['years'])) {
-        return $params['configoptions']['years'];
+    $yearsMap = [
+        'Annually' => 1,
+        'Biennially' => 2,
+        'Triennially' => 2,
+    ];
+
+    if ($years = ArrayHelper::getValue($params, 'configoptions.years')) {
+        return $years;
     } else {
-        if ($billingCycle && $billingCycle === 'Annually') {
-            return 1;
-        } else {
-            if ($billingCycle && $billingCycle === 'Biennially') {
-                return 2;
-            } else {
-                if ($billingCycle && $billingCycle === 'Triennially') {
-                    return 3;
-                } else {
-                    return 1;
-                }
-            }
-        }
+        return ArrayHelper::getValue($yearsMap, $billingCycle, 1);
     }
 }
 
