@@ -1,0 +1,12 @@
+{
+  "require": {
+    "php": ">=5.4.0",
+    "giggsey/libphonenumber-for-php": "^7.7",
+    "behat/transliterator": "^1.1"
+  },
+  "autoload": {
+    "classmap": [
+      "lib/"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+        backupGlobals               = "false"
+        backupStaticAttributes      = "false"
+        colors                      = "true"
+        convertErrorsToExceptions   = "true"
+        convertNoticesToExceptions  = "true"
+        convertWarningsToExceptions = "true"
+        processIsolation            = "false"
+        stopOnFailure               = "false"
+        syntaxCheck                 = "false"
+        bootstrap                   = "_bootstrap.php" >
+    
+    <php>
+        <ini name="display_errors" value="Off" />
+        <ini name="display_startup_errors" value="Off" />
+        <ini name="error_log" value="" />
+    </php>
+</phpunit>
