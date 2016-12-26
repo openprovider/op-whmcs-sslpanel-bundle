@@ -16,7 +16,7 @@ function openproviderssl_new_config()
     return [
         'name' => 'Openprovider SSL Panel',
         'description' => 'Addon for Openprovider SSL Panel',
-        'version' => '1.1.1',
+        'version' => '1.2.0',
         'author' => 'Openprovider',
         'fields' => [
             'option1' => [
