@@ -25,7 +25,25 @@ class opApiWrapper
                 'clientAdditionalData' => $params['clientAdditionalData'],
             ])
             ->setArgs($args);
+
+        logModuleCall(
+            'openprovidersslnew',
+            'OP_Request',
+            $params,
+            $request->getRaw(),
+            $request->getRaw()
+        );
+
         $reply = $api->setDebug(1)->process($request);
+
+        logModuleCall(
+            'openprovidersslnew',
+            'OP_Reply',
+            $params,
+            $reply->getRaw(),
+            $reply->getRaw()
+        );
+
         $returnValue = $reply->getValue();
         $faultCode = $reply->getFaultCode();
         if ($faultCode != 0) {

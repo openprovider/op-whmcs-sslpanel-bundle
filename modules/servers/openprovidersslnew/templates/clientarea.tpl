@@ -1,4 +1,4 @@
-<h2 align="left">Additional product data</h2>
+<h2 align="left">SSL Certificate Status</h2>
 
 {if $errorMessage} {$errorMessage} {/if}
 

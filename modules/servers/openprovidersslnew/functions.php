@@ -336,8 +336,8 @@ function buildCustomer(array $clientDetails)
         'gender' => 'M',
         'phone' => [
             'countryCode' => $phone->getCountryCode(),
-            'areaCode' => 0,
-            'subscriberNumber' => $phone->getNationalNumber(),
+            'areaCode' => substr($phone->getNationalNumber(), 0, 3),
+            'subscriberNumber' => substr($phone->getNationalNumber(), 3),
         ],
         'address' => [
             'street' => ArrayHelper::getValue($streetParsed, 'street', $fullAddress),
