@@ -13,6 +13,9 @@
                 <th><?php echo 'price biennially'; ?></th>
                 <th><?php echo 'price triennially'; ?></th>
                 <th><?php echo 'currency'; ?></th>
+                <th><?php echo 'max period'; ?></th>
+                <th><?php echo 'number of domains'; ?></th>
+                <th><?php echo 'max domains'; ?></th>
             </tr>
             <?php foreach ($view['products'] as $item): ?>
                 <tr>
@@ -38,6 +41,9 @@
                         <?php if (isset($item['prices'][2]['extraDomainPrice']['reseller']['price'])) echo '(extra domain price)' ?>
                     </td>
                     <td><?php echo $item['prices'][0]['price']['reseller']['currency'] ?></td>
+                    <td><?php echo $item['maxPeriod'] ?></td>
+                    <td><?php echo $item['numberOfDomains'] ?></td>
+                    <td><?php echo $item['maxDomains'] ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

@@ -137,7 +137,7 @@ function create($params)
         $billingCycle = $hosting->billingcycle;
 
         $params['period'] = extractYearsFromParams($params, $billingCycle);
-        $params['domainAmount'] = extractDomainAmountFromParams($params);
+        $params['domainAmount'] = extractDomainAmountFromParamsAndProduct($params, $product);
         $params['productId'] = $productId;
 
         addCredentialsToParams($params);
@@ -186,15 +186,17 @@ function create($params)
 
 /**
  * @param $params
+ * @param $product
  *
  * @return mixed
  */
-function extractDomainAmountFromParams($params)
+function extractDomainAmountFromParamsAndProduct($params, $product)
 {
     $domainAmount = ArrayHelper::getValue($params, 'configoptions.domainAmount',
         ArrayHelper::getValue($params, 'configoptions.domain amount'));
+    $numberOfDomains = $product->number_of_domains ?: 3;
 
-    return $domainAmount ? $domainAmount + 3 : 1;
+    return $domainAmount ? $domainAmount + $numberOfDomains : 1;
 }
 
 /**

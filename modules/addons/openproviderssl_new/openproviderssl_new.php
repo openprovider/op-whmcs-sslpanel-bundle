@@ -16,7 +16,7 @@ function openproviderssl_new_config()
     return [
         'name' => 'Openprovider SSL Panel',
         'description' => 'Addon for Openprovider SSL Panel',
-        'version' => '1.2.0',
+        'version' => '2.0.0',
         'author' => 'Openprovider',
         'fields' => [
             'option1' => [
@@ -125,6 +125,9 @@ function openproviderssl_new_output($vars)
                         'name' => $product['name'],
                         'brand_name' => $product['brandName'],
                         'price' => $product['prices'][0]['price']['reseller']['price'],
+                        'max_period' => $product['maxPeriod'],
+                        'number_of_domains' => $product['numberOfDomains'],
+                        'max_domains' => $product['maxDomains'],
                         'currency' => $product['prices'][0]['price']['reseller']['currency'],
                         'changed_at' => date('Y-m-d H:i:s', time()),
                     ]);
@@ -212,4 +215,26 @@ function openproviderssl_new_deactivate()
     return ['status' => 'success', 'description' => ''];
     //return array('status'=>'error','description'=>'If an error occurs you can return an error message for display here');
     //return array('status'=>'info','description'=>'If you want to give an info message to a user you can return it here');
+}
+
+function openproviderssl_new_upgrade($vars)
+{
+    $version = $vars['version'];
+
+    if ($version < 2.0) {
+        //todo: try via Exception classes
+        try {
+            Capsule::schema()->table(
+                'openprovidersslnew_products',
+                function ($table) {
+                    /** @var \Illuminate\Database\Schema\Blueprint $table */
+                    $table->integer('max_period');
+                    $table->integer('number_of_domains');
+                    $table->integer('max_domains');
+                }
+            );
+        } catch (\Exception $e) {
+            echo "Unable to update openprovidersslnew_products: {$e->getMessage()}";
+        }
+    }
 }
