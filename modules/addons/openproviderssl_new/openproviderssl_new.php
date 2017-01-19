@@ -16,7 +16,7 @@ function openproviderssl_new_config()
     return [
         'name' => 'Openprovider SSL Panel',
         'description' => 'Addon for Openprovider SSL Panel',
-        'version' => '2.0.0',
+        'version' => '2.0.1',
         'author' => 'Openprovider',
         'fields' => [
             'option1' => [
@@ -199,6 +199,9 @@ function openproviderssl_new_activate()
                 $table->string('expiration_date', 19);
                 $table->string('changed_at', 19);
                 $table->integer('service_id');
+                $table->integer('max_period');
+                $table->integer('number_of_domains');
+                $table->integer('max_domains');
                 $table->primary(['id']);
             }
         );
