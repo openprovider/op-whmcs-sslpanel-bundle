@@ -4,7 +4,7 @@
 
 This repository contains addon and server module for SSL part of Openprovider.
 
-Version: 2.0.1
+Version: 2.0.2
 
 ### Dependencies ###
 

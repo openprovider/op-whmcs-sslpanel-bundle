@@ -177,6 +177,9 @@ function openproviderssl_new_activate()
                 $table->string('brand_name');
                 $table->float('price');
                 $table->string('currency');
+                $table->integer('max_period');
+                $table->integer('number_of_domains');
+                $table->integer('max_domains');
                 $table->string('changed_at', 19);
                 $table->primary(['id']);
             }
@@ -199,9 +202,6 @@ function openproviderssl_new_activate()
                 $table->string('expiration_date', 19);
                 $table->string('changed_at', 19);
                 $table->integer('service_id');
-                $table->integer('max_period');
-                $table->integer('number_of_domains');
-                $table->integer('max_domains');
                 $table->primary(['id']);
             }
         );
