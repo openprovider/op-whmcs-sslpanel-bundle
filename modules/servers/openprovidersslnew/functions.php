@@ -72,6 +72,8 @@ function renew($params)
         opApiWrapper::renewSslCert($params);
 
         updateOpOrdersTable($params);
+
+        run_hook( 'hook_openprovidersslnew_renew', array( $params ) );
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
 
