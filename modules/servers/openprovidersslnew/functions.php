@@ -73,7 +73,7 @@ function renew($params)
 
         updateOpOrdersTable($params);
 
-        run_hook( 'hook_openprovidersslnew_renew', array( $params ) );
+        run_hook('hook_openprovidersslnew_renew', [$params]);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
 
