@@ -11,7 +11,7 @@
                         <tr>
                             <td class="fieldarea" width="150">{$linkName}:</td>
                             <td>
-                                <a href="{$systemurl|regex_replace:"/\/$/":""}/generateSslPanelOtpToken.php?{$linkValue}"
+                                <a href="/generateSslPanelOtpToken.php?{$linkValue}"
                                    target="_blank">Open</a></td>
                         </tr>
                         <tr>
