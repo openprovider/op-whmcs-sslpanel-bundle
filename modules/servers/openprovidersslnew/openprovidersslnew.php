@@ -256,7 +256,14 @@ function openprovidersslnew_AdminServicesTabFields($params)
 
                 if (is_array($value)) {
                     foreach ($value as $k => $v) {
-                        $html .= $k ? $k . ':' . $v . '<br />' : nl2br($v) . '<br />';
+                        // fix if $v is array
+                        if (is_array($v)) {
+                            foreach ($v as $kk => $vv) {
+                                    $html .= $kk ? $kk . ':' . $vv . '<br />' : nl2br($vv) . '<br />';
+                            }
+                        }else {
+                            $html .= $k ? $k . ':' . $v . '<br />' : nl2br($v) . '<br />';
+                        }
                     }
                 } else {
                     $html .= nl2br($value);
