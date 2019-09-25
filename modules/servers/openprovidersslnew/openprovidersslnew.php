@@ -204,7 +204,7 @@ function openprovidersslnew_AdminCustomButtonArray()
 {
     return [
         'Cancel' => 'Cancel',
-        'Renew' => 'Renew',
+        //'Renew' => 'Renew', //duplicate WHMCS button
     ];
 }
 
@@ -261,7 +261,7 @@ function openprovidersslnew_AdminServicesTabFields($params)
                             foreach ($v as $kk => $vv) {
                                     $html .= $kk ? $kk . ':' . $vv . '<br />' : nl2br($vv) . '<br />';
                             }
-                        }else {
+                        } else {
                             $html .= $k ? $k . ':' . $v . '<br />' : nl2br($v) . '<br />';
                         }
                     }
