@@ -1,4 +1,4 @@
-I<?php
+<?php
 
 $_MOD_LANG['opsslnew_title'] = "Дані сертифіката";
 $_MOD_LANG['opsslnew_panel'] = "Панель управління:";
