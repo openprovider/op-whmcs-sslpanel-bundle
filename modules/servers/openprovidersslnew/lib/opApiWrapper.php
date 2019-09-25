@@ -34,7 +34,7 @@ class opApiWrapper
             $request->getRaw()
         );
 
-        $reply = $api->setDebug(1)->process($request);
+        $reply = $api->setDebug(0)->process($request);
 
         logModuleCall(
             'openprovidersslnew',
@@ -241,12 +241,16 @@ class opApiWrapper
 
     static public function renewSslCert($params)
     {
+        $vars = [
+            'id' => $params['id'],
+        ];
+        if(!empty($params['productId'])){
+            $vars['productId'] = $params['productId'];
+        }
         return self::processRequest(
             'renewSslCertRequest',
             self::buildParams($params),
-            [
-                'id' => $params['id'],
-            ]
+            $vars
         );
     }
 
