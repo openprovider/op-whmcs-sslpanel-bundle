@@ -141,7 +141,7 @@ function openproviderssl_new_output($vars)
             $isPost = $_SERVER['REQUEST_METHOD'] === 'POST';
             if ($isPost) {
                 $params = [
-                    'name' => 'Name of my new product',
+                    'name' => 'Name of my new product3',
                     'description' => 'Description of my new product',
                     'gid' => $_POST['product-group-id'], // id of product group
                     'type' => 'other',
@@ -155,7 +155,14 @@ function openproviderssl_new_output($vars)
                     'configoption5' => $vars['option5'],
                     'configoption6' => 'EssentialSSL', // EssentialSSL and etc
                     'pricing' => [
-                        2 => ['monthly' => 8.00, 'annually' => 80.00],
+                        1 => [
+                            'monthly' => 8.00,
+                            'quarterly' => null,
+                            'semiannually' => null,
+                            'annually' => 80.00,
+                            'biennially' => null,
+                            'triennially' => null,
+                        ],
                     ],
                 ];
                 $result = localAPI('AddProduct', $params);
