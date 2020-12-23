@@ -137,6 +137,29 @@ function openproviderssl_new_output($vars)
             } catch (\Exception $e) {
                 $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
             }
+        } elseif ($action === 'import-ssl-products') {
+            $isPost = $_SERVER['REQUEST_METHOD'] === 'POST';
+            if ($isPost) {
+                $params = [
+                    'name' => 'Name of my new product',
+                    'description' => 'Description of my new product',
+                    'gid' => $_POST['product-group-id'], // id of product group
+                    'type' => 'other',
+                    'hidden' => false,
+                    'paytype' => 'recurring',
+                    'module' => 'openprovidersslnew',
+                    'configoption1' => $vars['option2'],
+                    'configoption2' => $vars['option3'],
+                    'configoption3' => $vars['option1'],
+                    'configoption4' => $vars['option4'],
+                    'configoption5' => $vars['option5'],
+                    'configoption6' => 'EssentialSSL', // EssentialSSL and etc
+                    'pricing' => [
+                        2 => ['monthly' => 8.00, 'annually' => 80.00],
+                    ],
+                ];
+                $result = localAPI('AddProduct', $params);
+            }
         } else {
             $action = 'default';
         }
