@@ -137,6 +137,54 @@ function openproviderssl_new_output($vars)
             } catch (\Exception $e) {
                 $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
             }
+        } elseif ($action === 'import-ssl-products') {
+            $isPost = $_SERVER['REQUEST_METHOD'] === 'POST';
+            if ($isPost) {
+                try {
+                    $products = searchProducts($vars);
+                    foreach ($products['results'] as $product) {
+                        $annuallyPrice = floatval($product['prices'][0]['price']['product']['price']);
+                        $bienniallyPrice = floatval($product['prices'][1]['price']['product']['price']);
+                        $annuallyMargin = floatval($_POST['margin-percent']) / 100 * $annuallyPrice;
+                        $bienniallyMargin = floatval($_POST['margin-percent']) / 100 * $bienniallyPrice;
+
+                        $params = [
+                            'name' => $product['name'],
+                            'description' => $product['brandName'],
+                            'gid' => $_POST['product-group-id'],
+                            'type' => 'other',
+                            'hidden' => false,
+                            'paytype' => 'recurring',
+                            'module' => 'openprovidersslnew',
+                            'configoption1' => $vars['option2'],
+                            'configoption2' => $vars['option3'],
+                            'configoption3' => $vars['option1'],
+                            'configoption4' => $vars['option4'],
+                            'configoption5' => $vars['option5'],
+                            'configoption6' => $product['name'],
+                            'pricing' => [
+                                1 => [
+                                    // 'monthly' => null,
+                                    // 'quarterly' => null,
+                                    // 'semiannually' => null,
+                                    'annually' => $annuallyPrice + $annuallyMargin,
+                                    'biennially' => $bienniallyPrice + $bienniallyMargin,
+                                    //'triennially' => null,
+                                ],
+                            ],
+                        ];
+                        $result = localAPI('AddProduct', $params);
+                        if ($result['result'] === 'error') {
+                            throw new Exception($result['message']);
+                        }
+                    }
+
+                } catch (opApiException $e) {
+                    $view['errorMessage'] = "Unable to retrieve products: {$e->getFullMessage()}";
+                } catch (\Exception $e) {
+                    $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
+                }
+            }
         } else {
             $action = 'default';
         }
