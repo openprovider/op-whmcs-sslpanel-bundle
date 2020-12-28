@@ -164,12 +164,12 @@ function openproviderssl_new_output($vars)
                             'configoption6' => $product['name'],
                             'pricing' => [
                                 1 => [
-                                    // 'monthly' => null,
-                                    // 'quarterly' => null,
-                                    // 'semiannually' => null,
+                                    'monthly' => -1,
+                                    'quarterly' => -1,
+                                    'semiannually' => -1,
                                     'annually' => $annuallyPrice + $annuallyMargin,
                                     'biennially' => $bienniallyPrice + $bienniallyMargin,
-                                    //'triennially' => null,
+                                    'triennially' => -1,
                                 ],
                             ],
                         ];

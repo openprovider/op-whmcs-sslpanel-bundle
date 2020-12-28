@@ -10,7 +10,7 @@ $noError = empty($view['errorMessage']);
 <?php endif; ?>
 
 <?php if (!empty($isPost) && $noError): ?>
-    Product success added
+    Products success added
 <?php elseif ($noError): ?>
     <style>
         .table-row {
