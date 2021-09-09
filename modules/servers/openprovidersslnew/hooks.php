@@ -19,12 +19,16 @@ add_hook('CancelOrder', 1, function ($parameters) {
 });
 
 add_hook('PreCronJob', 1, function () {
-    $orders = Capsule::table('openprovidersslnew_orders')->where('status', ['PAI', 'REQ', 'REJ'])->get();
+    try {
+        $orders = Capsule::table('openprovidersslnew_orders')->where('status', ['PAI', 'REQ', 'REJ'])->get();
 
-    foreach ($orders as $order) {
-        $service = Capsule::table('tblhosting')->where('id', $order->service_id)->first();
-        $product = Capsule::table('tblproducts')->where('id', $service->packageid)->first();
+        foreach ($orders as $order) {
+            $service = Capsule::table('tblhosting')->where('id', $order->service_id)->first();
+            $product = Capsule::table('tblproducts')->where('id', $service->packageid)->first();
 
-        updateOpOrdersTable(array_merge((array)$product, ['id' => $order->order_id, 'serviceid' => $service->id]));
+            updateOpOrdersTable(array_merge((array)$product, ['id' => $order->order_id, 'serviceid' => $service->id]));
+        }
+    } catch (Exception $e) {
+        echo $e->getMessage();
     }
 });
