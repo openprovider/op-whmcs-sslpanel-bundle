@@ -29,6 +29,11 @@ class ConfigHelper
         ],
     ];
 
+    private static $parametersToMaskInLogs = [
+        'configoption2',
+        'configoption9',
+    ];
+
     /**
      * @var array
      */
@@ -140,5 +145,23 @@ class ConfigHelper
     public static function getAddonConfigurationFromParams($params, $env = 'production')
     {
         return self::getConfigurationFromParamsAndMap($params, ArrayHelper::getValue(self::$addonParamsMap, $env));
+    }
+
+    /**
+     * @param $params
+     * @param array $additionalParameterNames
+     *
+     * @return array
+     */
+    public static function getParametersToMaskInLogs($params, $additionalParameterNames = [])
+    {
+        $result = [];
+        $paramNames = array_merge(self::$parametersToMaskInLogs, $additionalParameterNames);
+
+        foreach ($paramNames as $paramName) {
+            $result[] = $params[$paramName];
+        }
+
+        return $result;
     }
 }

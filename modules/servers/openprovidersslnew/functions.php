@@ -33,7 +33,8 @@ function cancel($params)
             'cancel',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString()
+            $fullMessage . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $fullMessage;
@@ -45,7 +46,8 @@ function cancel($params)
             'cancel',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString()
+            $message . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $message;
@@ -82,7 +84,8 @@ function renew($params)
             'renew',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString()
+            $fullMessage . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $fullMessage;
@@ -94,7 +97,8 @@ function renew($params)
             'renew',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString()
+            $message . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $message;
@@ -165,7 +169,8 @@ function create($params)
             'create',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString()
+            $fullMessage . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $fullMessage;
@@ -177,7 +182,8 @@ function create($params)
             'create',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString()
+            $message . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $message;
@@ -273,7 +279,8 @@ function createCustomer($params)
             'createClient',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString()
+            $message . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return null;
@@ -297,7 +304,8 @@ function createCustomer($params)
             'createClient',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString()
+            $fullMessage . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
     } catch (\Exception $e) {
         $message = "Error occurred during order saving: {$e->getMessage()}";
@@ -307,7 +315,8 @@ function createCustomer($params)
             'createClient',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString()
+            $message . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
     }
 
