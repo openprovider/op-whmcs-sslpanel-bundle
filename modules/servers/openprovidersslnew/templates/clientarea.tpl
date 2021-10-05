@@ -11,7 +11,7 @@
                         <tr>
                             <td class="fieldarea" width="150">{$linkName}:</td>
                             <td>
-                                <a href="/generateSslPanelOtpToken.php?{$linkValue}"
+                                <a href="{$linkUrl}"
                                    target="_blank">Open</a></td>
                         </tr>
                         <tr>
