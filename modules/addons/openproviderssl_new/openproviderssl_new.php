@@ -23,7 +23,7 @@ function openproviderssl_new_config()
                 'FriendlyName' => 'Openprovider API URL',
                 'Type' => 'text',
                 'Size' => '255',
-                'Default' => 'https://api.cte.openprovider.eu',
+                'Default' => 'https://api.openprovider.eu',
             ],
             'option2' => [
                 'FriendlyName' => 'API Username',
@@ -39,13 +39,13 @@ function openproviderssl_new_config()
                 'FriendlyName' => 'SSL Panel URL',
                 'Type' => 'text',
                 'Size' => '255',
-                'Default' => 'https://sslinhva.cte.openprovider.eu',
+                'Default' => 'https://sslinhva.openprovider.eu',
             ],
             'option5' => [
                 'FriendlyName' => 'Openprovider RCP URL',
                 'Type' => 'text',
                 'Size' => '255',
-                'Default' => 'https://rcp.cte.openprovider.eu',
+                'Default' => 'https://rcp.openprovider.eu',
             ],
             'option6' => [
                 'FriendlyName' => '!TEST! Mode?',
