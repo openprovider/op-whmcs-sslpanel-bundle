@@ -110,7 +110,8 @@ function openprovidersslnew_CreateAccount($params)
             'openprovidersslnew_CreateAccount',
             $params,
             '',
-            'Attempt to create new order'
+            'Attempt to create new order',
+            ConfigHelper::getParametersToMaskInLogs($params)
         );
 
         return create($params);
@@ -163,7 +164,8 @@ function openprovidersslnew_ClientArea($params)
             'openprovidersslnew_ClientArea',
             $params,
             $fullMessage,
-            $e->getTraceAsString()
+            $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params)
         );
     } catch (\Exception $e) {
         $fullMessage = $e->getMessage();
@@ -172,7 +174,8 @@ function openprovidersslnew_ClientArea($params)
             'openprovidersslnew_ClientArea',
             $params,
             $fullMessage,
-            $e->getTraceAsString()
+            $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params)
         );
     }
 

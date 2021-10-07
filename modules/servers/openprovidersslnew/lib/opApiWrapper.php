@@ -31,7 +31,8 @@ class opApiWrapper
             'OP_Request',
             $params,
             $request->getRaw(),
-            $request->getRaw()
+            $request->getRaw(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         $reply = $api->setDebug(1)->process($request);
@@ -41,7 +42,8 @@ class opApiWrapper
             'OP_Reply',
             $params,
             $reply->getRaw(),
-            $reply->getRaw()
+            $reply->getRaw(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         $returnValue = $reply->getValue();
