@@ -42,10 +42,6 @@ function openprovidersslnew_ConfigOptions()
             'Type' => 'password',
             'Size' => '25',
         ],
-        'Openprovider API URL' => [
-            'Type' => 'text',
-            'Size' => '60',
-        ],
         'SSL Panel URL' => [
             'Type' => 'text',
             'Size' => '60',
@@ -69,10 +65,6 @@ function openprovidersslnew_ConfigOptions()
         '!TEST! API Password' => [
             'Type' => 'password',
             'Size' => '25',
-        ],
-        '!TEST! Openprovider API URL' => [
-            'Type' => 'text',
-            'Size' => '60',
         ],
         '!TEST! SSL Panel URL' => [
             'Type' => 'text',
@@ -232,7 +224,7 @@ function openprovidersslnew_AdminServicesTabFields($params)
             $apiCredentials = [
                 'username' => ArrayHelper::getValue($configuration, 'username'),
                 'password' => ArrayHelper::getValue($configuration, 'password'),
-                'apiUrl' => ArrayHelper::getValue($configuration, 'opApiUrl'),
+                'apiUrl' => ConfigHelper::getApiUrlFromConfig(EnvHelper::getServerEnvironmentFromParams($product)),
                 'id' => $order->order_id,
             ];
 

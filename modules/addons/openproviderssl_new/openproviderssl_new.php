@@ -19,12 +19,6 @@ function openproviderssl_new_config()
         'version' => '2.0.1',
         'author' => 'Openprovider',
         'fields' => [
-            'option1' => [
-                'FriendlyName' => 'Openprovider API URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://api.openprovider.eu',
-            ],
             'option2' => [
                 'FriendlyName' => 'API Username',
                 'Type' => 'text',
@@ -50,12 +44,6 @@ function openproviderssl_new_config()
             'option6' => [
                 'FriendlyName' => '!TEST! Mode?',
                 'Type' => 'yesno',
-            ],
-            'option7' => [
-                'FriendlyName' => '!TEST! Openprovider API URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://api.cte.openprovider.eu',
             ],
             'option8' => [
                 'FriendlyName' => '!TEST! API Username',
@@ -156,12 +144,11 @@ function openproviderssl_new_output($vars)
                             'hidden' => false,
                             'paytype' => 'recurring',
                             'module' => 'openprovidersslnew',
-                            'configoption1' => $vars['option2'],
-                            'configoption2' => $vars['option3'],
-                            'configoption3' => $vars['option1'],
+                            'configoption1' => $vars['option1'],
+                            'configoption2' => $vars['option2'],
+                            'configoption3' => $vars['option3'],
                             'configoption4' => $vars['option4'],
-                            'configoption5' => $vars['option5'],
-                            'configoption6' => $product['name'],
+                            'configoption5' => $product['name'],
                             'pricing' => [
                                 1 => [
                                     'monthly' => -1,
