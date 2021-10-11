@@ -15,24 +15,22 @@ class ConfigHelper
         self::ENV_PRODUCTION => [
             'username' => 'configoption1',
             'password' => 'configoption2',
-            'sslPanelUrl' => 'configoption3',
-            'opRcpUrl' => 'configoption4',
-            'defaultTechnicalContact' => 'configoption11',
-            'defaultLanguage' => 'configoption13',
+            'opRcpUrl' => 'configoption3',
+            'defaultTechnicalContact' => 'configoption10',
+            'defaultLanguage' => 'configoption12',
         ],
         self::ENV_TEST => [
-            'username' => 'configoption7',
-            'password' => 'configoption8',
-            'sslPanelUrl' => 'configoption9',
-            'opRcpUrl' => 'configoption10',
-            'defaultTechnicalContact' => 'configoption12',
-            'defaultLanguage' => 'configoption13',
+            'username' => 'configoption6',
+            'password' => 'configoption7',
+            'opRcpUrl' => 'configoption8',
+            'defaultTechnicalContact' => 'configoption11',
+            'defaultLanguage' => 'configoption12',
         ],
     ];
 
     private static $parametersToMaskInLogs = [
         'configoption2',
-        'configoption8',
+        'configoption7',
     ];
 
     /**
@@ -42,14 +40,12 @@ class ConfigHelper
         self::ENV_PRODUCTION => [
             'username' => 'option1',
             'password' => 'option2',
-            'sslPanelUrl' => 'option3',
-            'opRcpUrl' => 'option4',
+            'opRcpUrl' => 'option3',
         ],
         self::ENV_TEST => [
-            'username' => 'option7',
-            'password' => 'option8',
-            'sslPanelUrl' => 'option9',
-            'opRcpUrl' => 'option10',
+            'username' => 'option5',
+            'password' => 'option6',
+            'opRcpUrl' => 'option7',
         ],
     ];
 

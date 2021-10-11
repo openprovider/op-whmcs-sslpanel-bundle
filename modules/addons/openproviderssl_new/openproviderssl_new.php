@@ -19,49 +19,37 @@ function openproviderssl_new_config()
         'version' => '2.0.1',
         'author' => 'Openprovider',
         'fields' => [
-            'option2' => [
+            'option1' => [
                 'FriendlyName' => 'API Username',
                 'Type' => 'text',
                 'Size' => '25',
             ],
-            'option3' => [
+            'option2' => [
                 'FriendlyName' => 'API Password',
                 'Type' => 'password',
                 'Size' => '25',
             ],
-            'option4' => [
-                'FriendlyName' => 'SSL Panel URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://sslinhva.openprovider.eu',
-            ],
-            'option5' => [
+            'option3' => [
                 'FriendlyName' => 'Openprovider RCP URL',
                 'Type' => 'text',
                 'Size' => '255',
                 'Default' => 'https://rcp.openprovider.eu',
             ],
-            'option6' => [
+            'option4' => [
                 'FriendlyName' => '!TEST! Mode?',
                 'Type' => 'yesno',
             ],
-            'option8' => [
+            'option5' => [
                 'FriendlyName' => '!TEST! API Username',
                 'Type' => 'text',
                 'Size' => '25',
             ],
-            'option9' => [
+            'option6' => [
                 'FriendlyName' => '!TEST! API Password',
                 'Type' => 'password',
                 'Size' => '25',
             ],
-            'option10' => [
-                'FriendlyName' => '!TEST! SSL Panel URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://sslinhva.cte.openprovider.eu',
-            ],
-            'option11' => [
+            'option7' => [
                 'FriendlyName' => '!TEST! Openprovider RCP URL',
                 'Type' => 'text',
                 'Size' => '255',
@@ -147,8 +135,7 @@ function openproviderssl_new_output($vars)
                             'configoption1' => $vars['option1'],
                             'configoption2' => $vars['option2'],
                             'configoption3' => $vars['option3'],
-                            'configoption4' => $vars['option4'],
-                            'configoption5' => $product['name'],
+                            'configoption4' => $product['name'],
                             'pricing' => [
                                 1 => [
                                     'monthly' => -1,

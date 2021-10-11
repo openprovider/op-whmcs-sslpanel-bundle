@@ -42,10 +42,6 @@ function openprovidersslnew_ConfigOptions()
             'Type' => 'password',
             'Size' => '25',
         ],
-        'SSL Panel URL' => [
-            'Type' => 'text',
-            'Size' => '60',
-        ],
         'Openprovider RCP URL' => [
             'Type' => 'text',
             'Size' => '60',
@@ -65,10 +61,6 @@ function openprovidersslnew_ConfigOptions()
         '!TEST! API Password' => [
             'Type' => 'password',
             'Size' => '25',
-        ],
-        '!TEST! SSL Panel URL' => [
-            'Type' => 'text',
-            'Size' => '60',
         ],
         '!TEST! Openprovider RCP URL' => [
             'Type' => 'text',
@@ -232,8 +224,8 @@ function openprovidersslnew_AdminServicesTabFields($params)
 
             $link1 = ArrayHelper::getValue($configuration,
                     'opRcpUrl') . '/ssl/order-details.php?ssl_order_id=' . $reply['id'];
-            $link2 = ArrayHelper::getValue($configuration,
-                    'sslPanelUrl') . '/#/orders/' . $reply['sslinhvaOrderId'] . '/details';
+            $link2 = ConfigHelper::getSslPanelUrlFromConfig(EnvHelper::getServerEnvironmentFromParams($product))
+                . '/#/orders/' . $reply['sslinhvaOrderId'] . '/details';
 
             $html = '<br /><a href=\'' . $link1 . '\' target=\'_blank\'>' . $link1 . '</a><br />';
             $html .= '<a href=\'' . $link2 . '\' target=\'_blank\'>' . $link2 . '</a><br /><br />';
