@@ -42,10 +42,6 @@ function openprovidersslnew_ConfigOptions()
             'Type' => 'password',
             'Size' => '25',
         ],
-        'Openprovider RCP URL' => [
-            'Type' => 'text',
-            'Size' => '60',
-        ],
         'SSL Product' => [
             'Type' => 'dropdown',
             'Options' => implode(',', $products),
@@ -61,10 +57,6 @@ function openprovidersslnew_ConfigOptions()
         '!TEST! API Password' => [
             'Type' => 'password',
             'Size' => '25',
-        ],
-        '!TEST! Openprovider RCP URL' => [
-            'Type' => 'text',
-            'Size' => '60',
         ],
         'Default technical contact handle' => [
             'Type' => 'text',
@@ -222,8 +214,8 @@ function openprovidersslnew_AdminServicesTabFields($params)
 
             $reply = opApiWrapper::retrieveOrder($apiCredentials);
 
-            $link1 = ArrayHelper::getValue($configuration,
-                    'opRcpUrl') . '/ssl/order-details.php?ssl_order_id=' . $reply['id'];
+            $link1 = ConfigHelper::getRcpUrlFromConfig(EnvHelper::getServerEnvironmentFromParams($product))
+                . '/ssl/order-details.php?ssl_order_id=' . $reply['id'];
             $link2 = ConfigHelper::getSslPanelUrlFromConfig(EnvHelper::getServerEnvironmentFromParams($product))
                 . '/#/orders/' . $reply['sslinhvaOrderId'] . '/details';
 

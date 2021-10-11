@@ -30,30 +30,18 @@ function openproviderssl_new_config()
                 'Size' => '25',
             ],
             'option3' => [
-                'FriendlyName' => 'Openprovider RCP URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://rcp.openprovider.eu',
-            ],
-            'option4' => [
                 'FriendlyName' => '!TEST! Mode?',
                 'Type' => 'yesno',
             ],
-            'option5' => [
+            'option4' => [
                 'FriendlyName' => '!TEST! API Username',
                 'Type' => 'text',
                 'Size' => '25',
             ],
-            'option6' => [
+            'option5' => [
                 'FriendlyName' => '!TEST! API Password',
                 'Type' => 'password',
                 'Size' => '25',
-            ],
-            'option7' => [
-                'FriendlyName' => '!TEST! Openprovider RCP URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://rcp.cte.openprovider.eu',
             ],
         ],
     ];
@@ -74,7 +62,7 @@ function openproviderssl_new_output($vars)
         'global' => [
             'mod_url' => '?module=openproviderssl_new',
             'module' => 'openproviderssl_new',
-            'overview_orders_url' => $vars['option5'],
+            'overview_orders_url' => ConfigHelper::getRcpUrlFromConfig(),
         ],
     ];
 
@@ -134,8 +122,7 @@ function openproviderssl_new_output($vars)
                             'module' => 'openprovidersslnew',
                             'configoption1' => $vars['option1'],
                             'configoption2' => $vars['option2'],
-                            'configoption3' => $vars['option3'],
-                            'configoption4' => $product['name'],
+                            'configoption3' => $product['name'],
                             'pricing' => [
                                 1 => [
                                     'monthly' => -1,

@@ -58,17 +58,17 @@ if ($ca->isLoggedIn()) {
     require_once __DIR__ . '/modules/servers/openprovidersslnew/lib/opApiException.php';
     require_once __DIR__ . '/modules/servers/openprovidersslnew/lib/opApiWrapper.php';
 
-    $env = $product->configoption5 ? 'test' : 'production';
+    $env = $product->configoption4 ? 'test' : 'production';
 
     $reply = opApiWrapper::generateOtpToken([
-        'username' => $env === 'production' ? $product->configoption1 : $product->configoption6,
-        'password' => $env === 'production' ? $product->configoption2 : $product->configoption7,
+        'username' => $env === 'production' ? $product->configoption1 : $product->configoption5,
+        'password' => $env === 'production' ? $product->configoption2 : $product->configoption6,
         'apiUrl' => ConfigHelper::getApiUrlFromConfig($env),
         'id' => $order->order_id,
     ]);
 
     $token = $reply['token'];
-    $defaultLanguage = isset($allLanguages[$product->configoption12]) ? $allLanguages[$product->configoption12] : null;
+    $defaultLanguage = isset($allLanguages[$product->configoption9]) ? $allLanguages[$product->configoption9] : null;
     $language = isset($languages[$ca->getClient()['language']]) ? $languages[$ca->getClient()['language']] : $defaultLanguage;
 
     header(sprintf('Location: %s/auth-order-otp-token?token=%s&language=%s',
