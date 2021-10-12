@@ -30,18 +30,8 @@ function openproviderssl_new_config()
                 'Size' => '25',
             ],
             'option3' => [
-                'FriendlyName' => '!TEST! Mode?',
+                'FriendlyName' => 'Test mode',
                 'Type' => 'yesno',
-            ],
-            'option4' => [
-                'FriendlyName' => '!TEST! API Username',
-                'Type' => 'text',
-                'Size' => '25',
-            ],
-            'option5' => [
-                'FriendlyName' => '!TEST! API Password',
-                'Type' => 'password',
-                'Size' => '25',
             ],
         ],
     ];

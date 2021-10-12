@@ -61,8 +61,8 @@ if ($ca->isLoggedIn()) {
     $env = $product->configoption4 ? 'test' : 'production';
 
     $reply = opApiWrapper::generateOtpToken([
-        'username' => $env === 'production' ? $product->configoption1 : $product->configoption5,
-        'password' => $env === 'production' ? $product->configoption2 : $product->configoption6,
+        'username' => $product->configoption1,
+        'password' => $product->configoption2,
         'apiUrl' => ConfigHelper::getApiUrlFromConfig($env),
         'id' => $order->order_id,
     ]);

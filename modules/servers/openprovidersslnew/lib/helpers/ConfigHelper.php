@@ -15,20 +15,19 @@ class ConfigHelper
         self::ENV_PRODUCTION => [
             'username' => 'configoption1',
             'password' => 'configoption2',
-            'defaultTechnicalContact' => 'configoption7',
-            'defaultLanguage' => 'configoption9',
+            'defaultTechnicalContact' => 'configoption5',
+            'defaultLanguage' => 'configoption7',
         ],
         self::ENV_TEST => [
-            'username' => 'configoption5',
-            'password' => 'configoption6',
-            'defaultTechnicalContact' => 'configoption8',
-            'defaultLanguage' => 'configoption9',
+            'username' => 'configoption1',
+            'password' => 'configoption2',
+            'defaultTechnicalContact' => 'configoption6',
+            'defaultLanguage' => 'configoption7',
         ],
     ];
 
     private static $parametersToMaskInLogs = [
         'configoption2',
-        'configoption6',
     ];
 
     /**
@@ -40,8 +39,8 @@ class ConfigHelper
             'password' => 'option2',
         ],
         self::ENV_TEST => [
-            'username' => 'option4',
-            'password' => 'option5',
+            'username' => 'option1',
+            'password' => 'option2',
         ],
     ];
 

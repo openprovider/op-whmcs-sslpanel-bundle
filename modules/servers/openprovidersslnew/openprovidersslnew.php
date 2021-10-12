@@ -37,38 +37,37 @@ function openprovidersslnew_ConfigOptions()
         'API Username' => [
             'Type' => 'text',
             'Size' => '25',
+            'SimpleMode' => true,
         ],
         'API Password' => [
             'Type' => 'password',
             'Size' => '25',
+            'SimpleMode' => true,
         ],
         'SSL Product' => [
             'Type' => 'dropdown',
             'Options' => implode(',', $products),
+            'SimpleMode' => true,
         ],
-        '!TEST! Mode?' => [
+        'Test mode' => [
             'Type' => 'yesno',
             'Size' => '25',
-        ],
-        '!TEST! API Username' => [
-            'Type' => 'text',
-            'Size' => '25',
-        ],
-        '!TEST! API Password' => [
-            'Type' => 'password',
-            'Size' => '25',
+            'SimpleMode' => false,
         ],
         'Default technical contact handle' => [
             'Type' => 'text',
             'Size' => '60',
+            'SimpleMode' => false,
         ],
         '!TEST! Default technical contact handle' => [
             'Type' => 'text',
             'Size' => '60',
+            'SimpleMode' => false,
         ],
         'Default language' => [
             'Type' => 'dropdown',
             'Options' => ['en_GB', 'ru_RU', 'es_ES', 'nl_NL'],
+            'SimpleMode' => true,
         ],
     ];
 }
