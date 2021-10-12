@@ -111,7 +111,7 @@ class ConfigHelper
     private static function getClientInformationFrom(array $params)
     {
         return [
-            'name' => 'whmcs',
+            'name' => self::getApiClientNameFromConfig(),
             'version' => ArrayHelper::getValue($params, 'whmcsVersion'),
         ];
     }
@@ -163,5 +163,15 @@ class ConfigHelper
         }
 
         return $result;
+    }
+
+    /**
+     * @return string api client name
+     */
+    public static function getApiClientNameFromConfig()
+    {
+        return isset(opConfig::$apiClientName) ?
+            opConfig::$apiClientName :
+            'whmcs-ssl';
     }
 }
