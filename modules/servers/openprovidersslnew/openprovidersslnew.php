@@ -59,11 +59,6 @@ function openprovidersslnew_ConfigOptions()
             'Size' => '60',
             'SimpleMode' => false,
         ],
-        '!TEST! Default technical contact handle' => [
-            'Type' => 'text',
-            'Size' => '60',
-            'SimpleMode' => false,
-        ],
         'Default language' => [
             'Type' => 'dropdown',
             'Options' => ['en_GB', 'ru_RU', 'es_ES', 'nl_NL'],

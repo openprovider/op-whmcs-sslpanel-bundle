@@ -16,13 +16,13 @@ class ConfigHelper
             'username' => 'configoption1',
             'password' => 'configoption2',
             'defaultTechnicalContact' => 'configoption5',
-            'defaultLanguage' => 'configoption7',
+            'defaultLanguage' => 'configoption6',
         ],
         self::ENV_TEST => [
             'username' => 'configoption1',
             'password' => 'configoption2',
-            'defaultTechnicalContact' => 'configoption6',
-            'defaultLanguage' => 'configoption7',
+            'defaultTechnicalContact' => 'configoption5',
+            'defaultLanguage' => 'configoption6',
         ],
     ];
 
