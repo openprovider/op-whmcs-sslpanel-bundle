@@ -26,23 +26,21 @@ class opApiWrapper
             ])
             ->setArgs($args);
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'OP_Request',
             $params,
             $request->getRaw(),
-            $request->getRaw(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         $reply = $api->setDebug(1)->process($request);
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'OP_Reply',
             $params,
             $reply->getRaw(),
-            $reply->getRaw(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 

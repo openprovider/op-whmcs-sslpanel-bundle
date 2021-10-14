@@ -28,12 +28,11 @@ function cancel($params)
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'cancel',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
@@ -41,12 +40,11 @@ function cancel($params)
     } catch (\Exception $e) {
         $message = "Error occurred during order saving: {$e->getMessage()}";
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'cancel',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
@@ -79,12 +77,11 @@ function renew($params)
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'renew',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
@@ -92,12 +89,11 @@ function renew($params)
     } catch (\Exception $e) {
         $message = "Error occurred during order saving: {$e->getMessage()}";
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'renew',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
@@ -164,12 +160,11 @@ function create($params)
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'create',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
@@ -177,12 +172,11 @@ function create($params)
     } catch (\Exception $e) {
         $message = "Error occurred during order saving: {$e->getMessage()}";
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'create',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
@@ -274,12 +268,11 @@ function createCustomer($params)
     } catch (\Exception $e) {
         $message = "Cannot build customer data: {$e->getMessage()}";
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'createClient',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
@@ -299,23 +292,21 @@ function createCustomer($params)
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'createClient',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
     } catch (\Exception $e) {
         $message = "Error occurred during order saving: {$e->getMessage()}";
 
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'createClient',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
     }

@@ -75,8 +75,7 @@ function openprovidersslnew_ConfigOptions()
 function openprovidersslnew_CreateAccount($params)
 {
     try {
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'openprovidersslnew_CreateAccount',
             $params,
             '',
@@ -129,22 +128,20 @@ function openprovidersslnew_ClientArea($params)
         $updatedData = updateOpOrdersTable($params);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'openprovidersslnew_ClientArea',
             $params,
             $fullMessage,
-            $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params)
         );
     } catch (\Exception $e) {
         $fullMessage = $e->getMessage();
-        logModuleCall(
-            'openprovidersslnew',
+        LogHelper::log(
             'openprovidersslnew_ClientArea',
             $params,
             $fullMessage,
-            $e->getTraceAsString(),
+            '',
             ConfigHelper::getParametersToMaskInLogs($params)
         );
     }
