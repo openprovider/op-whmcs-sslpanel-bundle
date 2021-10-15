@@ -26,13 +26,26 @@ function openprovidersslnew_MetaData()
 /**
  * @return array
  */
-function openprovidersslnew_ConfigOptions()
+function openprovidersslnew_ConfigOptions($params)
 {
     $products = [];
     foreach (Capsule::table('openprovidersslnew_products')->get() as $product) {
         $products[] = $product->name;
     }
 
+    $jsToCheckDefaultTechnicalHandle = <<<HTML
+<script>
+    const regex = /^[A-Z]{2}[\d]{6,}\-[A-Z]{2}$/ // regex to check if value is not handle
+    const handle = $("input[name='packageconfigoption[5]']"); // handle input
+    if (!handle[0].value.match(regex)) {
+        const description = $(handle).parent().prev(); // handle label
+        description.text(description.text() + '*') // add '*' to label
+        description.css('color', 'red') // set red color to label
+        handle.css('color', 'red').after("<span style='color: red; font-size: 13px'>Handle should be like this: " + regex + "</span>")
+    }
+</script>
+HTML;
+    
     return [
         'API Username' => [
             'Type' => 'text',
@@ -58,6 +71,7 @@ function openprovidersslnew_ConfigOptions()
             'Type' => 'text',
             'Size' => '60',
             'SimpleMode' => false,
+            'Description' => $jsToCheckDefaultTechnicalHandle,
         ],
         'Default language' => [
             'Type' => 'dropdown',
