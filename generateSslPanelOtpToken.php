@@ -53,25 +53,26 @@ if ($ca->isLoggedIn()) {
     $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $serviceId)->first();
 
     require_once __DIR__ . '/modules/servers/openprovidersslnew/lib/helpers/ArrayHelper.php';
+    require_once __DIR__ . '/modules/servers/openprovidersslnew/lib/helpers/ConfigHelper.php';
     require_once __DIR__ . '/modules/servers/openprovidersslnew/lib/API.php';
     require_once __DIR__ . '/modules/servers/openprovidersslnew/lib/opApiException.php';
     require_once __DIR__ . '/modules/servers/openprovidersslnew/lib/opApiWrapper.php';
 
-    $env = $product->configoption7 ? 'test' : 'production';
+    $env = $product->configoption4 ? 'test' : 'production';
 
     $reply = opApiWrapper::generateOtpToken([
-        'username' => $env === 'production' ? $product->configoption1 : $product->configoption8,
-        'password' => $env === 'production' ? $product->configoption2 : $product->configoption9,
-        'apiUrl' => $env === 'production' ? $product->configoption3 : $product->configoption10,
+        'username' => $product->configoption1,
+        'password' => $product->configoption2,
+        'apiUrl' => ConfigHelper::getApiUrlFromConfig($env),
         'id' => $order->order_id,
     ]);
 
     $token = $reply['token'];
-    $defaultLanguage = isset($allLanguages[$product->configoption15]) ? $allLanguages[$product->configoption15] : null;
+    $defaultLanguage = isset($allLanguages[$product->configoption9]) ? $allLanguages[$product->configoption9] : null;
     $language = isset($languages[$ca->getClient()['language']]) ? $languages[$ca->getClient()['language']] : $defaultLanguage;
 
     header(sprintf('Location: %s/auth-order-otp-token?token=%s&language=%s',
-        $env === 'production' ? $product->configoption4 : $product->configoption11, $token,
+        ConfigHelper::getSslPanelUrlFromConfig($env), $token,
         $language));
 
     exit;

@@ -36,4 +36,20 @@ class opConfig
        "on" and "default" to use the Openprovider account's default setting.
     */
     static public $renewBehaviour = 'on';
+
+    /*
+     * List of api urls.
+     * For Production mode
+     */
+    static public $apiUrl = 'https://api.openprovider.eu';
+    static public $sslPanelUrl = 'https://sslpanel.io';
+    static public $rcpUrl = 'https://cp.openprovider.eu';
+
+    /*
+     * List of api urls
+     * For Test mode
+     */
+    static public $apiCteUrl = 'https://api.cte.openprovider.eu';
+    static public $sslPanelCteUrl = 'https://sslinhva.cte.openprovider.eu';
+    static public $rcpCteUrl = 'https://rcp.cte.openprovider.eu';
 }

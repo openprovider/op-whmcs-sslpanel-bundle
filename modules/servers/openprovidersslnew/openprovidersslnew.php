@@ -26,73 +26,57 @@ function openprovidersslnew_MetaData()
 /**
  * @return array
  */
-function openprovidersslnew_ConfigOptions()
+function openprovidersslnew_ConfigOptions($params)
 {
     $products = [];
     foreach (Capsule::table('openprovidersslnew_products')->get() as $product) {
         $products[] = $product->name;
     }
 
+    $jsToCheckDefaultTechnicalHandle = <<<HTML
+<script>
+    const regex = /^[A-Z]{2}[\d]{6,}\-[A-Z]{2}$/ // regex to check if value is not handle
+    const handle = $("input[name='packageconfigoption[5]']"); // handle input
+    if (!handle[0].value.match(regex)) {
+        const description = $(handle).parent().prev(); // handle label
+        description.text(description.text() + '*') // add '*' to label
+        description.css('color', 'red') // set red color to label
+        handle.css('color', 'red').after("<span style='color: red; font-size: 13px'>Handle should be like this: " + regex + "</span>")
+    }
+</script>
+HTML;
+    
     return [
         'API Username' => [
             'Type' => 'text',
             'Size' => '25',
+            'SimpleMode' => true,
         ],
         'API Password' => [
             'Type' => 'password',
             'Size' => '25',
-        ],
-        'Openprovider API URL' => [
-            'Type' => 'text',
-            'Size' => '60',
-        ],
-        'SSL Panel URL' => [
-            'Type' => 'text',
-            'Size' => '60',
-        ],
-        'Openprovider RCP URL' => [
-            'Type' => 'text',
-            'Size' => '60',
+            'SimpleMode' => true,
         ],
         'SSL Product' => [
             'Type' => 'dropdown',
             'Options' => implode(',', $products),
+            'SimpleMode' => true,
         ],
-        '!TEST! Mode?' => [
+        'Test mode' => [
             'Type' => 'yesno',
             'Size' => '25',
-        ],
-        '!TEST! API Username' => [
-            'Type' => 'text',
-            'Size' => '25',
-        ],
-        '!TEST! API Password' => [
-            'Type' => 'password',
-            'Size' => '25',
-        ],
-        '!TEST! Openprovider API URL' => [
-            'Type' => 'text',
-            'Size' => '60',
-        ],
-        '!TEST! SSL Panel URL' => [
-            'Type' => 'text',
-            'Size' => '60',
-        ],
-        '!TEST! Openprovider RCP URL' => [
-            'Type' => 'text',
-            'Size' => '60',
+            'SimpleMode' => false,
         ],
         'Default technical contact handle' => [
             'Type' => 'text',
             'Size' => '60',
-        ],
-        '!TEST! Default technical contact handle' => [
-            'Type' => 'text',
-            'Size' => '60',
+            'SimpleMode' => false,
+            'Description' => $jsToCheckDefaultTechnicalHandle,
         ],
         'Default language' => [
             'Type' => 'dropdown',
             'Options' => ['en_GB', 'ru_RU', 'es_ES', 'nl_NL'],
+            'SimpleMode' => true,
         ],
     ];
 }
@@ -232,16 +216,16 @@ function openprovidersslnew_AdminServicesTabFields($params)
             $apiCredentials = [
                 'username' => ArrayHelper::getValue($configuration, 'username'),
                 'password' => ArrayHelper::getValue($configuration, 'password'),
-                'apiUrl' => ArrayHelper::getValue($configuration, 'opApiUrl'),
+                'apiUrl' => ConfigHelper::getApiUrlFromConfig(EnvHelper::getServerEnvironmentFromParams($product)),
                 'id' => $order->order_id,
             ];
 
             $reply = opApiWrapper::retrieveOrder($apiCredentials);
 
-            $link1 = ArrayHelper::getValue($configuration,
-                    'opRcpUrl') . '/ssl/order-details.php?ssl_order_id=' . $reply['id'];
-            $link2 = ArrayHelper::getValue($configuration,
-                    'sslPanelUrl') . '/#/orders/' . $reply['sslinhvaOrderId'] . '/details';
+            $link1 = ConfigHelper::getRcpUrlFromConfig(EnvHelper::getServerEnvironmentFromParams($product))
+                . '/ssl/order-details.php?ssl_order_id=' . $reply['id'];
+            $link2 = ConfigHelper::getSslPanelUrlFromConfig(EnvHelper::getServerEnvironmentFromParams($product))
+                . '/#/orders/' . $reply['sslinhvaOrderId'] . '/details';
 
             $html = '<br /><a href=\'' . $link1 . '\' target=\'_blank\'>' . $link1 . '</a><br />';
             $html .= '<a href=\'' . $link2 . '\' target=\'_blank\'>' . $link2 . '</a><br /><br />';

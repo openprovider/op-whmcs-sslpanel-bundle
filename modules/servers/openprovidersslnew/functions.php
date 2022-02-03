@@ -136,7 +136,7 @@ function create($params)
             $params['technicalHandle'] = $techHandle;
         }
 
-        $product = Capsule::table('openprovidersslnew_products')->where('name', $params['configoption6'])->first();
+        $product = Capsule::table('openprovidersslnew_products')->where('name', $params['configoption3'])->first();
         $productId = $product->product_id;
 
         $hosting = Capsule::table('tblhosting')->where('id', $params['serviceid'])->first();

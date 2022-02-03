@@ -14,7 +14,7 @@ class EnvHelper
     {
         $params = (array)$params;
 
-        return ArrayHelper::getValue($params, 'configoption7') ? 'test' : 'production';
+        return ArrayHelper::getValue($params, 'configoption4') ? 'test' : 'production';
     }
 
     /**
@@ -26,6 +26,6 @@ class EnvHelper
     {
         $params = (array)$params;
 
-        return ArrayHelper::getValue($params, 'option6') ? 'test' : 'production';
+        return ArrayHelper::getValue($params, 'option3') ? 'test' : 'production';
     }
 }

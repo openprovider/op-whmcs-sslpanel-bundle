@@ -20,64 +20,18 @@ function openproviderssl_new_config()
         'author' => 'Openprovider',
         'fields' => [
             'option1' => [
-                'FriendlyName' => 'Openprovider API URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://api.openprovider.eu',
-            ],
-            'option2' => [
                 'FriendlyName' => 'API Username',
                 'Type' => 'text',
                 'Size' => '25',
             ],
-            'option3' => [
+            'option2' => [
                 'FriendlyName' => 'API Password',
                 'Type' => 'password',
                 'Size' => '25',
             ],
-            'option4' => [
-                'FriendlyName' => 'SSL Panel URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://sslinhva.openprovider.eu',
-            ],
-            'option5' => [
-                'FriendlyName' => 'Openprovider RCP URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://rcp.openprovider.eu',
-            ],
-            'option6' => [
-                'FriendlyName' => '!TEST! Mode?',
+            'option3' => [
+                'FriendlyName' => 'Test mode',
                 'Type' => 'yesno',
-            ],
-            'option7' => [
-                'FriendlyName' => '!TEST! Openprovider API URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://api.cte.openprovider.eu',
-            ],
-            'option8' => [
-                'FriendlyName' => '!TEST! API Username',
-                'Type' => 'text',
-                'Size' => '25',
-            ],
-            'option9' => [
-                'FriendlyName' => '!TEST! API Password',
-                'Type' => 'password',
-                'Size' => '25',
-            ],
-            'option10' => [
-                'FriendlyName' => '!TEST! SSL Panel URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://sslinhva.cte.openprovider.eu',
-            ],
-            'option11' => [
-                'FriendlyName' => '!TEST! Openprovider RCP URL',
-                'Type' => 'text',
-                'Size' => '255',
-                'Default' => 'https://rcp.cte.openprovider.eu',
             ],
         ],
     ];
@@ -98,7 +52,7 @@ function openproviderssl_new_output($vars)
         'global' => [
             'mod_url' => '?module=openproviderssl_new',
             'module' => 'openproviderssl_new',
-            'overview_orders_url' => $vars['option5'],
+            'overview_orders_url' => ConfigHelper::getRcpUrlFromConfig(),
         ],
     ];
 
@@ -156,12 +110,9 @@ function openproviderssl_new_output($vars)
                             'hidden' => false,
                             'paytype' => 'recurring',
                             'module' => 'openprovidersslnew',
-                            'configoption1' => $vars['option2'],
-                            'configoption2' => $vars['option3'],
-                            'configoption3' => $vars['option1'],
-                            'configoption4' => $vars['option4'],
-                            'configoption5' => $vars['option5'],
-                            'configoption6' => $product['name'],
+                            'configoption1' => $vars['option1'],
+                            'configoption2' => $vars['option2'],
+                            'configoption3' => $product['name'],
                             'pricing' => [
                                 1 => [
                                     'monthly' => -1,

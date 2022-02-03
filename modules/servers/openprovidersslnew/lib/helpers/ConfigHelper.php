@@ -5,52 +5,42 @@
  */
 class ConfigHelper
 {
+    const ENV_PRODUCTION = 'production';
+    const ENV_TEST = 'test';
+
     /**
      * @var array
      */
     private static $serverParamsMap = [
-        'production' => [
+        self::ENV_PRODUCTION => [
             'username' => 'configoption1',
             'password' => 'configoption2',
-            'opApiUrl' => 'configoption3',
-            'sslPanelUrl' => 'configoption4',
-            'opRcpUrl' => 'configoption5',
-            'defaultTechnicalContact' => 'configoption13',
-            'defaultLanguage' => 'configoption15',
+            'defaultTechnicalContact' => 'configoption5',
+            'defaultLanguage' => 'configoption6',
         ],
-        'test' => [
-            'username' => 'configoption8',
-            'password' => 'configoption9',
-            'opApiUrl' => 'configoption10',
-            'sslPanelUrl' => 'configoption11',
-            'opRcpUrl' => 'configoption12',
-            'defaultTechnicalContact' => 'configoption14',
-            'defaultLanguage' => 'configoption15',
+        self::ENV_TEST => [
+            'username' => 'configoption1',
+            'password' => 'configoption2',
+            'defaultTechnicalContact' => 'configoption5',
+            'defaultLanguage' => 'configoption6',
         ],
     ];
 
     private static $parametersToMaskInLogs = [
         'configoption2',
-        'configoption9',
     ];
 
     /**
      * @var array
      */
     private static $addonParamsMap = [
-        'production' => [
-            'opApiUrl' => 'option1',
-            'username' => 'option2',
-            'password' => 'option3',
-            'sslPanelUrl' => 'option4',
-            'opRcpUrl' => 'option5',
+        self::ENV_PRODUCTION => [
+            'username' => 'option1',
+            'password' => 'option2',
         ],
-        'test' => [
-            'opApiUrl' => 'option7',
-            'username' => 'option8',
-            'password' => 'option9',
-            'sslPanelUrl' => 'option10',
-            'opRcpUrl' => 'option11',
+        self::ENV_TEST => [
+            'username' => 'option1',
+            'password' => 'option2',
         ],
     ];
 
@@ -69,7 +59,7 @@ class ConfigHelper
         return [
             'username' => ArrayHelper::getValue($config, 'username'),
             'password' => ArrayHelper::getValue($config, 'password'),
-            'apiUrl' => ArrayHelper::getValue($config, 'opApiUrl'),
+            'apiUrl' => self::getApiUrlFromConfig(EnvHelper::getServerEnvironmentFromParams($params)),
             'clientInformation' => self::getClientInformationFrom($params),
         ];
     }
@@ -80,7 +70,7 @@ class ConfigHelper
      *
      * @return array
      */
-    public static function getServerConfigurationFromParams($params, $env = 'production')
+    public static function getServerConfigurationFromParams($params, $env = self::ENV_PRODUCTION)
     {
         return self::getConfigurationFromParamsAndMap($params, ArrayHelper::getValue(self::$serverParamsMap, $env));
     }
@@ -131,7 +121,7 @@ class ConfigHelper
         return [
             'username' => ArrayHelper::getValue($config, 'username'),
             'password' => ArrayHelper::getValue($config, 'password'),
-            'apiUrl' => ArrayHelper::getValue($config, 'opApiUrl'),
+            'apiUrl' => self::getApiUrlFromConfig(EnvHelper::getAddonEnvironmentFromParams($params)),
             'clientInformation' => self::getClientInformationFrom($params),
         ];
     }
@@ -142,7 +132,7 @@ class ConfigHelper
      *
      * @return array
      */
-    public static function getAddonConfigurationFromParams($params, $env = 'production')
+    public static function getAddonConfigurationFromParams($params, $env = self::ENV_PRODUCTION)
     {
         return self::getConfigurationFromParamsAndMap($params, ArrayHelper::getValue(self::$addonParamsMap, $env));
     }
@@ -163,5 +153,41 @@ class ConfigHelper
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $env
+     *
+     * @return string Openprovider api url
+     */
+    public static function getApiUrlFromConfig($env = self::ENV_PRODUCTION)
+    {
+        return $env == self::ENV_PRODUCTION ?
+            opConfig::$apiUrl :
+            opConfig::$apiCteUrl;
+    }
+
+    /**
+     * @param string $env
+     *
+     * @return string Ssl panel url
+     */
+    public static function getSslPanelUrlFromConfig($env = self::ENV_PRODUCTION)
+    {
+        return $env == self::ENV_PRODUCTION ?
+            opConfig::$sslPanelUrl :
+            opConfig::$sslPanelCteUrl;
+    }
+
+    /**
+     * @param string $env
+     *
+     * @return string Openprovider reseller control panel url
+     */
+    public static function getRcpUrlFromConfig($env = self::ENV_PRODUCTION)
+    {
+        return $env == self::ENV_PRODUCTION ?
+            opConfig::$rcpUrl :
+            opConfig::$rcpCteUrl;
     }
 }
