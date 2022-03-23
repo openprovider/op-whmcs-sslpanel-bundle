@@ -92,7 +92,7 @@ function openprovidersslnew_ConfigOptions()
         ],
         'Default language' => [
             'Type' => 'dropdown',
-            'Options' => ['en_GB', 'ru_RU', 'es_ES', 'nl_NL'],
+            'Options' => ['en_GB', 'ru_RU', 'es_ES', 'nl_NL', 'uk_UK'],
         ],
     ];
 }
@@ -147,6 +147,8 @@ function openprovidersslnew_Cancel($params)
  */
 function openprovidersslnew_ClientArea($params)
 {
+    global $_LANG;
+    openprovidersslnew_initlang();
     $fullMessage = null;
     $order = null;
     $updatedData = [];
@@ -212,7 +214,7 @@ function openprovidersslnew_AdminCustomButtonArray()
 {
     return [
         'Cancel' => 'Cancel',
-        'Renew' => 'Renew',
+        //'Renew' => 'Renew', //duplicate WHMCS button
     ];
 }
 
@@ -306,4 +308,36 @@ function openprovidersslnew_AdminServicesTabFields($params)
 
 
     return $fieldsarray;
+}
+
+function openprovidersslnew_initlang() {
+
+    global $CONFIG, $_LANG, $smarty;
+    $_MOD_LANG = array();
+    $lang = !empty($_SESSION['Language']) ? $_SESSION['Language'] : $CONFIG['Language'];
+
+    $langFile = __DIR__ . "/lang/english.php";
+    if (file_exists($langFile)) {
+        require_once $langFile;
+    }
+    $langFile = __DIR__ . "/lang/{$CONFIG['Language']}.php";
+    if (file_exists($langFile)) {
+        require_once $langFile;
+    }
+    $langFile = __DIR__ . "/lang/" . $lang . ".php";
+    if (file_exists($langFile)) {
+        require_once $langFile;
+    }
+
+    if (is_array($_MOD_LANG)) {
+        foreach ($_MOD_LANG as $k => $v) {
+            if (empty($_LANG[$k])) {
+                $_LANG[$k] = $v;
+            }
+        }
+    }
+
+    if (isset($smarty)) {
+        $smarty->assign("LANG", $_LANG);
+    }
 }

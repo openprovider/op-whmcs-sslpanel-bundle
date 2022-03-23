@@ -69,13 +69,18 @@ function renew($params)
         $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->first();
         $params['id'] = $order->order_id;
 
+        $product = Capsule::table('openprovidersslnew_products')->where('name', $params['configoption6'])->first();
+        $params['productId'] = $product->product_id;
+
         addCredentialsToParams($params);
+
+        run_hook('hook_openprovidersslnew_pre_renew', $params);
 
         opApiWrapper::renewSslCert($params);
 
         updateOpOrdersTable($params);
 
-        run_hook('hook_openprovidersslnew_renew', [$params]);
+        run_hook('hook_openprovidersslnew_renew', $params);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
 
