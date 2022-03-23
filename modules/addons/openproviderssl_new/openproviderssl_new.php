@@ -23,7 +23,7 @@ function openproviderssl_new_config()
                 'FriendlyName' => 'Openprovider API URL',
                 'Type' => 'text',
                 'Size' => '255',
-                'Default' => 'https://api.cte.openprovider.eu',
+                'Default' => 'https://api.openprovider.eu',
             ],
             'option2' => [
                 'FriendlyName' => 'API Username',
@@ -39,13 +39,13 @@ function openproviderssl_new_config()
                 'FriendlyName' => 'SSL Panel URL',
                 'Type' => 'text',
                 'Size' => '255',
-                'Default' => 'https://sslinhva.cte.openprovider.eu',
+                'Default' => 'https://sslinhva.openprovider.eu',
             ],
             'option5' => [
                 'FriendlyName' => 'Openprovider RCP URL',
                 'Type' => 'text',
                 'Size' => '255',
-                'Default' => 'https://rcp.cte.openprovider.eu',
+                'Default' => 'https://rcp.openprovider.eu',
             ],
             'option6' => [
                 'FriendlyName' => '!TEST! Mode?',
@@ -136,6 +136,54 @@ function openproviderssl_new_output($vars)
                 $view['errorMessage'] = "Unable to retrieve products: {$e->getFullMessage()}";
             } catch (\Exception $e) {
                 $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
+            }
+        } elseif ($action === 'import-ssl-products') {
+            $isPost = $_SERVER['REQUEST_METHOD'] === 'POST';
+            if ($isPost) {
+                try {
+                    $products = searchProducts($vars);
+                    foreach ($products['results'] as $product) {
+                        $annuallyPrice = floatval($product['prices'][0]['price']['product']['price']);
+                        $bienniallyPrice = floatval($product['prices'][1]['price']['product']['price']);
+                        $annuallyMargin = floatval($_POST['margin-percent']) / 100 * $annuallyPrice;
+                        $bienniallyMargin = floatval($_POST['margin-percent']) / 100 * $bienniallyPrice;
+
+                        $params = [
+                            'name' => $product['name'],
+                            'description' => $product['brandName'],
+                            'gid' => $_POST['product-group-id'],
+                            'type' => 'other',
+                            'hidden' => false,
+                            'paytype' => 'recurring',
+                            'module' => 'openprovidersslnew',
+                            'configoption1' => $vars['option2'],
+                            'configoption2' => $vars['option3'],
+                            'configoption3' => $vars['option1'],
+                            'configoption4' => $vars['option4'],
+                            'configoption5' => $vars['option5'],
+                            'configoption6' => $product['name'],
+                            'pricing' => [
+                                1 => [
+                                    'monthly' => -1,
+                                    'quarterly' => -1,
+                                    'semiannually' => -1,
+                                    'annually' => $annuallyPrice + $annuallyMargin,
+                                    'biennially' => $bienniallyPrice + $bienniallyMargin,
+                                    'triennially' => -1,
+                                ],
+                            ],
+                        ];
+                        $result = localAPI('AddProduct', $params);
+                        if ($result['result'] === 'error') {
+                            throw new Exception($result['message']);
+                        }
+                    }
+
+                } catch (opApiException $e) {
+                    $view['errorMessage'] = "Unable to retrieve products: {$e->getFullMessage()}";
+                } catch (\Exception $e) {
+                    $view['errorMessage'] = "Unable to update openprovidersslnew_products: {$e->getMessage()}";
+                }
             }
         } else {
             $action = 'default';

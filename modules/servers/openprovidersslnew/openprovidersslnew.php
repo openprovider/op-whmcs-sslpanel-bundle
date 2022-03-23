@@ -9,6 +9,8 @@ if (!defined('WHMCS')) {
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/functions.php';
 
+const PAGE_GENERATE_SSL_PANEL_OTP_TOKEN = 'generateSslPanelOtpToken.php';
+
 /**
  * @return array
  */
@@ -108,7 +110,8 @@ function openprovidersslnew_CreateAccount($params)
             'openprovidersslnew_CreateAccount',
             $params,
             '',
-            'Attempt to create new order'
+            'Attempt to create new order',
+            ConfigHelper::getParametersToMaskInLogs($params)
         );
 
         return create($params);
@@ -163,7 +166,8 @@ function openprovidersslnew_ClientArea($params)
             'openprovidersslnew_ClientArea',
             $params,
             $fullMessage,
-            $e->getTraceAsString()
+            $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params)
         );
     } catch (\Exception $e) {
         $fullMessage = $e->getMessage();
@@ -172,7 +176,8 @@ function openprovidersslnew_ClientArea($params)
             'openprovidersslnew_ClientArea',
             $params,
             $fullMessage,
-            $e->getTraceAsString()
+            $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params)
         );
     }
 
@@ -185,11 +190,14 @@ function openprovidersslnew_ClientArea($params)
         'ACT' => 'Active',
     ];
 
+    $scriptFileName = $_SERVER['SCRIPT_NAME'];
+    $prefix = substr($scriptFileName, 0, strlen(basename($scriptFileName)) * -1);
+
     return [
         'templatefile' => 'templates/clientarea.tpl',
         'templateVariables' => [
-            'linkValue' => 'serviceId=' . $params['serviceid'],
             'linkName' => 'SSL Panel',
+            'linkUrl' => $prefix . PAGE_GENERATE_SSL_PANEL_OTP_TOKEN . '?serviceId=' . $params['serviceid'],
             'errorMessage' => $fullMessage,
             'status' => ArrayHelper::getValue($statusMap, $updatedData['status']),
             'creationDate' => $updatedData['creationDate'],

@@ -8,5 +8,8 @@
     "classmap": [
       "lib/"
     ]
+  },
+  "config":{
+    "secure-http": false
   }
 }
