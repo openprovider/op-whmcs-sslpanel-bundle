@@ -33,7 +33,8 @@ function cancel($params)
             'cancel',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString()
+            $fullMessage . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $fullMessage;
@@ -45,7 +46,8 @@ function cancel($params)
             'cancel',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString()
+            $message . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $message;
@@ -67,13 +69,18 @@ function renew($params)
         $order = Capsule::table('openprovidersslnew_orders')->where('service_id', $params['serviceid'])->first();
         $params['id'] = $order->order_id;
 
+        $product = Capsule::table('openprovidersslnew_products')->where('name', $params['configoption6'])->first();
+        $params['productId'] = $product->product_id;
+
         addCredentialsToParams($params);
+
+        run_hook('hook_openprovidersslnew_pre_renew', $params);
 
         opApiWrapper::renewSslCert($params);
 
         updateOpOrdersTable($params);
 
-        run_hook('hook_openprovidersslnew_renew', [$params]);
+        run_hook('hook_openprovidersslnew_renew', $params);
     } catch (opApiException $e) {
         $fullMessage = $e->getFullMessage();
 
@@ -82,7 +89,8 @@ function renew($params)
             'renew',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString()
+            $fullMessage . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $fullMessage;
@@ -94,7 +102,8 @@ function renew($params)
             'renew',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString()
+            $message . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $message;
@@ -165,7 +174,8 @@ function create($params)
             'create',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString()
+            $fullMessage . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $fullMessage;
@@ -177,7 +187,8 @@ function create($params)
             'create',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString()
+            $message . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return $message;
@@ -273,7 +284,8 @@ function createCustomer($params)
             'createClient',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString()
+            $message . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         return null;
@@ -297,7 +309,8 @@ function createCustomer($params)
             'createClient',
             $params,
             $fullMessage,
-            $fullMessage . ', ' . $e->getTraceAsString()
+            $fullMessage . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
     } catch (\Exception $e) {
         $message = "Error occurred during order saving: {$e->getMessage()}";
@@ -307,7 +320,8 @@ function createCustomer($params)
             'createClient',
             $params,
             $message,
-            $message . ', ' . $e->getTraceAsString()
+            $message . ', ' . $e->getTraceAsString(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
     }
 

@@ -31,17 +31,19 @@ class opApiWrapper
             'OP_Request',
             $params,
             $request->getRaw(),
-            $request->getRaw()
+            $request->getRaw(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
-        $reply = $api->setDebug(1)->process($request);
+        $reply = $api->setDebug(0)->process($request);
 
         logModuleCall(
             'openprovidersslnew',
             'OP_Reply',
             $params,
             $reply->getRaw(),
-            $reply->getRaw()
+            $reply->getRaw(),
+            ConfigHelper::getParametersToMaskInLogs($params, ['password'])
         );
 
         $returnValue = $reply->getValue();
@@ -241,12 +243,16 @@ class opApiWrapper
 
     static public function renewSslCert($params)
     {
+        $vars = [
+            'id' => $params['id'],
+        ];
+        if(!empty($params['productId'])){
+            $vars['productId'] = $params['productId'];
+        }
         return self::processRequest(
             'renewSslCertRequest',
             self::buildParams($params),
-            [
-                'id' => $params['id'],
-            ]
+            $vars
         );
     }
 
