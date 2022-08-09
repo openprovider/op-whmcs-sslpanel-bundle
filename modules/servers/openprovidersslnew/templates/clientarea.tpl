@@ -11,8 +11,8 @@
                         <tr>
                             <td class="fieldarea" width="150">{$LANG.opsslnew_panel}</td>
                             <td>
-                                <a href="{$systemurl|regex_replace:"/\/$/":""}/generateSslPanelOtpToken.php?{$linkValue}"
-                                   target="_blank">{$LANG.opsslnew_open}</a></td>
+                                <a href="{$linkUrl}"
+                                   target="_blank">Open</a></td>
                         </tr>
                         <tr>
                             <td class="fieldarea" width="150">{$LANG.opsslnew_status}</td>
