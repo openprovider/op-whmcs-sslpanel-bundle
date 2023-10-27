@@ -189,7 +189,6 @@ class OP_Request
     protected $language = null;
     protected $raw = null;
     protected $client = null;
-    protected $clientVersion = null;
     protected $clientAdditionalData = [];
 
     public function __construct($str = null)
@@ -224,9 +223,6 @@ class OP_Request
         }
         if (isset($credentials['client'])) {
             $this->client = $credentials['client'];
-        }
-        if (isset($credentials['clientVersion'])) {
-            $this->clientVersion = $credentials['clientVersion'];
         }
         if (isset($credentials['clientAdditionalData'])) {
             $this->clientAdditionalData = $credentials['clientAdditionalData'];
@@ -270,8 +266,7 @@ class OP_Request
         $this->password = isset($args["password"]) ? $args["password"] : null;
         $this->token = isset($args["token"]) ? $args["token"] : null;
         $this->ip = isset($args["ip"]) ? $args["ip"] : null;
-        $this->client = isset($args["client"]) ? $args["client"] : null;
-        $this->clientVersion = isset($args["clientVersion"]) ? $args["clientVersion"] : null;
+        $this->client = isset($args['client']) ? $args['client'] : null;
         $this->clientAdditionalData = isset($args["clientAdditionalData"]) ? $args["clientAdditionalData"] : null;
 
         return $this;
@@ -285,7 +280,6 @@ class OP_Request
             "token" => $this->token,
             "ip" => $this->ip,
             "client" => $this->client,
-            "clientVersion" => $this->clientVersion,
             "clientAdditionalData" => $this->clientAdditionalData,
         ];
     }
@@ -338,12 +332,6 @@ class OP_Request
             $clientElement = $dom->createElement('client');
             $credentialsElement->appendChild($clientElement);
             OP_API::convertPhpObjToDom($this->client, $clientElement, $dom);
-        }
-
-        if (isset($this->clientVersion)) {
-            $clientVersionElement = $dom->createElement('clientVersion');
-            $credentialsElement->appendChild($clientVersionElement);
-            OP_API::convertPhpObjToDom($this->clientVersion, $clientVersionElement, $dom);
         }
 
         if (isset($this->clientAdditionalData)) {

@@ -296,7 +296,7 @@ function createCustomer($params)
     try {
         $reply = opApiWrapper::processRequest(
             'createCustomerRequest',
-            ConfigHelper::getServerCredentialsArray($params),
+            opApiWrapper::buildParams(ConfigHelper::getServerCredentialsArray($params)),
             $customer
         );
 
