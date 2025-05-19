@@ -1,4 +1,4 @@
-#  NOT MAINTAINED #
+#  No longer maintained – Switch to the [updated module](https://support.openprovider.eu/hc/en-us/articles/26725066143378-WHMCS-SSL-plugin-Installation-configuration-and-management) #
 This Openprovider WHMCS SSL module is not actively maintained and may not be compatible with latest versions of WHMCS and PHP. **Please use the new SSL module following instructions in [this article](https://support.openprovider.eu/hc/en-us/articles/26725066143378-WHMCS-SSL-plugin-Installation-configuration-and-management).**
 
 ### Openprovider WHMCS SSL Bundle ###
