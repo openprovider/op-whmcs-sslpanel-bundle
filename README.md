@@ -1,5 +1,5 @@
-#  NOT MAINTAINED #
-**The Openprovider WHMCS SSL Module is not actively maintained and may not be compatible with latest versions of WHMCS and PHP. Users are encouraged to fork and develop the current module to meet their needs. We plan to resume development of the module in the future, however we don't have an ETA at this point.**
+#  Deprecated - please use the [new SSL module](https://github.com/openprovider/Openprovider-WHMCS-SSL) #
+**This Openprovider WHMCS SSL module is no longer actively maintained and may not be compatible with the latest versions of WHMCS or PHP. We recommend using [our new SSL module](https://github.com/openprovider/Openprovider-WHMCS-SSL).**
 
 ### Openprovider WHMCS SSL Bundle ###
 
