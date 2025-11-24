@@ -2,6 +2,8 @@
 
 class opConfig
 {
+    static public $apiClientName = 'whmcs-ssl';
+
     /* $trusteeAvailableFor defines TLDs for which Openprovider's
        trustee service will be used. Uncomment those TLDs for which
        you need to use trustee. Please note that additional costs can apply.

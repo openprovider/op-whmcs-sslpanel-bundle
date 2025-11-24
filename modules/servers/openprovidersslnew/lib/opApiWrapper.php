@@ -20,8 +20,7 @@ class opApiWrapper
             ->setAuth([
                 'username' => $params['username'],
                 'password' => $params['password'],
-                'client' => $params['client'],
-                'clientVersion' => $params['clientVersion'],
+                'client' => $params['client'] . '-' . $params['clientVersion'],
                 'clientAdditionalData' => $params['clientAdditionalData'],
             ])
             ->setArgs($args);
