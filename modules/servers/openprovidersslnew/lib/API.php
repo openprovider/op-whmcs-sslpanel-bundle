@@ -47,7 +47,7 @@ class OP_API
             }
         }
 
-        return 0 < count($ret) ? $ret : null;
+        return 0 < count((array)$ret) ? $ret : null;
     }
 
     static function decode($str)
